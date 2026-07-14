@@ -1,0 +1,43 @@
+DSO COMPANION ÜBER GITHUB AUTOMATISCH ALS EXE BAUEN
+
+Du benötigst auf deinem PC kein .NET SDK und kein Visual Studio.
+
+TEIL 1 – GitHub-Konto und Repository
+1. Öffne github.com und melde dich an.
+2. Klicke oben rechts auf das Pluszeichen.
+3. Wähle „New repository“.
+4. Repository-Name: DSO-Companion
+5. Wähle „Public“ oder „Private“.
+6. README, .gitignore und Lizenz NICHT zusätzlich anlegen.
+7. Klicke auf „Create repository“.
+
+TEIL 2 – Dateien hochladen
+1. Öffne das neu erstellte Repository.
+2. Klicke auf „uploading an existing file“ beziehungsweise „Add file → Upload files“.
+3. Entpacke zuerst dieses ZIP-Paket.
+4. Ziehe ALLE Inhalte aus dem Ordner DSO_Companion_GitHub in das Upload-Fenster.
+   Wichtig: Auch der versteckte Ordner .github muss hochgeladen werden.
+5. Unten „Commit changes“ anklicken.
+
+TEIL 3 – EXE herunterladen
+1. Öffne im Repository oben den Reiter „Actions“.
+2. Wähle links „Windows EXE erstellen“.
+3. Warte, bis der Lauf einen grünen Haken hat.
+4. Öffne den erfolgreichen Lauf.
+5. Scrolle ganz nach unten zu „Artifacts“.
+6. Klicke auf „DSO-Companion-Windows“.
+7. Entpacke den Download.
+8. Darin befindet sich DSO Companion.exe.
+
+AUTOMATISCHE UPDATES
+Jedes Mal, wenn neue Projektdateien nach GitHub hochgeladen werden, baut GitHub
+automatisch eine neue EXE.
+
+ÖFFENTLICHE VERSIONEN
+Wenn später ein Tag wie v0.1 oder v0.2 erstellt wird, erzeugt release.yml
+automatisch einen Eintrag unter „Releases“ mit einem fertigen ZIP-Download.
+
+WICHTIG
+GitHub zeigt Ordner mit einem führenden Punkt eventuell nicht im normalen
+Windows-Explorer an. Im ZIP ist der Ordner .github bereits enthalten.
+Lade deshalb wirklich den gesamten entpackten Ordnerinhalt hoch.
