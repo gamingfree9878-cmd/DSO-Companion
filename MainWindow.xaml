@@ -46,7 +46,7 @@
                 </ScrollViewer>
             </TabItem>
 
-            <TabItem Header="⚔ Builds & Ausrüstung">
+            <TabItem Header="⚔ Builds &amp; Ausrüstung">
                 <Grid Margin="18">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
