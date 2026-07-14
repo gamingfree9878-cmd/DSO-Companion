@@ -5,22 +5,19 @@ on:
   push:
     branches:
       - main
-      - master
   pull_request:
     branches:
       - main
-      - master
 
 permissions:
   contents: read
 
 jobs:
-  build-windows:
-    name: DSO Companion bauen
+  build:
     runs-on: windows-latest
 
     steps:
-      - name: Projekt herunterladen
+      - name: Quellcode herunterladen
         uses: actions/checkout@v4
 
       - name: .NET 8 einrichten
@@ -31,10 +28,10 @@ jobs:
       - name: Projekt wiederherstellen
         run: dotnet restore DSOCompanion.csproj
 
-      - name: Projekt prüfen
+      - name: Projekt kompilieren
         run: dotnet build DSOCompanion.csproj --configuration Release --no-restore
 
-      - name: Portable Windows-EXE erstellen
+      - name: Portable EXE erstellen
         run: >
           dotnet publish DSOCompanion.csproj
           --configuration Release
@@ -43,7 +40,6 @@ jobs:
           --no-restore
           -p:PublishSingleFile=true
           -p:IncludeNativeLibrariesForSelfExtract=true
-          -p:EnableCompressionInSingleFile=true
           --output publish
 
       - name: Download-Paket erstellen
@@ -51,10 +47,10 @@ jobs:
         run: |
           New-Item -ItemType Directory -Force -Path package | Out-Null
           Copy-Item "publish\DSO Companion.exe" "package\DSO Companion.exe"
-          Copy-Item "README.txt" "package\README.txt"
+          Copy-Item "README.md" "package\README.md"
           Compress-Archive -Path "package\*" -DestinationPath "DSO-Companion-Windows.zip" -Force
 
-      - name: EXE als GitHub-Download hochladen
+      - name: Windows-Version hochladen
         uses: actions/upload-artifact@v4
         with:
           name: DSO-Companion-Windows

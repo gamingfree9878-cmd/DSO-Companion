@@ -1,0 +1,52 @@
+DSO COMPANION – KOMPLETTER NEUSTART
+
+WICHTIG:
+Im lokalen GitHub-Ordner werden die alten Projektdateien vollständig entfernt
+und anschließend durch die Dateien aus diesem Paket ersetzt.
+
+SCHRITT 1
+GitHub Desktop schließen.
+
+SCHRITT 2
+Öffne:
+Dokumente\GitHub\DSO-Companion
+
+SCHRITT 3
+Lösche dort alles AUSSER dem Ordner:
+.git
+
+Der Ordner .git muss unbedingt bestehen bleiben.
+
+SCHRITT 4
+Kopiere den gesamten Inhalt aus dem Ordner DSO_Companion_CLEAN_START
+in Dokumente\GitHub\DSO-Companion.
+
+Danach müssen dort sichtbar sein:
+.github
+.gitignore
+App.xaml
+App.xaml.cs
+DSOCompanion.csproj
+MainWindow.xaml
+MainWindow.xaml.cs
+README.md
+
+SCHRITT 5
+GitHub Desktop öffnen.
+
+SCHRITT 6
+Bei Summary eintragen:
+Kompletter sauberer Neustart
+
+SCHRITT 7
+Commit to main anklicken.
+
+SCHRITT 8
+Push origin anklicken.
+
+SCHRITT 9
+GitHub im Browser öffnen:
+Actions → Windows EXE erstellen
+
+Wenn der Lauf grün ist, unten bei Artifacts:
+DSO-Companion-Windows herunterladen.

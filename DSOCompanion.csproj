@@ -8,7 +8,6 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <AssemblyName>DSO Companion</AssemblyName>
     <RootNamespace>DSOCompanion</RootNamespace>
-    <ApplicationIcon />
   </PropertyGroup>
 
 </Project>

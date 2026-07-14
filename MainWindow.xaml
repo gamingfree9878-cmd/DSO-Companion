@@ -1,181 +1,94 @@
 <Window x:Class="DSOCompanion.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="DSO Companion" Height="900" Width="1500"
-        MinHeight="700" MinWidth="1100"
-        WindowStartupLocation="CenterScreen">
-    <DockPanel>
-        <Border DockPanel.Dock="Top" Background="#0B1019" BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1" Padding="14">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="30"/>
-                    <ColumnDefinition Width="230"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
+        Title="DSO Companion"
+        Width="1100"
+        Height="700"
+        MinWidth="900"
+        MinHeight="600"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource BackgroundBrush}"
+        Foreground="{StaticResource TextBrush}">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="240"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
-                <TextBlock Text="⚒ DSO Companion" FontSize="25" FontWeight="Bold" VerticalAlignment="Center"/>
-                <ComboBox x:Name="ProfileCombo" Grid.Column="2" DisplayMemberPath="Name" SelectionChanged="ProfileCombo_OnSelectionChanged"/>
-                <Button Grid.Column="3" Content="+ Profil" Background="{StaticResource AccentBrush}" Click="AddProfile_OnClick"/>
-                <Button Grid.Column="4" Content="Umbenennen" Click="RenameProfile_OnClick"/>
-                <Button Grid.Column="5" Content="Löschen" Background="{StaticResource DangerBrush}" Click="DeleteProfile_OnClick"/>
-            </Grid>
+        <Border Grid.Column="0"
+                Background="#0B1019"
+                BorderBrush="#2B374B"
+                BorderThickness="0,0,1,0">
+            <StackPanel Margin="20">
+                <TextBlock Text="⚒ DSO Companion"
+                           FontSize="24"
+                           FontWeight="Bold"
+                           Margin="0,0,0,24"/>
+
+                <Button Content="🏠 Übersicht"
+                        Height="46"
+                        Margin="0,0,0,8"
+                        Background="{StaticResource AccentBrush}"
+                        Foreground="White"/>
+
+                <Button Content="💎 Edelsteine"
+                        Height="46"
+                        Margin="0,0,0,8"
+                        Background="{StaticResource PanelBrush}"
+                        Foreground="White"/>
+
+                <Button Content="ᚱ Runen"
+                        Height="46"
+                        Margin="0,0,0,8"
+                        Background="{StaticResource PanelBrush}"
+                        Foreground="White"/>
+
+                <Button Content="🔷 Juwelen"
+                        Height="46"
+                        Margin="0,0,0,8"
+                        Background="{StaticResource PanelBrush}"
+                        Foreground="White"/>
+
+                <Button Content="🦴 Mortis / BGH"
+                        Height="46"
+                        Background="{StaticResource PanelBrush}"
+                        Foreground="White"/>
+            </StackPanel>
         </Border>
 
-        <TabControl x:Name="MainTabs">
-            <TabItem Header="🏠 Übersicht">
-                <ScrollViewer>
-                    <StackPanel Margin="24">
-                        <TextBlock x:Name="DashboardTitle" FontSize="30" FontWeight="Bold"/>
-                        <TextBlock x:Name="DashboardSubtitle" Margin="0,8,0,24" Foreground="{StaticResource MutedBrush}"/>
-                        <UniformGrid Columns="3">
-                            <Border Style="{StaticResource CardStyle}">
-                                <StackPanel><TextBlock Text="Builds" Foreground="{StaticResource MutedBrush}"/><TextBlock x:Name="BuildCountText" FontSize="30" FontWeight="Bold"/></StackPanel>
-                            </Border>
-                            <Border Style="{StaticResource CardStyle}">
-                                <StackPanel><TextBlock Text="Mortis-Knochen geplant" Foreground="{StaticResource MutedBrush}"/><TextBlock x:Name="DashboardBonesText" FontSize="30" FontWeight="Bold"/></StackPanel>
-                            </Border>
-                            <Border Style="{StaticResource CardStyle}">
-                                <StackPanel><TextBlock Text="Noch fehlend" Foreground="{StaticResource MutedBrush}"/><TextBlock x:Name="DashboardMissingText" FontSize="30" FontWeight="Bold"/></StackPanel>
-                            </Border>
-                        </UniformGrid>
+        <Grid Grid.Column="1" Margin="30">
+            <StackPanel VerticalAlignment="Center">
+                <TextBlock Text="DSO Companion"
+                           FontSize="42"
+                           FontWeight="Bold"
+                           HorizontalAlignment="Center"/>
+
+                <TextBlock Text="Sauberer Neustart – Version 0.0.1"
+                           FontSize="18"
+                           Foreground="{StaticResource MutedBrush}"
+                           Margin="0,12,0,0"
+                           HorizontalAlignment="Center"/>
+
+                <Border Background="{StaticResource PanelBrush}"
+                        CornerRadius="14"
+                        Padding="24"
+                        Margin="0,32,0,0"
+                        MaxWidth="620"
+                        HorizontalAlignment="Center">
+                    <StackPanel>
+                        <TextBlock Text="Der automatische Windows-Build ist eingerichtet."
+                                   FontSize="20"
+                                   FontWeight="SemiBold"
+                                   TextAlignment="Center"/>
+
+                        <TextBlock Text="Sobald GitHub Actions grün ist, ergänzen wir nacheinander Profile, Builds, Edelsteine, Runen, Juwelen und Mortis."
+                                   TextWrapping="Wrap"
+                                   Foreground="{StaticResource MutedBrush}"
+                                   Margin="0,12,0,0"
+                                   TextAlignment="Center"/>
                     </StackPanel>
-                </ScrollViewer>
-            </TabItem>
-
-            <TabItem Header="⚔ Builds &amp; Ausrüstung">
-                <Grid Margin="18">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-
-                    <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="12" Padding="12">
-                        <WrapPanel>
-                            <TextBlock Text="Klasse:" VerticalAlignment="Center" Margin="6"/>
-                            <ComboBox x:Name="ClassCombo" Width="180" SelectionChanged="ClassCombo_OnSelectionChanged">
-                                <ComboBoxItem Content="Zirkelmagier"/>
-                                <ComboBoxItem Content="Drachenkrieger"/>
-                                <ComboBoxItem Content="Waldläufer"/>
-                                <ComboBoxItem Content="Dampfmechanikus"/>
-                            </ComboBox>
-
-                            <TextBlock Text="Build:" VerticalAlignment="Center" Margin="18,6,6,6"/>
-                            <ComboBox x:Name="BuildCombo" Width="220" DisplayMemberPath="Name" SelectionChanged="BuildCombo_OnSelectionChanged"/>
-                            <Button Content="+ Build" Background="{StaticResource AccentBrush}" Click="AddBuild_OnClick"/>
-                            <Button Content="Kopieren" Click="CopyBuild_OnClick"/>
-                            <Button Content="Umbenennen" Click="RenameBuild_OnClick"/>
-                            <Button Content="Exportieren" Click="ExportBuild_OnClick"/>
-                            <Button Content="Importieren" Click="ImportBuild_OnClick"/>
-                            <Button Content="Löschen" Background="{StaticResource DangerBrush}" Click="DeleteBuild_OnClick"/>
-                        </WrapPanel>
-                    </Border>
-
-                    <Grid Grid.Row="1" Margin="0,14,0,0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="240"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-
-                        <ListBox x:Name="SlotList" DisplayMemberPath="SlotName" SelectionChanged="SlotList_OnSelectionChanged"/>
-
-                        <ScrollViewer Grid.Column="1" Margin="14,0,0,0">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="180"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/><RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-
-                                <TextBlock Grid.Row="0" Text="Itemname" Margin="8" FontWeight="Bold"/>
-                                <TextBox x:Name="ItemNameBox" Grid.Row="0" Grid.Column="1" TextChanged="EquipmentField_OnChanged"/>
-
-                                <TextBlock Grid.Row="1" Text="Gegenstandsstufe" Margin="8" FontWeight="Bold"/>
-                                <TextBox x:Name="ItemLevelBox" Grid.Row="1" Grid.Column="1" TextChanged="EquipmentField_OnChanged"/>
-
-                                <TextBlock Grid.Row="2" Text="Basiswerte" Margin="8" FontWeight="Bold"/>
-                                <TextBox x:Name="BaseValuesBox" Grid.Row="2" Grid.Column="1" Height="80" AcceptsReturn="True" TextWrapping="Wrap" TextChanged="EquipmentField_OnChanged"/>
-
-                                <TextBlock Grid.Row="3" Text="Verzauberungen" Margin="8" FontWeight="Bold"/>
-                                <TextBox x:Name="EnchantmentsBox" Grid.Row="3" Grid.Column="1" Height="100" AcceptsReturn="True" TextWrapping="Wrap" TextChanged="EquipmentField_OnChanged"/>
-
-                                <TextBlock Grid.Row="4" Text="Edelsteine" Margin="8" FontWeight="Bold"/>
-                                <TextBox x:Name="GemsBox" Grid.Row="4" Grid.Column="1" Height="80" AcceptsReturn="True" TextWrapping="Wrap" TextChanged="EquipmentField_OnChanged"/>
-
-                                <TextBlock Grid.Row="5" Text="Runen" Margin="8" FontWeight="Bold"/>
-                                <TextBox x:Name="RunesBox" Grid.Row="5" Grid.Column="1" Height="70" AcceptsReturn="True" TextWrapping="Wrap" TextChanged="EquipmentField_OnChanged"/>
-
-                                <TextBlock Grid.Row="6" Text="Juwel" Margin="8" FontWeight="Bold"/>
-                                <TextBox x:Name="JewelBox" Grid.Row="6" Grid.Column="1" TextChanged="EquipmentField_OnChanged"/>
-
-                                <TextBlock Grid.Row="7" Text="Notizen" Margin="8" FontWeight="Bold"/>
-                                <TextBox x:Name="NotesBox" Grid.Row="7" Grid.Column="1" Height="90" AcceptsReturn="True" TextWrapping="Wrap" TextChanged="EquipmentField_OnChanged"/>
-                            </Grid>
-                        </ScrollViewer>
-                    </Grid>
-                </Grid>
-            </TabItem>
-
-            <TabItem Header="🦴 Mortis / BGH">
-                <Grid Margin="18">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-
-                    <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="12" Padding="12">
-                        <WrapPanel>
-                            <TextBlock Text="Ziel-Knochen" VerticalAlignment="Center" Margin="6"/>
-                            <TextBox x:Name="TargetBonesBox" Width="110" TextChanged="MortisInput_OnChanged"/>
-                            <TextBlock Text="Aktuelle Knochen" VerticalAlignment="Center" Margin="16,6,6,6"/>
-                            <TextBox x:Name="CurrentBonesBox" Width="110" TextChanged="MortisInput_OnChanged"/>
-                            <TextBlock Text="Tage übrig" VerticalAlignment="Center" Margin="16,6,6,6"/>
-                            <TextBox x:Name="DaysLeftBox" Width="80" TextChanged="MortisInput_OnChanged"/>
-                            <TextBlock Text="Stunden/Tag" VerticalAlignment="Center" Margin="16,6,6,6"/>
-                            <TextBox x:Name="HoursPerDayBox" Width="80" TextChanged="MortisInput_OnChanged"/>
-                            <TextBlock Text="Minuten/Run" VerticalAlignment="Center" Margin="16,6,6,6"/>
-                            <TextBox x:Name="MinutesPerRunBox" Width="80" TextChanged="MortisInput_OnChanged"/>
-                        </WrapPanel>
-                    </Border>
-
-                    <DataGrid x:Name="MortisGrid" Grid.Row="1" Margin="0,14,0,14"
-                              AutoGenerateColumns="False" CanUserAddRows="False"
-                              CellEditEnding="MortisGrid_OnCellEditEnding">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Boss / Aktivität" Binding="{Binding Name}" IsReadOnly="True" Width="*"/>
-                            <DataGridTextColumn Header="Schwierigkeit" Binding="{Binding Difficulty}" IsReadOnly="True" Width="150"/>
-                            <DataGridTextColumn Header="Knochen/Run" Binding="{Binding BonesPerRun}" IsReadOnly="True" Width="120"/>
-                            <DataGridTextColumn Header="Eingänge" Binding="{Binding Entries}" Width="100"/>
-                            <DataGridTextColumn Header="Runs" Binding="{Binding Runs}" Width="100"/>
-                            <DataGridTextColumn Header="Gesamtknochen" Binding="{Binding TotalBones}" IsReadOnly="True" Width="140"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
-
-                    <Border Grid.Row="2" Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="12" Padding="16">
-                        <TextBlock x:Name="MortisSummaryText" FontSize="17" FontWeight="Bold" TextWrapping="Wrap"/>
-                    </Border>
-                </Grid>
-            </TabItem>
-
-            <TabItem Header="💎 Edelsteine">
-                <Grid><TextBlock Text="Edelsteinmodul ist für Version 0.2 vorbereitet." FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{StaticResource MutedBrush}"/></Grid>
-            </TabItem>
-
-            <TabItem Header="ᚱ Runen">
-                <Grid><TextBlock Text="Getrennte Runenkarten kommen in Version 0.2." FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{StaticResource MutedBrush}"/></Grid>
-            </TabItem>
-
-            <TabItem Header="🔷 Juwelen">
-                <Grid><TextBlock Text="Juwelenkatalog mit Bildern und Wirkungen kommt in Version 0.3." FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{StaticResource MutedBrush}"/></Grid>
-            </TabItem>
-        </TabControl>
-    </DockPanel>
+                </Border>
+            </StackPanel>
+        </Grid>
+    </Grid>
 </Window>
