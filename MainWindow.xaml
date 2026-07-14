@@ -2,13 +2,11 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="DSO Companion"
-        Width="1100"
-        Height="700"
-        MinWidth="900"
-        MinHeight="600"
-        WindowStartupLocation="CenterScreen"
-        Background="{StaticResource BackgroundBrush}"
-        Foreground="{StaticResource TextBrush}">
+        Width="1250"
+        Height="780"
+        MinWidth="1050"
+        MinHeight="680"
+        WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="240"/>
@@ -16,8 +14,8 @@
         </Grid.ColumnDefinitions>
 
         <Border Grid.Column="0"
-                Background="#0B1019"
-                BorderBrush="#2B374B"
+                Background="{StaticResource SidebarBrush}"
+                BorderBrush="{StaticResource BorderBrush}"
                 BorderThickness="0,0,1,0">
             <StackPanel Margin="20">
                 <TextBlock Text="⚒ DSO Companion"
@@ -28,67 +26,189 @@
                 <Button Content="🏠 Übersicht"
                         Height="46"
                         Margin="0,0,0,8"
-                        Background="{StaticResource AccentBrush}"
-                        Foreground="White"/>
+                        Background="{StaticResource AccentBrush}"/>
+
+                <Button Content="👤 Charaktere &amp; Builds"
+                        Height="46"
+                        Margin="0,0,0,8"
+                        Background="{StaticResource PanelBrush}"/>
 
                 <Button Content="💎 Edelsteine"
                         Height="46"
                         Margin="0,0,0,8"
-                        Background="{StaticResource PanelBrush}"
-                        Foreground="White"/>
+                        Background="{StaticResource PanelBrush}"/>
 
                 <Button Content="ᚱ Runen"
                         Height="46"
                         Margin="0,0,0,8"
-                        Background="{StaticResource PanelBrush}"
-                        Foreground="White"/>
+                        Background="{StaticResource PanelBrush}"/>
 
                 <Button Content="🔷 Juwelen"
                         Height="46"
                         Margin="0,0,0,8"
-                        Background="{StaticResource PanelBrush}"
-                        Foreground="White"/>
+                        Background="{StaticResource PanelBrush}"/>
 
                 <Button Content="🦴 Mortis / BGH"
                         Height="46"
-                        Background="{StaticResource PanelBrush}"
-                        Foreground="White"/>
+                        Background="{StaticResource PanelBrush}"/>
             </StackPanel>
         </Border>
 
-        <Grid Grid.Column="1" Margin="30">
-            <StackPanel VerticalAlignment="Center">
-                <TextBlock Text="DSO Companion"
-                           FontSize="42"
-                           FontWeight="Bold"
-                           HorizontalAlignment="Center"/>
+        <Grid Grid.Column="1" Margin="24">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-                <TextBlock Text="Sauberer Neustart – Version 0.0.1"
-                           FontSize="18"
-                           Foreground="{StaticResource MutedBrush}"
-                           Margin="0,12,0,0"
-                           HorizontalAlignment="Center"/>
+            <Border Style="{StaticResource CardStyle}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="240"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
-                <Border Background="{StaticResource PanelBrush}"
-                        CornerRadius="14"
-                        Padding="24"
-                        Margin="0,32,0,0"
-                        MaxWidth="620"
-                        HorizontalAlignment="Center">
-                    <StackPanel>
-                        <TextBlock Text="Der automatische Windows-Build ist eingerichtet."
-                                   FontSize="20"
-                                   FontWeight="SemiBold"
-                                   TextAlignment="Center"/>
+                    <TextBlock Text="Charakter:"
+                               VerticalAlignment="Center"
+                               Margin="4"/>
 
-                        <TextBlock Text="Sobald GitHub Actions grün ist, ergänzen wir nacheinander Profile, Builds, Edelsteine, Runen, Juwelen und Mortis."
-                                   TextWrapping="Wrap"
-                                   Foreground="{StaticResource MutedBrush}"
-                                   Margin="0,12,0,0"
-                                   TextAlignment="Center"/>
-                    </StackPanel>
-                </Border>
-            </StackPanel>
+                    <ComboBox x:Name="CharacterCombo"
+                              Grid.Column="1"
+                              DisplayMemberPath="Name"
+                              SelectionChanged="CharacterCombo_OnSelectionChanged"/>
+
+                    <Button Grid.Column="2"
+                            Content="+ Charakter"
+                            Background="{StaticResource AccentBrush}"
+                            Click="AddCharacter_OnClick"/>
+
+                    <Button Grid.Column="3"
+                            Content="Umbenennen"
+                            Click="RenameCharacter_OnClick"/>
+
+                    <Button Grid.Column="4"
+                            Content="Löschen"
+                            Background="{StaticResource DangerBrush}"
+                            Click="DeleteCharacter_OnClick"/>
+                </Grid>
+            </Border>
+
+            <ScrollViewer Grid.Row="1">
+                <StackPanel>
+                    <TextBlock Text="Charakterverwaltung"
+                               FontSize="30"
+                               FontWeight="Bold"
+                               Margin="6,16,6,4"/>
+
+                    <TextBlock Text="Profile und Builds werden automatisch lokal gespeichert."
+                               Foreground="{StaticResource MutedBrush}"
+                               Margin="6,0,6,16"/>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="360"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Border Grid.Column="0" Style="{StaticResource CardStyle}">
+                            <StackPanel>
+                                <TextBlock Text="Charakterdaten"
+                                           FontSize="20"
+                                           FontWeight="Bold"
+                                           Margin="4,0,4,12"/>
+
+                                <TextBlock Text="Name" Foreground="{StaticResource MutedBrush}" Margin="4"/>
+                                <TextBox x:Name="CharacterNameBox"
+                                         TextChanged="CharacterField_OnChanged"/>
+
+                                <TextBlock Text="Klasse" Foreground="{StaticResource MutedBrush}" Margin="4,10,4,4"/>
+                                <ComboBox x:Name="ClassCombo"
+                                          SelectionChanged="CharacterField_OnChanged"/>
+
+                                <TextBlock Text="Level" Foreground="{StaticResource MutedBrush}" Margin="4,10,4,4"/>
+                                <TextBox x:Name="LevelBox"
+                                         TextChanged="CharacterField_OnChanged"/>
+
+                                <TextBlock Text="Server" Foreground="{StaticResource MutedBrush}" Margin="4,10,4,4"/>
+                                <ComboBox x:Name="ServerCombo"
+                                          SelectionChanged="CharacterField_OnChanged"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Grid.Column="1" Style="{StaticResource CardStyle}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Text="Builds"
+                                           FontSize="20"
+                                           FontWeight="Bold"
+                                           Margin="4,0,4,12"/>
+
+                                <WrapPanel Grid.Row="1">
+                                    <Button Content="+ Build"
+                                            Background="{StaticResource AccentBrush}"
+                                            Click="AddBuild_OnClick"/>
+                                    <Button Content="Umbenennen"
+                                            Click="RenameBuild_OnClick"/>
+                                    <Button Content="Kopieren"
+                                            Click="CopyBuild_OnClick"/>
+                                    <Button Content="Löschen"
+                                            Background="{StaticResource DangerBrush}"
+                                            Click="DeleteBuild_OnClick"/>
+                                </WrapPanel>
+
+                                <ListBox x:Name="BuildList"
+                                         Grid.Row="2"
+                                         Margin="4,12,4,4"
+                                         DisplayMemberPath="Name"
+                                         SelectionChanged="BuildList_OnSelectionChanged"/>
+                            </Grid>
+                        </Border>
+                    </Grid>
+
+                    <UniformGrid Columns="3" Margin="0,10,0,0">
+                        <Border Style="{StaticResource CardStyle}">
+                            <StackPanel>
+                                <TextBlock Text="Aktiver Charakter"
+                                           Foreground="{StaticResource MutedBrush}"/>
+                                <TextBlock x:Name="SummaryCharacterText"
+                                           FontSize="24"
+                                           FontWeight="Bold"
+                                           Margin="0,6,0,0"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Style="{StaticResource CardStyle}">
+                            <StackPanel>
+                                <TextBlock Text="Klasse &amp; Server"
+                                           Foreground="{StaticResource MutedBrush}"/>
+                                <TextBlock x:Name="SummaryClassText"
+                                           FontSize="20"
+                                           FontWeight="Bold"
+                                           Margin="0,6,0,0"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Style="{StaticResource CardStyle}">
+                            <StackPanel>
+                                <TextBlock Text="Builds"
+                                           Foreground="{StaticResource MutedBrush}"/>
+                                <TextBlock x:Name="SummaryBuildCountText"
+                                           FontSize="24"
+                                           FontWeight="Bold"
+                                           Margin="0,6,0,0"/>
+                            </StackPanel>
+                        </Border>
+                    </UniformGrid>
+                </StackPanel>
+            </ScrollViewer>
         </Grid>
     </Grid>
 </Window>

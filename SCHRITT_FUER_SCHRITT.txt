@@ -1,52 +1,32 @@
-DSO COMPANION – KOMPLETTER NEUSTART
+DSO COMPANION VERSION 0.2
 
-WICHTIG:
-Im lokalen GitHub-Ordner werden die alten Projektdateien vollständig entfernt
-und anschließend durch die Dateien aus diesem Paket ersetzt.
+1. GitHub Desktop schließen.
 
-SCHRITT 1
-GitHub Desktop schließen.
+2. Öffne:
+   Dokumente\GitHub\DSO-Companion
 
-SCHRITT 2
-Öffne:
-Dokumente\GitHub\DSO-Companion
+3. Lösche dort alles AUSSER:
+   .git
 
-SCHRITT 3
-Lösche dort alles AUSSER dem Ordner:
-.git
+4. Entpacke DSO_Companion_V0_2_CHARAKTERE.zip.
 
-Der Ordner .git muss unbedingt bestehen bleiben.
+5. Kopiere den gesamten Inhalt des Ordners
+   DSO_Companion_V0_2_CHARAKTERE
+   in:
+   Dokumente\GitHub\DSO-Companion
 
-SCHRITT 4
-Kopiere den gesamten Inhalt aus dem Ordner DSO_Companion_CLEAN_START
-in Dokumente\GitHub\DSO-Companion.
+6. GitHub Desktop öffnen.
 
-Danach müssen dort sichtbar sein:
-.github
-.gitignore
-App.xaml
-App.xaml.cs
-DSOCompanion.csproj
-MainWindow.xaml
-MainWindow.xaml.cs
-README.md
+7. Summary:
+   Version 0.2 Charaktere und Builds
 
-SCHRITT 5
-GitHub Desktop öffnen.
+8. Commit to main.
 
-SCHRITT 6
-Bei Summary eintragen:
-Kompletter sauberer Neustart
+9. Push origin.
 
-SCHRITT 7
-Commit to main anklicken.
+10. GitHub → Actions → neuesten Lauf abwarten.
 
-SCHRITT 8
-Push origin anklicken.
+11. Unten unter Artefakte:
+    DSO-Companion-Windows herunterladen.
 
-SCHRITT 9
-GitHub im Browser öffnen:
-Actions → Windows EXE erstellen
-
-Wenn der Lauf grün ist, unten bei Artifacts:
-DSO-Companion-Windows herunterladen.
+12. ZIP entpacken und DSO Companion.exe starten.

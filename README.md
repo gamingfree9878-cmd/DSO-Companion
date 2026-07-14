@@ -1,25 +1,24 @@
 # DSO Companion
 
-Sauberer Neustart des DSO-Companion-Projekts.
+## Version 0.2 – Charaktere und Builds
 
-## Version 0.0.1
+Enthalten:
 
-Diese Version enthält nur:
+- mehrere Charakterprofile
+- Klassen:
+  - Zirkelmagier
+  - Drachenkrieger
+  - Waldläufer
+  - Dampfmechanikus
+- Level
+- Server, Standard: Heredur
+- mehrere Builds je Charakter
+- Build anlegen
+- Build umbenennen
+- Build kopieren
+- Build löschen
+- automatische lokale Speicherung
 
-- ein minimales WPF-Fenster
-- ein dunkles Grunddesign
-- eine vorbereitete Navigation
-- einen automatischen GitHub-Actions-Build
-- eine portable Windows-EXE als GitHub-Artefakt
+Speicherort:
 
-Erst wenn dieser Build erfolgreich grün ist, werden die eigentlichen Module ergänzt.
-
-## Geplante Reihenfolge
-
-1. Profile und Charaktere
-2. Builds und Ausrüstung
-3. Edelsteine
-4. Runen
-5. Juwelen
-6. Mortis / BGH
-7. Import und Export
+`%APPDATA%\DSO Companion\state.json`
