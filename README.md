@@ -1,22 +1,23 @@
 # DSO Companion
 
-## Version 0.2 – Charaktere und Builds
+## Version 0.3 – Ausrüstung und Builds
 
-Enthalten:
+Neu:
 
-- mehrere Charakterprofile
-- Klassen:
-  - Zirkelmagier
-  - Drachenkrieger
-  - Waldläufer
-  - Dampfmechanikus
-- Level
-- Server, Standard: Heredur
-- mehrere Builds je Charakter
-- Build anlegen
-- Build umbenennen
-- Build kopieren
-- Build löschen
+- vollständig dunkler Hauptbereich
+- Charakter-Notizen
+- Build-Typen
+- Ausrüstung pro Build
+- alle 13 Ausrüstungsslots
+- Itemname
+- Gegenstandsstufe
+- Basiswerte
+- Verzauberungen
+- Edelsteine
+- Runen
+- Juwel
+- Item-Notizen
+- Build-Kopien übernehmen die gesamte Ausrüstung
 - automatische lokale Speicherung
 
 Speicherort:

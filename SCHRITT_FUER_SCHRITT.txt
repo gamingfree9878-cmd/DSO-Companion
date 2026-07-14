@@ -1,4 +1,4 @@
-DSO COMPANION VERSION 0.2
+DSO COMPANION VERSION 0.3
 
 1. GitHub Desktop schließen.
 
@@ -8,17 +8,18 @@ DSO COMPANION VERSION 0.2
 3. Lösche dort alles AUSSER:
    .git
 
-4. Entpacke DSO_Companion_V0_2_CHARAKTERE.zip.
+4. Entpacke:
+   DSO_Companion_V0_3_AUSRUESTUNG.zip
 
 5. Kopiere den gesamten Inhalt des Ordners
-   DSO_Companion_V0_2_CHARAKTERE
-   in:
+   DSO_Companion_V0_3_AUSRUESTUNG
+   nach:
    Dokumente\GitHub\DSO-Companion
 
 6. GitHub Desktop öffnen.
 
 7. Summary:
-   Version 0.2 Charaktere und Builds
+   Version 0.3 Ausrüstung und Builds
 
 8. Commit to main.
 
@@ -26,7 +27,7 @@ DSO COMPANION VERSION 0.2
 
 10. GitHub → Actions → neuesten Lauf abwarten.
 
-11. Unten unter Artefakte:
+11. Bei grünem Haken das Artefakt
     DSO-Companion-Windows herunterladen.
 
-12. ZIP entpacken und DSO Companion.exe starten.
+12. ZIP vollständig entpacken und DSO Companion.exe starten.

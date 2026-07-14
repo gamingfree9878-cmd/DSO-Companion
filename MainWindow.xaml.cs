@@ -10,9 +10,13 @@ public partial class MainWindow : Window
     private readonly StorageService _storage = new();
     private AppState _state;
     private bool _loading;
+    private EquipmentSlot? _selectedEquipmentSlot;
 
     private CharacterProfile ActiveCharacter =>
         _state.Characters.First(x => x.Id == _state.ActiveCharacterId);
+
+    private BuildProfile ActiveBuild =>
+        ActiveCharacter.Builds.First(x => x.Id == ActiveCharacter.ActiveBuildId);
 
     public MainWindow()
     {
@@ -20,6 +24,7 @@ public partial class MainWindow : Window
 
         ClassCombo.ItemsSource = AppDataService.Classes;
         ServerCombo.ItemsSource = AppDataService.Servers;
+        BuildTypeCombo.ItemsSource = AppDataService.BuildTypes;
 
         _state = _storage.Load();
         NormalizeState();
@@ -42,20 +47,7 @@ public partial class MainWindow : Window
         }
 
         foreach (CharacterProfile character in _state.Characters)
-        {
-            if (character.Builds.Count == 0)
-            {
-                BuildProfile build = new() { Name = "Boss-Build" };
-                character.Builds.Add(build);
-                character.ActiveBuildId = build.Id;
-            }
-
-            if (character.ActiveBuildId is null ||
-                character.Builds.All(x => x.Id != character.ActiveBuildId))
-            {
-                character.ActiveBuildId = character.Builds[0].Id;
-            }
-        }
+            AppDataService.NormalizeCharacter(character);
     }
 
     private void RefreshAll()
@@ -70,14 +62,22 @@ public partial class MainWindow : Window
         ClassCombo.SelectedItem = ActiveCharacter.CharacterClass;
         LevelBox.Text = ActiveCharacter.Level.ToString();
         ServerCombo.SelectedItem = ActiveCharacter.Server;
+        CharacterNotesBox.Text = ActiveCharacter.Notes;
 
         BuildList.ItemsSource = null;
         BuildList.ItemsSource = ActiveCharacter.Builds;
-        BuildList.SelectedItem = ActiveCharacter.Builds
-            .FirstOrDefault(x => x.Id == ActiveCharacter.ActiveBuildId);
+        BuildList.SelectedItem = ActiveBuild;
+        BuildTypeCombo.SelectedItem = ActiveBuild.BuildType;
+
+        ActiveBuildHeader.Text = $"{ActiveBuild.Name} · {ActiveBuild.BuildType}";
+
+        EquipmentSlotList.ItemsSource = null;
+        EquipmentSlotList.ItemsSource = ActiveBuild.Equipment;
+        EquipmentSlotList.SelectedIndex = 0;
 
         _loading = false;
 
+        LoadSelectedEquipmentSlot();
         UpdateSummary();
         Save();
     }
@@ -88,11 +88,52 @@ public partial class MainWindow : Window
         SummaryClassText.Text =
             $"{ActiveCharacter.CharacterClass} · {ActiveCharacter.Server} · Level {ActiveCharacter.Level}";
         SummaryBuildCountText.Text = ActiveCharacter.Builds.Count.ToString();
+        ActiveBuildHeader.Text = $"{ActiveBuild.Name} · {ActiveBuild.BuildType}";
     }
 
     private void Save()
     {
         _storage.Save(_state);
+    }
+
+    private void LoadSelectedEquipmentSlot()
+    {
+        _selectedEquipmentSlot = EquipmentSlotList.SelectedItem as EquipmentSlot;
+
+        _loading = true;
+
+        SelectedSlotHeader.Text = _selectedEquipmentSlot?.SlotName ?? "Ausrüstung";
+        ItemNameBox.Text = _selectedEquipmentSlot?.ItemName ?? "";
+        ItemLevelBox.Text = (_selectedEquipmentSlot?.ItemLevel ?? 0).ToString();
+        BaseValuesBox.Text = _selectedEquipmentSlot?.BaseValues ?? "";
+        EnchantmentsBox.Text = _selectedEquipmentSlot?.Enchantments ?? "";
+        GemsBox.Text = _selectedEquipmentSlot?.Gems ?? "";
+        RunesBox.Text = _selectedEquipmentSlot?.Runes ?? "";
+        JewelBox.Text = _selectedEquipmentSlot?.Jewel ?? "";
+        EquipmentNotesBox.Text = _selectedEquipmentSlot?.Notes ?? "";
+
+        _loading = false;
+    }
+
+    private void SaveSelectedEquipmentSlot()
+    {
+        if (_loading || _selectedEquipmentSlot is null)
+            return;
+
+        _selectedEquipmentSlot.ItemName = ItemNameBox.Text;
+        _selectedEquipmentSlot.ItemLevel =
+            int.TryParse(ItemLevelBox.Text, out int level)
+                ? Math.Max(0, level)
+                : 0;
+
+        _selectedEquipmentSlot.BaseValues = BaseValuesBox.Text;
+        _selectedEquipmentSlot.Enchantments = EnchantmentsBox.Text;
+        _selectedEquipmentSlot.Gems = GemsBox.Text;
+        _selectedEquipmentSlot.Runes = RunesBox.Text;
+        _selectedEquipmentSlot.Jewel = JewelBox.Text;
+        _selectedEquipmentSlot.Notes = EquipmentNotesBox.Text;
+
+        Save();
     }
 
     private static string? Prompt(string title, string initialValue)
@@ -152,9 +193,7 @@ public partial class MainWindow : Window
         return result;
     }
 
-    private void CharacterCombo_OnSelectionChanged(
-        object sender,
-        SelectionChangedEventArgs e)
+    private void CharacterCombo_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         if (_loading || CharacterCombo.SelectedItem is not CharacterProfile character)
             return;
@@ -195,14 +234,14 @@ public partial class MainWindow : Window
             return;
         }
 
-        MessageBoxResult result = MessageBox.Show(
-            "Diesen Charakter wirklich löschen?",
-            "Bestätigung",
-            MessageBoxButton.YesNo,
-            MessageBoxImage.Warning);
-
-        if (result != MessageBoxResult.Yes)
+        if (MessageBox.Show(
+                "Diesen Charakter wirklich löschen?",
+                "Bestätigung",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning) != MessageBoxResult.Yes)
+        {
             return;
+        }
 
         _state.Characters.Remove(ActiveCharacter);
         _state.ActiveCharacterId = _state.Characters[0].Id;
@@ -226,20 +265,32 @@ public partial class MainWindow : Window
         ActiveCharacter.Server =
             ServerCombo.SelectedItem?.ToString() ?? "Heredur";
 
-        UpdateSummary();
-        Save();
+        ActiveCharacter.Notes = CharacterNotesBox.Text;
 
         CharacterCombo.Items.Refresh();
+        UpdateSummary();
+        Save();
     }
 
-    private void BuildList_OnSelectionChanged(
-        object sender,
-        SelectionChangedEventArgs e)
+    private void BuildList_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         if (_loading || BuildList.SelectedItem is not BuildProfile build)
             return;
 
+        SaveSelectedEquipmentSlot();
         ActiveCharacter.ActiveBuildId = build.Id;
+        RefreshAll();
+    }
+
+    private void BuildTypeCombo_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (_loading)
+            return;
+
+        ActiveBuild.BuildType =
+            BuildTypeCombo.SelectedItem?.ToString() ?? "Eigen";
+
+        UpdateSummary();
         Save();
     }
 
@@ -250,7 +301,7 @@ public partial class MainWindow : Window
         if (string.IsNullOrWhiteSpace(name))
             return;
 
-        BuildProfile build = new() { Name = name };
+        BuildProfile build = AppDataService.CreateBuild(name, "Eigen");
         ActiveCharacter.Builds.Add(build);
         ActiveCharacter.ActiveBuildId = build.Id;
         RefreshAll();
@@ -280,7 +331,26 @@ public partial class MainWindow : Window
         if (string.IsNullOrWhiteSpace(name))
             return;
 
-        BuildProfile copy = new() { Name = name };
+        BuildProfile copy = new()
+        {
+            Name = name,
+            BuildType = build.BuildType,
+            Equipment = build.Equipment
+                .Select(item => new EquipmentSlot
+                {
+                    SlotName = item.SlotName,
+                    ItemName = item.ItemName,
+                    ItemLevel = item.ItemLevel,
+                    BaseValues = item.BaseValues,
+                    Enchantments = item.Enchantments,
+                    Gems = item.Gems,
+                    Runes = item.Runes,
+                    Jewel = item.Jewel,
+                    Notes = item.Notes
+                })
+                .ToList()
+        };
+
         ActiveCharacter.Builds.Add(copy);
         ActiveCharacter.ActiveBuildId = copy.Id;
         RefreshAll();
@@ -297,17 +367,31 @@ public partial class MainWindow : Window
         if (BuildList.SelectedItem is not BuildProfile build)
             return;
 
-        MessageBoxResult result = MessageBox.Show(
-            "Diesen Build wirklich löschen?",
-            "Bestätigung",
-            MessageBoxButton.YesNo,
-            MessageBoxImage.Warning);
-
-        if (result != MessageBoxResult.Yes)
+        if (MessageBox.Show(
+                "Diesen Build wirklich löschen?",
+                "Bestätigung",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning) != MessageBoxResult.Yes)
+        {
             return;
+        }
 
         ActiveCharacter.Builds.Remove(build);
         ActiveCharacter.ActiveBuildId = ActiveCharacter.Builds[0].Id;
         RefreshAll();
+    }
+
+    private void EquipmentSlotList_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (_loading)
+            return;
+
+        SaveSelectedEquipmentSlot();
+        LoadSelectedEquipmentSlot();
+    }
+
+    private void EquipmentField_OnChanged(object sender, TextChangedEventArgs e)
+    {
+        SaveSelectedEquipmentSlot();
     }
 }

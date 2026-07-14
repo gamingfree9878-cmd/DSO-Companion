@@ -7,6 +7,7 @@ public sealed class CharacterProfile
     public string CharacterClass { get; set; } = "Zirkelmagier";
     public int Level { get; set; } = 100;
     public string Server { get; set; } = "Heredur";
+    public string Notes { get; set; } = "";
     public List<BuildProfile> Builds { get; set; } = [];
     public Guid? ActiveBuildId { get; set; }
 }

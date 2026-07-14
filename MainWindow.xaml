@@ -2,12 +2,12 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="DSO Companion"
-        Width="1250"
-        Height="780"
-        MinWidth="1050"
-        MinHeight="680"
+        Width="1450"
+        Height="900"
+        MinWidth="1150"
+        MinHeight="720"
         WindowStartupLocation="CenterScreen">
-    <Grid>
+    <Grid Background="{StaticResource BackgroundBrush}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="240"/>
             <ColumnDefinition Width="*"/>
@@ -21,40 +21,36 @@
                 <TextBlock Text="⚒ DSO Companion"
                            FontSize="24"
                            FontWeight="Bold"
+                           Foreground="White"
                            Margin="0,0,0,24"/>
 
                 <Button Content="🏠 Übersicht"
-                        Height="46"
-                        Margin="0,0,0,8"
+                        Style="{StaticResource SidebarButtonStyle}"
                         Background="{StaticResource AccentBrush}"/>
 
                 <Button Content="👤 Charaktere &amp; Builds"
-                        Height="46"
-                        Margin="0,0,0,8"
-                        Background="{StaticResource PanelBrush}"/>
+                        Style="{StaticResource SidebarButtonStyle}"/>
+
+                <Button Content="⚔ Ausrüstung"
+                        Style="{StaticResource SidebarButtonStyle}"/>
 
                 <Button Content="💎 Edelsteine"
-                        Height="46"
-                        Margin="0,0,0,8"
-                        Background="{StaticResource PanelBrush}"/>
+                        Style="{StaticResource SidebarButtonStyle}"/>
 
                 <Button Content="ᚱ Runen"
-                        Height="46"
-                        Margin="0,0,0,8"
-                        Background="{StaticResource PanelBrush}"/>
+                        Style="{StaticResource SidebarButtonStyle}"/>
 
                 <Button Content="🔷 Juwelen"
-                        Height="46"
-                        Margin="0,0,0,8"
-                        Background="{StaticResource PanelBrush}"/>
+                        Style="{StaticResource SidebarButtonStyle}"/>
 
                 <Button Content="🦴 Mortis / BGH"
-                        Height="46"
-                        Background="{StaticResource PanelBrush}"/>
+                        Style="{StaticResource SidebarButtonStyle}"/>
             </StackPanel>
         </Border>
 
-        <Grid Grid.Column="1" Margin="24">
+        <Grid Grid.Column="1"
+              Margin="24"
+              Background="{StaticResource BackgroundBrush}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
@@ -64,7 +60,7 @@
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="240"/>
+                        <ColumnDefinition Width="250"/>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
@@ -72,6 +68,7 @@
                     </Grid.ColumnDefinitions>
 
                     <TextBlock Text="Charakter:"
+                               Foreground="White"
                                VerticalAlignment="Center"
                                Margin="4"/>
 
@@ -96,119 +93,268 @@
                 </Grid>
             </Border>
 
-            <ScrollViewer Grid.Row="1">
-                <StackPanel>
-                    <TextBlock Text="Charakterverwaltung"
-                               FontSize="30"
-                               FontWeight="Bold"
-                               Margin="6,16,6,4"/>
+            <TabControl Grid.Row="1"
+                        Margin="6,10,6,6"
+                        Background="{StaticResource BackgroundBrush}"
+                        BorderBrush="{StaticResource BorderBrush}"
+                        Foreground="Black">
 
-                    <TextBlock Text="Profile und Builds werden automatisch lokal gespeichert."
-                               Foreground="{StaticResource MutedBrush}"
-                               Margin="6,0,6,16"/>
+                <TabItem Header="Charaktere &amp; Builds">
+                    <ScrollViewer Background="{StaticResource BackgroundBrush}">
+                        <StackPanel Margin="12">
+                            <TextBlock Text="Charakterverwaltung"
+                                       Foreground="White"
+                                       FontSize="30"
+                                       FontWeight="Bold"
+                                       Margin="6,4,6,4"/>
 
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="360"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
+                            <TextBlock Text="Profile, Builds und Ausrüstung werden automatisch lokal gespeichert."
+                                       Foreground="{StaticResource MutedBrush}"
+                                       Margin="6,0,6,16"/>
 
-                        <Border Grid.Column="0" Style="{StaticResource CardStyle}">
-                            <StackPanel>
-                                <TextBlock Text="Charakterdaten"
-                                           FontSize="20"
-                                           FontWeight="Bold"
-                                           Margin="4,0,4,12"/>
-
-                                <TextBlock Text="Name" Foreground="{StaticResource MutedBrush}" Margin="4"/>
-                                <TextBox x:Name="CharacterNameBox"
-                                         TextChanged="CharacterField_OnChanged"/>
-
-                                <TextBlock Text="Klasse" Foreground="{StaticResource MutedBrush}" Margin="4,10,4,4"/>
-                                <ComboBox x:Name="ClassCombo"
-                                          SelectionChanged="CharacterField_OnChanged"/>
-
-                                <TextBlock Text="Level" Foreground="{StaticResource MutedBrush}" Margin="4,10,4,4"/>
-                                <TextBox x:Name="LevelBox"
-                                         TextChanged="CharacterField_OnChanged"/>
-
-                                <TextBlock Text="Server" Foreground="{StaticResource MutedBrush}" Margin="4,10,4,4"/>
-                                <ComboBox x:Name="ServerCombo"
-                                          SelectionChanged="CharacterField_OnChanged"/>
-                            </StackPanel>
-                        </Border>
-
-                        <Border Grid.Column="1" Style="{StaticResource CardStyle}">
                             <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="*"/>
-                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="390"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
 
-                                <TextBlock Text="Builds"
-                                           FontSize="20"
-                                           FontWeight="Bold"
-                                           Margin="4,0,4,12"/>
+                                <Border Grid.Column="0" Style="{StaticResource CardStyle}">
+                                    <StackPanel>
+                                        <TextBlock Text="👤 Charakterdaten"
+                                                   Foreground="White"
+                                                   FontSize="21"
+                                                   FontWeight="Bold"
+                                                   Margin="4,0,4,12"/>
 
-                                <WrapPanel Grid.Row="1">
-                                    <Button Content="+ Build"
-                                            Background="{StaticResource AccentBrush}"
-                                            Click="AddBuild_OnClick"/>
-                                    <Button Content="Umbenennen"
-                                            Click="RenameBuild_OnClick"/>
-                                    <Button Content="Kopieren"
-                                            Click="CopyBuild_OnClick"/>
-                                    <Button Content="Löschen"
-                                            Background="{StaticResource DangerBrush}"
-                                            Click="DeleteBuild_OnClick"/>
-                                </WrapPanel>
+                                        <TextBlock Text="Name" Foreground="{StaticResource MutedBrush}" Margin="4"/>
+                                        <TextBox x:Name="CharacterNameBox"
+                                                 TextChanged="CharacterField_OnChanged"/>
 
-                                <ListBox x:Name="BuildList"
-                                         Grid.Row="2"
-                                         Margin="4,12,4,4"
-                                         DisplayMemberPath="Name"
-                                         SelectionChanged="BuildList_OnSelectionChanged"/>
+                                        <TextBlock Text="Klasse" Foreground="{StaticResource MutedBrush}" Margin="4,10,4,4"/>
+                                        <ComboBox x:Name="ClassCombo"
+                                                  SelectionChanged="CharacterField_OnChanged"/>
+
+                                        <TextBlock Text="Level" Foreground="{StaticResource MutedBrush}" Margin="4,10,4,4"/>
+                                        <TextBox x:Name="LevelBox"
+                                                 TextChanged="CharacterField_OnChanged"/>
+
+                                        <TextBlock Text="Server" Foreground="{StaticResource MutedBrush}" Margin="4,10,4,4"/>
+                                        <ComboBox x:Name="ServerCombo"
+                                                  SelectionChanged="CharacterField_OnChanged"/>
+
+                                        <TextBlock Text="Notizen" Foreground="{StaticResource MutedBrush}" Margin="4,10,4,4"/>
+                                        <TextBox x:Name="CharacterNotesBox"
+                                                 Height="100"
+                                                 AcceptsReturn="True"
+                                                 TextWrapping="Wrap"
+                                                 VerticalScrollBarVisibility="Auto"
+                                                 TextChanged="CharacterField_OnChanged"/>
+                                    </StackPanel>
+                                </Border>
+
+                                <Border Grid.Column="1" Style="{StaticResource CardStyle}">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+
+                                        <TextBlock Text="⚔ Builds"
+                                                   Foreground="White"
+                                                   FontSize="21"
+                                                   FontWeight="Bold"
+                                                   Margin="4,0,4,12"/>
+
+                                        <WrapPanel Grid.Row="1">
+                                            <Button Content="+ Build"
+                                                    Background="{StaticResource AccentBrush}"
+                                                    Click="AddBuild_OnClick"/>
+                                            <Button Content="Umbenennen"
+                                                    Click="RenameBuild_OnClick"/>
+                                            <Button Content="Kopieren"
+                                                    Click="CopyBuild_OnClick"/>
+                                            <Button Content="Löschen"
+                                                    Background="{StaticResource DangerBrush}"
+                                                    Click="DeleteBuild_OnClick"/>
+                                        </WrapPanel>
+
+                                        <StackPanel Grid.Row="2"
+                                                    Orientation="Horizontal"
+                                                    Margin="4,8,4,8">
+                                            <TextBlock Text="Build-Typ:"
+                                                       Foreground="{StaticResource MutedBrush}"
+                                                       VerticalAlignment="Center"
+                                                       Margin="0,0,8,0"/>
+                                            <ComboBox x:Name="BuildTypeCombo"
+                                                      Width="180"
+                                                      SelectionChanged="BuildTypeCombo_OnSelectionChanged"/>
+                                        </StackPanel>
+
+                                        <ListBox x:Name="BuildList"
+                                                 Grid.Row="3"
+                                                 DisplayMemberPath="Name"
+                                                 SelectionChanged="BuildList_OnSelectionChanged"/>
+                                    </Grid>
+                                </Border>
                             </Grid>
-                        </Border>
-                    </Grid>
 
-                    <UniformGrid Columns="3" Margin="0,10,0,0">
-                        <Border Style="{StaticResource CardStyle}">
-                            <StackPanel>
-                                <TextBlock Text="Aktiver Charakter"
-                                           Foreground="{StaticResource MutedBrush}"/>
-                                <TextBlock x:Name="SummaryCharacterText"
-                                           FontSize="24"
-                                           FontWeight="Bold"
-                                           Margin="0,6,0,0"/>
-                            </StackPanel>
-                        </Border>
+                            <UniformGrid Columns="3" Margin="0,10,0,0">
+                                <Border Style="{StaticResource CardStyle}">
+                                    <StackPanel>
+                                        <TextBlock Text="👤 Aktiver Charakter"
+                                                   Foreground="{StaticResource MutedBrush}"/>
+                                        <TextBlock x:Name="SummaryCharacterText"
+                                                   Foreground="White"
+                                                   FontSize="24"
+                                                   FontWeight="Bold"
+                                                   Margin="0,6,0,0"/>
+                                    </StackPanel>
+                                </Border>
+
+                                <Border Style="{StaticResource CardStyle}">
+                                    <StackPanel>
+                                        <TextBlock Text="⚔ Klasse &amp; Server"
+                                                   Foreground="{StaticResource MutedBrush}"/>
+                                        <TextBlock x:Name="SummaryClassText"
+                                                   Foreground="White"
+                                                   FontSize="19"
+                                                   FontWeight="Bold"
+                                                   Margin="0,6,0,0"
+                                                   TextWrapping="Wrap"/>
+                                    </StackPanel>
+                                </Border>
+
+                                <Border Style="{StaticResource CardStyle}">
+                                    <StackPanel>
+                                        <TextBlock Text="📦 Builds"
+                                                   Foreground="{StaticResource MutedBrush}"/>
+                                        <TextBlock x:Name="SummaryBuildCountText"
+                                                   Foreground="White"
+                                                   FontSize="24"
+                                                   FontWeight="Bold"
+                                                   Margin="0,6,0,0"/>
+                                    </StackPanel>
+                                </Border>
+                            </UniformGrid>
+                        </StackPanel>
+                    </ScrollViewer>
+                </TabItem>
+
+                <TabItem Header="Ausrüstung des aktiven Builds">
+                    <Grid Background="{StaticResource BackgroundBrush}"
+                          Margin="12">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
 
                         <Border Style="{StaticResource CardStyle}">
-                            <StackPanel>
-                                <TextBlock Text="Klasse &amp; Server"
-                                           Foreground="{StaticResource MutedBrush}"/>
-                                <TextBlock x:Name="SummaryClassText"
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Aktiver Build:"
+                                           Foreground="{StaticResource MutedBrush}"
+                                           VerticalAlignment="Center"
+                                           Margin="4"/>
+                                <TextBlock x:Name="ActiveBuildHeader"
+                                           Foreground="White"
                                            FontSize="20"
                                            FontWeight="Bold"
-                                           Margin="0,6,0,0"/>
+                                           VerticalAlignment="Center"
+                                           Margin="8,4"/>
                             </StackPanel>
                         </Border>
 
-                        <Border Style="{StaticResource CardStyle}">
-                            <StackPanel>
-                                <TextBlock Text="Builds"
-                                           Foreground="{StaticResource MutedBrush}"/>
-                                <TextBlock x:Name="SummaryBuildCountText"
-                                           FontSize="24"
-                                           FontWeight="Bold"
-                                           Margin="0,6,0,0"/>
-                            </StackPanel>
-                        </Border>
-                    </UniformGrid>
-                </StackPanel>
-            </ScrollViewer>
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="250"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Border Grid.Column="0" Style="{StaticResource CardStyle}">
+                                <StackPanel>
+                                    <TextBlock Text="Ausrüstungsslots"
+                                               Foreground="White"
+                                               FontSize="20"
+                                               FontWeight="Bold"
+                                               Margin="4,0,4,12"/>
+                                    <ListBox x:Name="EquipmentSlotList"
+                                             DisplayMemberPath="SlotName"
+                                             SelectionChanged="EquipmentSlotList_OnSelectionChanged"/>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Grid.Column="1" Style="{StaticResource CardStyle}">
+                                <ScrollViewer>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="180"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+
+                                        <TextBlock Grid.Row="0"
+                                                   Grid.ColumnSpan="2"
+                                                   x:Name="SelectedSlotHeader"
+                                                   Text="Ausrüstung"
+                                                   Foreground="White"
+                                                   FontSize="22"
+                                                   FontWeight="Bold"
+                                                   Margin="4,0,4,14"/>
+
+                                        <TextBlock Grid.Row="1" Text="Itemname" Foreground="{StaticResource MutedBrush}" Margin="8"/>
+                                        <TextBox x:Name="ItemNameBox" Grid.Row="1" Grid.Column="1" TextChanged="EquipmentField_OnChanged"/>
+
+                                        <TextBlock Grid.Row="2" Text="Gegenstandsstufe" Foreground="{StaticResource MutedBrush}" Margin="8"/>
+                                        <TextBox x:Name="ItemLevelBox" Grid.Row="2" Grid.Column="1" TextChanged="EquipmentField_OnChanged"/>
+
+                                        <TextBlock Grid.Row="3" Text="Basiswerte" Foreground="{StaticResource MutedBrush}" Margin="8"/>
+                                        <TextBox x:Name="BaseValuesBox" Grid.Row="3" Grid.Column="1" Height="75"
+                                                 AcceptsReturn="True" TextWrapping="Wrap"
+                                                 VerticalScrollBarVisibility="Auto"
+                                                 TextChanged="EquipmentField_OnChanged"/>
+
+                                        <TextBlock Grid.Row="4" Text="Verzauberungen" Foreground="{StaticResource MutedBrush}" Margin="8"/>
+                                        <TextBox x:Name="EnchantmentsBox" Grid.Row="4" Grid.Column="1" Height="95"
+                                                 AcceptsReturn="True" TextWrapping="Wrap"
+                                                 VerticalScrollBarVisibility="Auto"
+                                                 TextChanged="EquipmentField_OnChanged"/>
+
+                                        <TextBlock Grid.Row="5" Text="Edelsteine" Foreground="{StaticResource MutedBrush}" Margin="8"/>
+                                        <TextBox x:Name="GemsBox" Grid.Row="5" Grid.Column="1" Height="70"
+                                                 AcceptsReturn="True" TextWrapping="Wrap"
+                                                 TextChanged="EquipmentField_OnChanged"/>
+
+                                        <TextBlock Grid.Row="6" Text="Runen" Foreground="{StaticResource MutedBrush}" Margin="8"/>
+                                        <TextBox x:Name="RunesBox" Grid.Row="6" Grid.Column="1" Height="65"
+                                                 AcceptsReturn="True" TextWrapping="Wrap"
+                                                 TextChanged="EquipmentField_OnChanged"/>
+
+                                        <TextBlock Grid.Row="7" Text="Juwel" Foreground="{StaticResource MutedBrush}" Margin="8"/>
+                                        <TextBox x:Name="JewelBox" Grid.Row="7" Grid.Column="1" TextChanged="EquipmentField_OnChanged"/>
+
+                                        <TextBlock Grid.Row="8" Text="Notizen" Foreground="{StaticResource MutedBrush}" Margin="8"/>
+                                        <TextBox x:Name="EquipmentNotesBox" Grid.Row="8" Grid.Column="1" Height="85"
+                                                 AcceptsReturn="True" TextWrapping="Wrap"
+                                                 VerticalScrollBarVisibility="Auto"
+                                                 TextChanged="EquipmentField_OnChanged"/>
+                                    </Grid>
+                                </ScrollViewer>
+                            </Border>
+                        </Grid>
+                    </Grid>
+                </TabItem>
+            </TabControl>
         </Grid>
     </Grid>
 </Window>

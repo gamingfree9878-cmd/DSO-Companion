@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text.Json;
 using DSOCompanion.Models;
 
@@ -32,7 +33,17 @@ public sealed class StorageService
                 return CreateDefault();
 
             string json = File.ReadAllText(_file);
-            return JsonSerializer.Deserialize<AppState>(json, Options) ?? CreateDefault();
+            AppState? state = JsonSerializer.Deserialize<AppState>(json, Options);
+
+            if (state is null)
+                return CreateDefault();
+
+            state.Characters ??= [];
+
+            foreach (CharacterProfile character in state.Characters)
+                AppDataService.NormalizeCharacter(character);
+
+            return state;
         }
         catch
         {
