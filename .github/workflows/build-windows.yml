@@ -26,10 +26,10 @@ jobs:
           dotnet-version: 8.0.x
 
       - name: Projekt wiederherstellen
-        run: dotnet restore DSOCompanion.csproj
+        run: dotnet restore DSOCompanion.csproj --runtime win-x64
 
       - name: Projekt kompilieren
-        run: dotnet build DSOCompanion.csproj --configuration Release --no-restore
+        run: dotnet build DSOCompanion.csproj --configuration Release --runtime win-x64 --no-restore
 
       - name: Portable EXE erstellen
         run: >
