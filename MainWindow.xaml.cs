@@ -2,7 +2,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Threading;
-using System.IO;
 using System.Text.Json;
 using Microsoft.Win32;
 using DSOCompanion.Models;
@@ -98,8 +97,8 @@ public partial class MainWindow : Window
         MortisElixirBox.Text = ActiveCharacter.Mortis.ElixirCostPerRun.ToString();
         MortisCoinsBox.Text = ActiveCharacter.Mortis.MortisCoins.ToString();
 
-        MortisGrid.ItemsSource = null;
-        MortisGrid.ItemsSource = ActiveCharacter.Mortis.Activities;
+        MortisExcelItemsControl.ItemsSource = null;
+        MortisExcelItemsControl.ItemsSource = ActiveCharacter.Mortis.Activities;
 
         _loading = false;
 
@@ -476,11 +475,13 @@ public partial class MainWindow : Window
     private static decimal ParseDecimal(string value) =>
         decimal.TryParse(value, out decimal result) ? Math.Max(0, result) : 0;
 
-    private void MortisGrid_OnCellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+    private void MortisExcelEntry_OnChanged(object sender, TextChangedEventArgs e)
     {
-        Dispatcher.BeginInvoke(
-            new Action(UpdateMortisSummary),
-            DispatcherPriority.Background);
+        if (_loading || sender is not TextBox box || box.Tag is not MortisActivity activity)
+            return;
+
+        activity.Entries = ParseInt(box.Text);
+        UpdateMortisSummary();
     }
 
     private void UpdateMortisSummary()
@@ -488,7 +489,7 @@ public partial class MainWindow : Window
         if (ActiveCharacter.Mortis is null)
             return;
 
-        MortisGrid.Items.Refresh();
+        MortisExcelItemsControl.Items.Refresh();
         MortisPlan plan = ActiveCharacter.Mortis;
 
         double progress = plan.TargetBones > 0
@@ -496,6 +497,14 @@ public partial class MainWindow : Window
             : 0;
 
         MortisProgressBar.Value = progress;
+
+        MortisRateSumText.Text =
+            plan.Activities.Sum(x => x.BonesPerRun).ToString("N0");
+        MortisEntrySumText.Text =
+            plan.Activities.Sum(x => x.Entries).ToString("N0");
+        MortisBoneSumText.Text =
+            plan.PlannedBones.ToString("N0");
+
         MortisSummaryText.Text =
             $"Fortschritt: {progress:N1} % · Geplante Knochen: {plan.PlannedBones:N0} · " +
             $"Knochen danach: {plan.FinalBones:N0} · Noch fehlend: {plan.MissingBones:N0} · " +

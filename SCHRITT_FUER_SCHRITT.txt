@@ -1,4 +1,4 @@
-DSO COMPANION VERSION 1.0
+DSO COMPANION VERSION 1.0.1
 
 1. GitHub Desktop schließen.
 
@@ -9,15 +9,15 @@ DSO COMPANION VERSION 1.0
    .git
 
 4. Entpacke:
-   DSO_Companion_V1_0_RUNEN_MORTIS.zip
+   DSO_Companion_V1_0_1_MORTIS_EXCEL.zip
 
-5. Kopiere den gesamten Inhalt des Projektordners nach:
+5. Kopiere den gesamten Inhalt nach:
    Dokumente\GitHub\DSO-Companion
 
 6. GitHub Desktop öffnen.
 
 7. Summary:
-   Version 1.0 Runen und Mortis BGH
+   Version 1.0.1 Mortis Excel Design
 
 8. Commit to main.
 
@@ -25,11 +25,9 @@ DSO COMPANION VERSION 1.0
 
 10. GitHub → Actions → grünen Build abwarten.
 
-11. Artefakt DSO-Companion-Windows herunterladen und entpacken.
+11. Artefakt herunterladen, entpacken und starten.
 
-12. Testen:
-    - Runen öffnen
-    - Filter und Plus/Minus prüfen
-    - Mortis/BGH öffnen
-    - Runs und Eingänge eintragen
-    - Charakter exportieren und wieder importieren
+TEST:
+- Mortis / BGH öffnen
+- In der Zeile Eingänge Werte eintragen
+- Prüfen, ob Knochen und Summe sofort berechnet werden

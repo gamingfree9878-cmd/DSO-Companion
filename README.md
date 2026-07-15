@@ -1,32 +1,16 @@
-# DSO Companion 1.0 – Runen & Mortis/BGH
+# DSO Companion 1.0.1 – Mortis/BGH im Excel-Design
 
-Enthalten:
+Geändert:
 
-## Runen
-- 19 Originalbilder aus dem hochgeladenen Dokument
-- Kategorien Offensiv, Defensiv und Sonstige
-- konzentrierte Runen unter Offensiv
-- Stufen Grün, Blau, Lila und Legendär
-- Runenstaub- und Goldwerte aus der hochgeladenen Excel
-- Plus/Minus je Stufe
-- vorhandene und fehlende Ressourcen
-- Speicherung pro Charakter
+- Mortis/BGH ist jetzt waagerecht wie die ursprüngliche Excel aufgebaut.
+- Spalten für jeden Boss und jede Schwierigkeitsstufe.
+- Zeilen:
+  - pro Runde
+  - Eingänge
+  - Knochen
+- Summenspalte rechts.
+- Eingänge können direkt in der blauen Matrix eingetragen werden.
+- Knochen und Gesamtwerte werden sofort neu berechnet.
+- Ziel, Zeit, Kosten und Fortschritt bleiben unter der Matrix erhalten.
 
-## Mortis / BGH
-- Heredur, Sargon, Herold, Nefertari und Balor: 5 Knochen
-- Mortis Infernal: 25
-- Mortis Gnadenlos: 35
-- Mortis Blutvergießen: 35
-- Inferno Infernal: 40
-- Inferno Gnadenlos: 50
-- Inferno Blutvergießen: 60
-- Wächter: 5
-- Gruppe Wächter: 25
-- Ziel, aktuelle Knochen, Runs, Eingänge, Zeit und Fortschritt
-- konfigurierbare Andermant- und Elixierkosten
-- Mortis-Münzen
-
-## Teilen
-- Charakter exportieren
-- Charakter bei Freunden importieren
-- übertragen werden Builds, Edelsteine, Runen und Mortis-Plan
+Die Runen- und Edelsteinbereiche bleiben unverändert.

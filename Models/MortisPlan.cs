@@ -16,7 +16,7 @@ public sealed class MortisPlan
     public int FinalBones => CurrentBones + PlannedBones;
     public int MissingBones => Math.Max(0, TargetBones - FinalBones);
     public int ExcessBones => Math.Max(0, FinalBones - TargetBones);
-    public int TotalRuns => Activities.Sum(x => x.Runs);
+    public int TotalRuns => Activities.Sum(x => x.Entries);
     public int TotalEntries => Activities.Sum(x => x.Entries);
     public decimal TotalHours => TotalRuns * MinutesPerRun / 60m;
     public decimal TimeBudgetHours => DaysLeft * HoursPerDay;
