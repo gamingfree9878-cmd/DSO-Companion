@@ -1,39 +1,26 @@
-# DSO Companion 1.2 – Direkte Eingabe
+# DSO Companion 1.3 – Edelstein-Komfort
 
-## Neu
+Neu:
 
-### Mortis / BGH
+- richtige Reihenfolge der Edelsteinstufen
+- neue Endstufe „Maximal“
+- direkte Eingabe sowie Minus/Plus
+- Tab wechselt zum nächsten Feld
+- Enter wechselt ebenfalls zum nächsten Feld
+- beim Anklicken wird die vorhandene Zahl komplett markiert
+- kein Neuaufbau der Karten nach jeder Ziffer, daher bleibt der Fokus erhalten
+- optionales automatisches Übernehmen einer Zahl auf alle höheren Stufen
+- Gesamtanzahl und Anzahl maximaler Edelsteine direkt auf jeder Karte
+- alte gespeicherte Stufennamen werden automatisch übernommen
 
-Die Anzahl der Runs kann jetzt direkt in das Zahlenfeld geschrieben werden.
+Reihenfolge:
 
-Beispiel:
-
-- Feld anklicken
-- 250 eingeben
-- Knochen, Eingänge, Fortschritt und Kosten werden sofort berechnet
-
-Die Plus- und Minus-Schaltflächen bleiben erhalten.
-
-### Edelsteine
-
-Die Anzahl jeder einzelnen Edelsteinstufe ist jetzt ein direkt editierbares Besitzfeld.
-
-Beispiel:
-
-Rubin → Imperial Brillant → Besitz 12
-
-Diese Anzahl wird pro Charakter gespeichert und fließt sofort in Staub- und Goldberechnung ein.
-
-### Runen
-
-Auch die Mengen jeder Runenstufe können direkt eingetragen werden.
-
-## Bedienung
-
-Überall gilt:
-
-- direkte Zahleneingabe
-- Plus und Minus
-- keine negativen Werte
-- Punkte und Kommas in großen Zahlen werden beim Einlesen entfernt
-- automatische Speicherung pro Charakter
+1. Trapez
+2. Trapez Verfeinerter
+3. Trapez Brillanter
+4. Trapez Exquisit
+5. Imperial
+6. Imperial Verfeinerter
+7. Imperial Brillanter
+8. Imperial Exquisit
+9. Maximal

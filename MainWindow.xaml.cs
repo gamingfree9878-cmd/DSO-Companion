@@ -1,6 +1,7 @@
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 using System.Text.Json;
@@ -230,7 +231,6 @@ public partial class MainWindow : Window
         GemNeededGoldText.Text = gold.ToString("N0");
         GemMissingGoldText.Text = missingGold.ToString("N0");
 
-        GemCardsControl.Items.Refresh();
         Save();
     }
 
@@ -280,6 +280,7 @@ public partial class MainWindow : Window
         if (sender is Button button && button.Tag is GemTierEntry tier)
         {
             tier.Quantity++;
+            CascadeGemQuantityToHigherTiers(tier);
             UpdateGemTotals();
         }
     }
@@ -289,6 +290,7 @@ public partial class MainWindow : Window
         if (sender is Button button && button.Tag is GemTierEntry tier)
         {
             tier.Quantity = Math.Max(0, tier.Quantity - 1);
+            CascadeGemQuantityToHigherTiers(tier);
             UpdateGemTotals();
         }
     }
@@ -299,7 +301,42 @@ public partial class MainWindow : Window
             return;
 
         tier.Quantity = ParseNonNegativeInt(box.Text);
+        CascadeGemQuantityToHigherTiers(tier);
         UpdateGemTotals();
+    }
+
+    private void CascadeGemQuantityToHigherTiers(GemTierEntry changedTier)
+    {
+        if (CascadeGemTiersCheckBox.IsChecked != true)
+            return;
+
+        GemCollection? gem = ActiveCharacter.Gems
+            .FirstOrDefault(collection => collection.Tiers.Contains(changedTier));
+
+        if (gem is null)
+            return;
+
+        int changedIndex = gem.Tiers.IndexOf(changedTier);
+        if (changedIndex < 0)
+            return;
+
+        for (int index = changedIndex + 1; index < gem.Tiers.Count; index++)
+            gem.Tiers[index].Quantity = changedTier.Quantity;
+    }
+
+    private void QuantityTextBox_OnGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+    {
+        if (sender is TextBox box)
+            box.SelectAll();
+    }
+
+    private void QuantityTextBox_OnPreviewKeyDown(object sender, KeyEventArgs e)
+    {
+        if (sender is not TextBox box || e.Key != Key.Enter)
+            return;
+
+        box.MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
+        e.Handled = true;
     }
 
     private void ClearAllGems_OnClick(object sender, RoutedEventArgs e)

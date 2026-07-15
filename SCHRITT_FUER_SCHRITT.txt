@@ -1,34 +1,19 @@
-DSO COMPANION VERSION 1.2
+DSO COMPANION VERSION 1.3
 
 1. GitHub Desktop schließen.
-
-2. Öffne:
-   Dokumente\GitHub\DSO-Companion
-
-3. Lösche alles AUSSER:
-   .git
-
-4. Entpacke:
-   DSO_Companion_V1_2_DIREKTE_EINGABE.zip
-
-5. Kopiere den gesamten Inhalt nach:
-   Dokumente\GitHub\DSO-Companion
-
+2. Dokumente\GitHub\DSO-Companion öffnen.
+3. Alles AUSSER .git löschen.
+4. DSO_Companion_V1_3_EDELSTEIN_KOMFORT.zip entpacken.
+5. Den gesamten Inhalt in den Repository-Ordner kopieren.
 6. GitHub Desktop öffnen.
-
-7. Summary:
-   Version 1.2 Direkte Eingabe
-
+7. Summary: Version 1.3 Edelstein Komfort
 8. Commit to main.
-
 9. Push origin.
-
-10. GitHub → Actions → grünen Build abwarten.
-
-11. Artefakt herunterladen und vollständig entpacken.
+10. GitHub Actions abwarten.
 
 TEST:
-- Mortis öffnen und 100 direkt in ein Runs-Feld schreiben
-- Edelsteine öffnen und bei einer Stufe direkt 12 eintragen
-- Runen öffnen und bei einer Stufe direkt 8 eintragen
-- Programm neu starten und prüfen, ob die Werte gespeichert sind
+- Edelsteine öffnen.
+- Bei Trapez 9 eintragen.
+- Prüfen, ob höhere Stufen ebenfalls 9 erhalten.
+- Tab oder Enter drücken und prüfen, ob der Cursor zum nächsten Feld springt.
+- Maximal-Wert eintragen.

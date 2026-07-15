@@ -552,7 +552,12 @@
                             </Grid>
                         </Border>
 
-                        <StackPanel Orientation="Horizontal" Margin="2,6,2,8">
+                        <Grid Margin="2,6,2,8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Orientation="Horizontal">
                             <Button x:Name="GemFilterAllButton"
                                     Content="Alle"
                                     Background="{StaticResource AccentBrush}"
@@ -569,7 +574,18 @@
                             <Button x:Name="GemFilterDiamondsButton"
                                     Content="Diamanten"
                                     Click="GemFilterDiamonds_OnClick"/>
-                        </StackPanel>
+                            </StackPanel>
+
+                            <CheckBox x:Name="CascadeGemTiersCheckBox"
+                                      Grid.Column="1"
+                                      Content="Eingabe auf alle höheren Stufen übernehmen"
+                                      IsChecked="True"
+                                      Foreground="White"
+                                      VerticalAlignment="Center"
+                                      HorizontalAlignment="Right"
+                                      Margin="12,0,4,0"
+                                      ToolTip="Beispiel: 9 bei Trapez trägt auch bei allen höheren Stufen 9 ein."/>
+                        </Grid>
 
                         <ItemsControl x:Name="GemCardsControl">
                             <ItemsControl.ItemsPanel>
@@ -617,6 +633,14 @@
                                                     <TextBlock Text="{Binding ColorName}"
                                                                Foreground="#9FB8E5"
                                                                FontSize="12"/>
+                                                    <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                                                        <TextBlock Text="Gesamt: " Foreground="#7F91AC" FontSize="11"/>
+                                                        <TextBlock Text="{Binding TotalQuantity, Mode=OneWay}"
+                                                                   Foreground="White" FontWeight="Bold" FontSize="11"/>
+                                                        <TextBlock Text="  ·  Maximal: " Foreground="#7F91AC" FontSize="11"/>
+                                                        <TextBlock Text="{Binding MaximumQuantity, Mode=OneWay}"
+                                                                   Foreground="#55D6C2" FontWeight="Bold" FontSize="11"/>
+                                                    </StackPanel>
                                                 </StackPanel>
                                             </Grid>
 
@@ -667,7 +691,9 @@
                                                                      BorderThickness="1"
                                                                      Margin="2"
                                                                      Padding="2"
-                                                                     ToolTip="Besitz direkt eingeben"
+                                                                     ToolTip="Besitz direkt eingeben. Tab oder Enter = nächstes Feld."
+                                                                     GotKeyboardFocus="QuantityTextBox_OnGotKeyboardFocus"
+                                                                     PreviewKeyDown="QuantityTextBox_OnPreviewKeyDown"
                                                                      TextChanged="GemQuantityTextBox_OnChanged"/>
 
                                                             <Button Grid.Column="3"

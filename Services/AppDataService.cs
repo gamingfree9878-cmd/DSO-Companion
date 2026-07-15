@@ -76,13 +76,14 @@ public static class AppDataService
     public static readonly (string Name, int Dust, int Gold)[] GemTiers =
     [
         ("Trapez", 2000, 2288),
-        ("Trapez Verfeinert", 3500, 3596),
-        ("Trapez Brillant", 5500, 5230),
+        ("Trapez Verfeinerter", 3500, 3596),
+        ("Trapez Brillanter", 5500, 5230),
         ("Trapez Exquisit", 8000, 7192),
         ("Imperial", 11000, 9480),
-        ("Imperial Verfeinert", 14500, 12095),
-        ("Imperial Brillant", 18500, 15038),
-        ("Imperial Exquisit", 23000, 18307)
+        ("Imperial Verfeinerter", 14500, 12095),
+        ("Imperial Brillanter", 18500, 15038),
+        ("Imperial Exquisit", 23000, 18307),
+        ("Maximal", 0, 0)
     ];
 
     public static CharacterProfile CreateCharacter(string name = "Mein Charakter")
@@ -117,7 +118,7 @@ public static class AppDataService
 
     public static List<GemCollection> CreateGemCollections()
     {
-        return GemTypes.Select(type => new GemCollection
+        List<GemCollection> collections = GemTypes.Select(type => new GemCollection
         {
             GemName = type.Name,
             ColorName = type.ColorName,
@@ -131,6 +132,11 @@ public static class AppDataService
                 GoldCost = tier.Gold
             }).ToList()
         }).ToList();
+
+        foreach (GemCollection collection in collections)
+            collection.AttachTierNotifications();
+
+        return collections;
     }
 
     public static List<RuneTierEntry> CreateRuneTiers(string category)
@@ -356,6 +362,23 @@ public static class AppDataService
             character.ActiveBuildId = character.Builds[0].Id;
         }
 
+        Dictionary<string, string> tierAliases = new()
+        {
+            ["Trapez Verfeinert"] = "Trapez Verfeinerter",
+            ["Trapez Brillant"] = "Trapez Brillanter",
+            ["Imperial Verfeinert"] = "Imperial Verfeinerter",
+            ["Imperial Brillant"] = "Imperial Brillanter"
+        };
+
+        foreach (GemCollection gem in character.Gems)
+        {
+            foreach (GemTierEntry tier in gem.Tiers)
+            {
+                if (tierAliases.TryGetValue(tier.TierName, out string? correctedName))
+                    tier.TierName = correctedName;
+            }
+        }
+
         List<GemCollection> defaultGems = CreateGemCollections();
         foreach (GemCollection defaultGem in defaultGems)
         {
@@ -383,6 +406,11 @@ public static class AppDataService
                     tier.GoldCost = defaultTier.GoldCost;
                 }
             }
+
+            existing.Tiers = GemTiers
+                .Select(definition => existing.Tiers.First(x => x.TierName == definition.Name))
+                .ToList();
+            existing.AttachTierNotifications();
         }
 
         List<RuneCollection> defaultRunes = CreateRuneCollections();
