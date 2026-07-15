@@ -679,14 +679,14 @@
                                             <Grid>
                                                 <TextBlock Foreground="#9FB8E5">
                                                     <Run Text="Staub: "/>
-                                                    <Run Text="{Binding TotalDust, StringFormat={}{0:N0}}"
+                                                    <Run Text="{Binding TotalDust, Mode=OneWay, StringFormat={}{0:N0}}"
                                                          Foreground="White"
                                                          FontWeight="Bold"/>
                                                 </TextBlock>
                                                 <TextBlock HorizontalAlignment="Right"
                                                            Foreground="#9FB8E5">
                                                     <Run Text="Gold: "/>
-                                                    <Run Text="{Binding TotalGold, StringFormat={}{0:N0}}"
+                                                    <Run Text="{Binding TotalGold, Mode=OneWay, StringFormat={}{0:N0}}"
                                                          Foreground="White"
                                                          FontWeight="Bold"/>
                                                 </TextBlock>
