@@ -48,30 +48,33 @@ public static class AppDataService
         "Juwelen-Zier"
     ];
 
-    public static readonly (string Name, string Color)[] GemTypes =
+    public static readonly (string Name, string ColorName, string Color, string Category)[] GemTypes =
     [
-        ("Rubin", "#D32F2F"),
-        ("Onyx", "#20242B"),
-        ("Rhodolith", "#EC407A"),
-        ("Zirkon", "#FDD835"),
-        ("Amethyst", "#8E44AD"),
-        ("Eisdiamant", "#78909C"),
-        ("Blitzdiamant", "#C0B84B"),
-        ("Cyanit", "#26A69A"),
-        ("Smaragd", "#0B6B3A"),
-        ("Feuerdiamant", "#A94442"),
-        ("Diamant", "#9E9E9E"),
-        ("Andermachtdiamant", "#7E57C2"),
-        ("Giftdiamant", "#558B2F")
+        ("Rubin", "Rot", "#FF3B30", "Offensiv"),
+        ("Onyx", "Schwarz", "#59616D", "Offensiv"),
+        ("Rhodolith", "Pink", "#FF2D96", "Offensiv"),
+        ("Zirkon", "Gelb", "#D7C800", "Offensiv"),
+        ("Amethyst", "Lila", "#9C4DFF", "Defensiv"),
+        ("Cyanit", "Türkis", "#20C6C7", "Defensiv"),
+        ("Smaragd", "Dunkelgrün", "#149447", "Defensiv"),
+        ("Eisdiamant", "Grau / Blau", "#70A8C5", "Diamanten"),
+        ("Blitzdiamant", "Grau / Gelb", "#D0B84F", "Diamanten"),
+        ("Feuerdiamant", "Grau / Rot", "#D04A45", "Diamanten"),
+        ("Diamant", "Grau", "#AEB7C2", "Diamanten"),
+        ("Andermachtdiamant", "Grau / Lila", "#8A64C8", "Diamanten"),
+        ("Giftdiamant", "Grau / Grün", "#6F9D4B", "Diamanten")
     ];
 
     public static readonly (string Name, int Dust, int Gold)[] GemTiers =
     [
+        ("Trapez", 2000, 2288),
+        ("Trapez Verfeinert", 3500, 3596),
         ("Trapez Brillant", 5500, 5230),
         ("Trapez Exquisit", 8000, 7192),
         ("Imperial", 11000, 9480),
         ("Imperial Verfeinert", 14500, 12095),
-        ("Imperial Brillant", 18500, 15038)
+        ("Imperial Brillant", 18500, 15038),
+        ("Imperial Exquisit", 23000, 18307)
     ];
 
     public static CharacterProfile CreateCharacter(string name = "Mein Charakter")
@@ -107,7 +110,9 @@ public static class AppDataService
         return GemTypes.Select(type => new GemCollection
         {
             GemName = type.Name,
+            ColorName = type.ColorName,
             ColorHex = type.Color,
+            Category = type.Category,
             Tiers = GemTiers.Select(tier => new GemTierEntry
             {
                 TierName = tier.Name,
@@ -139,7 +144,7 @@ public static class AppDataService
             character.ActiveBuildId = character.Builds[0].Id;
         }
 
-        foreach ((string Name, string Color) gemType in GemTypes)
+        foreach ((string Name, string ColorName, string Color, string Category) gemType in GemTypes)
         {
             GemCollection? existing = character.Gems.FirstOrDefault(x => x.GemName == gemType.Name);
 
@@ -148,13 +153,14 @@ public static class AppDataService
                 existing = new GemCollection
                 {
                     GemName = gemType.Name,
-                    ColorHex = gemType.Color,
                     Tiers = []
                 };
                 character.Gems.Add(existing);
             }
 
+            existing.ColorName = gemType.ColorName;
             existing.ColorHex = gemType.Color;
+            existing.Category = gemType.Category;
             existing.Tiers ??= [];
 
             foreach ((string Name, int Dust, int Gold) tier in GemTiers)

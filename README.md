@@ -1,22 +1,23 @@
 # DSO Companion
 
-## Version 0.5 – Edelsteine
+## Version 0.6 – Edelsteine im Web-Design
 
 Neu:
 
-- eigener Edelsteinbereich
-- 13 Edelsteinsorten mit Farbcodierung
-- Qualitätsstufen:
-  - Trapez Brillant
-  - Trapez Exquisit
-  - Imperial
-  - Imperial Verfeinert
-  - Imperial Brillant
-- Mengen mit Plus und Minus
-- Edelsteine innerhalb derselben Sorte eine Stufe höher oder tiefer verschieben
-- Staub- und Goldkosten
-- vorhandener Staub und vorhandenes Gold
-- benötigte und noch fehlende Ressourcen
-- automatische Speicherung pro Charakter
+- Edelsteinseite vollständig im Stil der früheren Web-Version
+- vier große Statistik-Karten
+- breite Ressourcenleiste
+- Filter:
+  - Alle
+  - Offensiv
+  - Defensiv
+  - Opal
+  - Diamanten
+- jede Edelsteinart als eigene farbige Karte
+- direkte Plus- und Minus-Schaltflächen je Qualitätsstufe
+- acht Qualitätsstufen von Trapez bis Imperial Exquisit
+- Karten zeigen eigene Staub- und Goldsummen
+- automatische Gesamtsummen und Fehlbeträge
+- Speicherung pro Charakterprofil
 
-Die Kosten basieren auf den bisher festgelegten Werten und können in späteren Versionen um weitere Stufen erweitert werden.
+Die Edelsteinbilder werden in einer späteren Version als echte Bilddateien ergänzt. Bis dahin zeigt jede Karte ein farbiges Edelsteinsymbol.

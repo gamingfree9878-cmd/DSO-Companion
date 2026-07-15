@@ -1,33 +1,30 @@
-DSO COMPANION VERSION 0.5
+DSO COMPANION VERSION 0.6
 
 1. GitHub Desktop schließen.
 
 2. Öffne:
    Dokumente\GitHub\DSO-Companion
 
-3. Lösche dort alles AUSSER:
+3. Lösche alles AUSSER:
    .git
 
 4. Entpacke:
-   DSO_Companion_V0_5_EDELSTEINE.zip
+   DSO_Companion_V0_6_WEB_DESIGN.zip
 
-5. Kopiere den gesamten Inhalt des Ordners
-   DSO_Companion_V0_5_EDELSTEINE
-   nach:
+5. Kopiere den gesamten Inhalt des entpackten Projektordners nach:
    Dokumente\GitHub\DSO-Companion
 
 6. GitHub Desktop öffnen.
 
 7. Summary:
-   Version 0.5 Edelsteine
+   Version 0.6 Edelsteine Web Design
 
 8. Commit to main.
 
 9. Push origin.
 
-10. GitHub → Actions → neuesten Lauf abwarten.
+10. GitHub → Actions → neuesten Build abwarten.
 
-11. Bei grünem Haken:
-    DSO-Companion-Windows herunterladen.
+11. Artefakt DSO-Companion-Windows herunterladen.
 
 12. ZIP entpacken und DSO Companion.exe starten.

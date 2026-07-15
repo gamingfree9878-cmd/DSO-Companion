@@ -12,8 +12,7 @@ public partial class MainWindow : Window
     private AppState _state;
     private bool _loading;
     private EquipmentSlot? _selectedEquipmentSlot;
-    private GemCollection? _selectedGemCollection;
-    private GemTierEntry? _selectedGemTier;
+    private string _activeGemFilter = "Alle";
 
     private CharacterProfile ActiveCharacter =>
         _state.Characters.First(x => x.Id == _state.ActiveCharacterId);
@@ -79,15 +78,6 @@ public partial class MainWindow : Window
         EquipmentSlotList.ItemsSource = ActiveBuild.Equipment;
         EquipmentSlotList.SelectedIndex = 0;
 
-        GemTypeCombo.ItemsSource = null;
-        GemTypeCombo.ItemsSource = ActiveCharacter.Gems;
-
-        _selectedGemCollection =
-            _selectedGemCollection is not null
-                ? ActiveCharacter.Gems.FirstOrDefault(x => x.GemName == _selectedGemCollection.GemName)
-                : ActiveCharacter.Gems.FirstOrDefault();
-
-        GemTypeCombo.SelectedItem = _selectedGemCollection;
         OwnedGemDustBox.Text = ActiveCharacter.OwnedGemDust.ToString();
         OwnedGoldBox.Text = ActiveCharacter.OwnedGold.ToString();
 
@@ -186,34 +176,20 @@ public partial class MainWindow : Window
 
     private void RefreshGemPage()
     {
-        if (ActiveCharacter.Gems.Count == 0)
-            return;
-
-        _selectedGemCollection ??= ActiveCharacter.Gems[0];
-
-        GemTierGrid.ItemsSource = null;
-        GemTierGrid.ItemsSource = _selectedGemCollection.Tiers;
-
-        if (_selectedGemTier is not null)
+        IEnumerable<GemCollection> filtered = _activeGemFilter switch
         {
-            _selectedGemTier = _selectedGemCollection.Tiers
-                .FirstOrDefault(x => x.TierName == _selectedGemTier.TierName);
-        }
+            "Offensiv" => ActiveCharacter.Gems.Where(x => x.Category == "Offensiv"),
+            "Defensiv" => ActiveCharacter.Gems.Where(x => x.Category == "Defensiv"),
+            "Diamanten" => ActiveCharacter.Gems.Where(x => x.Category == "Diamanten"),
+            "Opal" => ActiveCharacter.Gems.Where(x => x.Category == "Opal"),
+            _ => ActiveCharacter.Gems
+        };
 
-        GemTierGrid.SelectedItem = _selectedGemTier;
-        GemColorPreview.Background =
-            (Brush)new BrushConverter().ConvertFromString(_selectedGemCollection.ColorHex)!;
+        GemCardsControl.ItemsSource = null;
+        GemCardsControl.ItemsSource = filtered.ToList();
 
-        UpdateSelectedGemTierText();
         UpdateGemTotals();
-    }
-
-    private void UpdateSelectedGemTierText()
-    {
-        SelectedGemTierText.Text =
-            _selectedGemTier is null
-                ? "Keine Stufe ausgewählt"
-                : $"{_selectedGemCollection?.GemName} · {_selectedGemTier.TierName}\nAnzahl: {_selectedGemTier.Quantity}";
+        UpdateGemFilterButtons();
     }
 
     private void UpdateGemTotals()
@@ -229,30 +205,36 @@ public partial class MainWindow : Window
         long missingDust = Math.Max(0, dust - ActiveCharacter.OwnedGemDust);
         long missingGold = Math.Max(0, gold - ActiveCharacter.OwnedGold);
 
-        GemNeededText.Text = $"{dust:N0} Staub\n{gold:N0} Gold";
-        GemMissingText.Text = $"{missingDust:N0} Staub\n{missingGold:N0} Gold";
+        GemNeededDustText.Text = dust.ToString("N0");
+        GemMissingDustText.Text = missingDust.ToString("N0");
+        GemNeededGoldText.Text = gold.ToString("N0");
+        GemMissingGoldText.Text = missingGold.ToString("N0");
 
-        GemTierGrid.Items.Refresh();
+        GemCardsControl.Items.Refresh();
         Save();
     }
 
-    private void GemTypeCombo_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    private void UpdateGemFilterButtons()
     {
-        if (_loading || GemTypeCombo.SelectedItem is not GemCollection collection)
-            return;
+        Brush normal = (Brush)FindResource("Panel2Brush");
+        Brush accent = (Brush)FindResource("AccentBrush");
 
-        _selectedGemCollection = collection;
-        _selectedGemTier = null;
-        RefreshGemPage();
-    }
+        GemFilterAllButton.Background = normal;
+        GemFilterOffensiveButton.Background = normal;
+        GemFilterDefensiveButton.Background = normal;
+        GemFilterOpalButton.Background = normal;
+        GemFilterDiamondsButton.Background = normal;
 
-    private void GemTierGrid_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-        if (_loading)
-            return;
+        Button active = _activeGemFilter switch
+        {
+            "Offensiv" => GemFilterOffensiveButton,
+            "Defensiv" => GemFilterDefensiveButton,
+            "Opal" => GemFilterOpalButton,
+            "Diamanten" => GemFilterDiamondsButton,
+            _ => GemFilterAllButton
+        };
 
-        _selectedGemTier = GemTierGrid.SelectedItem as GemTierEntry;
-        UpdateSelectedGemTierText();
+        active.Background = accent;
     }
 
     private void GemResource_OnChanged(object sender, TextChangedEventArgs e)
@@ -273,85 +255,28 @@ public partial class MainWindow : Window
         UpdateGemTotals();
     }
 
-    private void GemPlus_OnClick(object sender, RoutedEventArgs e)
+    private void GemCardPlus_OnClick(object sender, RoutedEventArgs e)
     {
-        if (_selectedGemTier is null)
-            return;
-
-        _selectedGemTier.Quantity++;
-        UpdateSelectedGemTierText();
-        UpdateGemTotals();
+        if (sender is Button button && button.Tag is GemTierEntry tier)
+        {
+            tier.Quantity++;
+            UpdateGemTotals();
+        }
     }
 
-    private void GemMinus_OnClick(object sender, RoutedEventArgs e)
+    private void GemCardMinus_OnClick(object sender, RoutedEventArgs e)
     {
-        if (_selectedGemTier is null)
-            return;
-
-        _selectedGemTier.Quantity = Math.Max(0, _selectedGemTier.Quantity - 1);
-        UpdateSelectedGemTierText();
-        UpdateGemTotals();
+        if (sender is Button button && button.Tag is GemTierEntry tier)
+        {
+            tier.Quantity = Math.Max(0, tier.Quantity - 1);
+            UpdateGemTotals();
+        }
     }
 
-    private void GemMoveUp_OnClick(object sender, RoutedEventArgs e)
+    private void ClearAllGems_OnClick(object sender, RoutedEventArgs e)
     {
-        if (_selectedGemCollection is null || _selectedGemTier is null)
-            return;
-
-        int index = _selectedGemCollection.Tiers.IndexOf(_selectedGemTier);
-
-        if (index < 0 || index >= _selectedGemCollection.Tiers.Count - 1)
-        {
-            MessageBox.Show("Diese Stufe kann nicht weiter erhöht werden.");
-            return;
-        }
-
-        if (_selectedGemTier.Quantity <= 0)
-        {
-            MessageBox.Show("Auf dieser Stufe ist kein Edelstein vorhanden.");
-            return;
-        }
-
-        _selectedGemTier.Quantity--;
-        _selectedGemCollection.Tiers[index + 1].Quantity++;
-        _selectedGemTier = _selectedGemCollection.Tiers[index + 1];
-
-        RefreshGemPage();
-    }
-
-    private void GemMoveDown_OnClick(object sender, RoutedEventArgs e)
-    {
-        if (_selectedGemCollection is null || _selectedGemTier is null)
-            return;
-
-        int index = _selectedGemCollection.Tiers.IndexOf(_selectedGemTier);
-
-        if (index <= 0)
-        {
-            MessageBox.Show("Diese Stufe kann nicht weiter abgesenkt werden.");
-            return;
-        }
-
-        if (_selectedGemTier.Quantity <= 0)
-        {
-            MessageBox.Show("Auf dieser Stufe ist kein Edelstein vorhanden.");
-            return;
-        }
-
-        _selectedGemTier.Quantity--;
-        _selectedGemCollection.Tiers[index - 1].Quantity++;
-        _selectedGemTier = _selectedGemCollection.Tiers[index - 1];
-
-        RefreshGemPage();
-    }
-
-    private void ClearGemType_OnClick(object sender, RoutedEventArgs e)
-    {
-        if (_selectedGemCollection is null)
-            return;
-
         if (MessageBox.Show(
-                $"Alle Mengen für {_selectedGemCollection.GemName} auf 0 setzen?",
+                "Alle Edelsteinmengen dieses Charakters auf 0 setzen?",
                 "Bestätigung",
                 MessageBoxButton.YesNo,
                 MessageBoxImage.Warning) != MessageBoxResult.Yes)
@@ -359,12 +284,32 @@ public partial class MainWindow : Window
             return;
         }
 
-        foreach (GemTierEntry tier in _selectedGemCollection.Tiers)
+        foreach (GemTierEntry tier in ActiveCharacter.Gems.SelectMany(x => x.Tiers))
             tier.Quantity = 0;
 
-        _selectedGemTier = null;
+        UpdateGemTotals();
+    }
+
+    private void SetGemFilter(string filter)
+    {
+        _activeGemFilter = filter;
         RefreshGemPage();
     }
+
+    private void GemFilterAll_OnClick(object sender, RoutedEventArgs e) =>
+        SetGemFilter("Alle");
+
+    private void GemFilterOffensive_OnClick(object sender, RoutedEventArgs e) =>
+        SetGemFilter("Offensiv");
+
+    private void GemFilterDefensive_OnClick(object sender, RoutedEventArgs e) =>
+        SetGemFilter("Defensiv");
+
+    private void GemFilterOpal_OnClick(object sender, RoutedEventArgs e) =>
+        SetGemFilter("Opal");
+
+    private void GemFilterDiamonds_OnClick(object sender, RoutedEventArgs e) =>
+        SetGemFilter("Diamanten");
 
     private static string? Prompt(string title, string initialValue)
     {

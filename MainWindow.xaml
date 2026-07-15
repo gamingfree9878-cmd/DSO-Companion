@@ -436,170 +436,268 @@
                 </Grid>
 
                 <!-- Placeholder pages -->
-                <Grid x:Name="GemsPage"
-                      Visibility="Collapsed"
-                      Background="{StaticResource BackgroundBrush}">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
+                <ScrollViewer x:Name="GemsPage"
+                              Visibility="Collapsed"
+                              Background="{StaticResource BackgroundBrush}"
+                              VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="16">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
 
-                    <StackPanel Margin="18,12,18,8">
-                        <TextBlock Text="💎 Edelsteine"
-                                   Foreground="White"
-                                   FontSize="32"
-                                   FontWeight="Bold"/>
-                        <TextBlock Text="Mengen, Staub und Gold pro Edelsteinart berechnen."
-                                   Foreground="{StaticResource MutedBrush}"
-                                   FontSize="16"
-                                   Margin="0,8,0,0"/>
-                    </StackPanel>
-
-                    <Grid Grid.Row="1" Margin="12,0,12,8">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="2*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-
-                        <Border Grid.Column="0" Style="{StaticResource CardStyle}">
                             <StackPanel>
-                                <TextBlock Text="Edelsteinart"
-                                           Foreground="{StaticResource MutedBrush}"/>
-                                <ComboBox x:Name="GemTypeCombo"
-                                          DisplayMemberPath="GemName"
-                                          SelectionChanged="GemTypeCombo_OnSelectionChanged"/>
-                                <Border x:Name="GemColorPreview"
-                                        Height="12"
-                                        CornerRadius="6"
-                                        Margin="4,8,4,0"/>
-                            </StackPanel>
-                        </Border>
-
-                        <Border Grid.Column="1" Style="{StaticResource CardStyle}">
-                            <StackPanel>
-                                <TextBlock Text="Vorhandener Staub"
-                                           Foreground="{StaticResource MutedBrush}"/>
-                                <TextBox x:Name="OwnedGemDustBox"
-                                         TextChanged="GemResource_OnChanged"/>
-                            </StackPanel>
-                        </Border>
-
-                        <Border Grid.Column="2" Style="{StaticResource CardStyle}">
-                            <StackPanel>
-                                <TextBlock Text="Vorhandenes Gold"
-                                           Foreground="{StaticResource MutedBrush}"/>
-                                <TextBox x:Name="OwnedGoldBox"
-                                         TextChanged="GemResource_OnChanged"/>
-                            </StackPanel>
-                        </Border>
-
-                        <Border Grid.Column="3" Style="{StaticResource CardStyle}">
-                            <StackPanel>
-                                <TextBlock Text="Benötigt"
-                                           Foreground="{StaticResource MutedBrush}"/>
-                                <TextBlock x:Name="GemNeededText"
+                                <TextBlock Text="Edelsteine"
                                            Foreground="White"
-                                           FontSize="18"
-                                           FontWeight="Bold"
-                                           Margin="0,8,0,0"
-                                           TextWrapping="Wrap"/>
-                            </StackPanel>
-                        </Border>
-
-                        <Border Grid.Column="4" Style="{StaticResource CardStyle}">
-                            <StackPanel>
-                                <TextBlock Text="Noch fehlend"
-                                           Foreground="{StaticResource MutedBrush}"/>
-                                <TextBlock x:Name="GemMissingText"
-                                           Foreground="White"
-                                           FontSize="18"
-                                           FontWeight="Bold"
-                                           Margin="0,8,0,0"
-                                           TextWrapping="Wrap"/>
-                            </StackPanel>
-                        </Border>
-                    </Grid>
-
-                    <Grid Grid.Row="2" Margin="12">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="260"/>
-                        </Grid.ColumnDefinitions>
-
-                        <Border Grid.Column="0" Style="{StaticResource CardStyle}">
-                            <DataGrid x:Name="GemTierGrid"
-                                      AutoGenerateColumns="False"
-                                      CanUserAddRows="False"
-                                      IsReadOnly="True"
-                                      HeadersVisibility="Column"
-                                      SelectionMode="Single"
-                                      SelectionChanged="GemTierGrid_OnSelectionChanged"
-                                      Background="White"
-                                      Foreground="Black">
-                                <DataGrid.Columns>
-                                    <DataGridTextColumn Header="Stufe"
-                                                        Binding="{Binding TierName}"
-                                                        Width="*"/>
-                                    <DataGridTextColumn Header="Staub"
-                                                        Binding="{Binding DustCost}"
-                                                        Width="120"/>
-                                    <DataGridTextColumn Header="Gold"
-                                                        Binding="{Binding GoldCost}"
-                                                        Width="120"/>
-                                    <DataGridTextColumn Header="Anzahl"
-                                                        Binding="{Binding Quantity}"
-                                                        Width="100"/>
-                                </DataGrid.Columns>
-                            </DataGrid>
-                        </Border>
-
-                        <Border Grid.Column="1" Style="{StaticResource CardStyle}">
-                            <StackPanel>
-                                <TextBlock Text="Ausgewählte Stufe"
-                                           Foreground="White"
-                                           FontSize="20"
+                                           FontSize="30"
                                            FontWeight="Bold"/>
-
-                                <TextBlock x:Name="SelectedGemTierText"
-                                           Text="Keine Stufe ausgewählt"
+                                <TextBlock Text="Jede Sorte wird unabhängig berechnet."
                                            Foreground="{StaticResource MutedBrush}"
-                                           TextWrapping="Wrap"
-                                           Margin="0,8,0,16"/>
-
-                                <UniformGrid Columns="2">
-                                    <Button Content="− 1"
-                                            FontSize="18"
-                                            Click="GemMinus_OnClick"/>
-                                    <Button Content="+ 1"
-                                            FontSize="18"
-                                            Background="{StaticResource AccentBrush}"
-                                            Click="GemPlus_OnClick"/>
-                                </UniformGrid>
-
-                                <Button Content="Eine Stufe höher"
-                                        Margin="4,16,4,4"
-                                        Click="GemMoveUp_OnClick"/>
-
-                                <Button Content="Eine Stufe tiefer"
-                                        Click="GemMoveDown_OnClick"/>
-
-                                <Button Content="Diese Edelsteinart leeren"
-                                        Background="{StaticResource DangerBrush}"
-                                        Margin="4,20,4,4"
-                                        Click="ClearGemType_OnClick"/>
-
-                                <TextBlock Text="Beim Verschieben wird ein Edelstein aus der ausgewählten Stufe entfernt und in die benachbarte Stufe übernommen."
-                                           Foreground="{StaticResource MutedBrush}"
-                                           TextWrapping="Wrap"
-                                           Margin="4,16,4,0"/>
+                                           Margin="0,4,0,0"/>
                             </StackPanel>
+
+                            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                <Button Content="+ Profil"
+                                        Background="{StaticResource AccentBrush}"
+                                        Click="AddCharacter_OnClick"/>
+                                <Button Content="Umbenennen"
+                                        Click="RenameCharacter_OnClick"/>
+                                <Button Content="Löschen"
+                                        Background="{StaticResource DangerBrush}"
+                                        Click="DeleteCharacter_OnClick"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <UniformGrid Columns="4" Margin="0,14,0,0">
+                            <Border Style="{StaticResource CardStyle}">
+                                <StackPanel>
+                                    <TextBlock Text="Benötigter Staub"
+                                               Foreground="{StaticResource MutedBrush}"/>
+                                    <TextBlock x:Name="GemNeededDustText"
+                                               Foreground="#9B7BFF"
+                                               FontSize="26"
+                                               FontWeight="Bold"
+                                               Margin="0,6,0,0"/>
+                                </StackPanel>
+                            </Border>
+                            <Border Style="{StaticResource CardStyle}">
+                                <StackPanel>
+                                    <TextBlock Text="Noch fehlender Staub"
+                                               Foreground="{StaticResource MutedBrush}"/>
+                                    <TextBlock x:Name="GemMissingDustText"
+                                               Foreground="#FF5578"
+                                               FontSize="26"
+                                               FontWeight="Bold"
+                                               Margin="0,6,0,0"/>
+                                </StackPanel>
+                            </Border>
+                            <Border Style="{StaticResource CardStyle}">
+                                <StackPanel>
+                                    <TextBlock Text="Benötigtes Gold"
+                                               Foreground="{StaticResource MutedBrush}"/>
+                                    <TextBlock x:Name="GemNeededGoldText"
+                                               Foreground="#FFD34F"
+                                               FontSize="26"
+                                               FontWeight="Bold"
+                                               Margin="0,6,0,0"/>
+                                </StackPanel>
+                            </Border>
+                            <Border Style="{StaticResource CardStyle}">
+                                <StackPanel>
+                                    <TextBlock Text="Noch fehlendes Gold"
+                                               Foreground="{StaticResource MutedBrush}"/>
+                                    <TextBlock x:Name="GemMissingGoldText"
+                                               Foreground="#FF5578"
+                                               FontSize="26"
+                                               FontWeight="Bold"
+                                               Margin="0,6,0,0"/>
+                                </StackPanel>
+                            </Border>
+                        </UniformGrid>
+
+                        <Border Style="{StaticResource CardStyle}" Margin="6,10,6,6">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel Grid.Column="0">
+                                    <TextBlock Text="Vorhandener funkelnder Staub"
+                                               Foreground="{StaticResource MutedBrush}"/>
+                                    <TextBox x:Name="OwnedGemDustBox"
+                                             TextChanged="GemResource_OnChanged"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="1">
+                                    <TextBlock Text="Vorhandenes Gold"
+                                               Foreground="{StaticResource MutedBrush}"/>
+                                    <TextBox x:Name="OwnedGoldBox"
+                                             TextChanged="GemResource_OnChanged"/>
+                                </StackPanel>
+
+                                <Button Grid.Column="2"
+                                        Content="Edelsteine leeren"
+                                        Background="{StaticResource DangerBrush}"
+                                        VerticalAlignment="Bottom"
+                                        Margin="8,4"
+                                        Click="ClearAllGems_OnClick"/>
+                            </Grid>
                         </Border>
-                    </Grid>
-                </Grid>
+
+                        <StackPanel Orientation="Horizontal" Margin="2,6,2,8">
+                            <Button x:Name="GemFilterAllButton"
+                                    Content="Alle"
+                                    Background="{StaticResource AccentBrush}"
+                                    Click="GemFilterAll_OnClick"/>
+                            <Button x:Name="GemFilterOffensiveButton"
+                                    Content="Offensiv"
+                                    Click="GemFilterOffensive_OnClick"/>
+                            <Button x:Name="GemFilterDefensiveButton"
+                                    Content="Defensiv"
+                                    Click="GemFilterDefensive_OnClick"/>
+                            <Button x:Name="GemFilterOpalButton"
+                                    Content="Opal"
+                                    Click="GemFilterOpal_OnClick"/>
+                            <Button x:Name="GemFilterDiamondsButton"
+                                    Content="Diamanten"
+                                    Click="GemFilterDiamonds_OnClick"/>
+                        </StackPanel>
+
+                        <ItemsControl x:Name="GemCardsControl">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <UniformGrid Columns="3"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Margin="6"
+                                            Padding="12"
+                                            CornerRadius="12"
+                                            Background="#111824"
+                                            BorderThickness="1.5">
+                                        <Border.BorderBrush>
+                                            <SolidColorBrush Color="{Binding ColorHex}"/>
+                                        </Border.BorderBrush>
+
+                                        <StackPanel>
+                                            <Grid Margin="0,0,0,10">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="54"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <Border Width="46"
+                                                        Height="46"
+                                                        CornerRadius="8"
+                                                        Background="#1A2230"
+                                                        BorderBrush="#776A4E"
+                                                        BorderThickness="1">
+                                                    <Grid>
+                                                        <Polygon Points="23,5 40,16 34,38 12,38 6,16"
+                                                                 Fill="{Binding ColorHex}"
+                                                                 Stroke="White"
+                                                                 StrokeThickness="1"
+                                                                 Opacity="0.95"/>
+                                                    </Grid>
+                                                </Border>
+
+                                                <StackPanel Grid.Column="1"
+                                                            VerticalAlignment="Center">
+                                                    <TextBlock Text="{Binding GemName}"
+                                                               Foreground="White"
+                                                               FontSize="18"
+                                                               FontWeight="Bold"/>
+                                                    <TextBlock Text="{Binding ColorName}"
+                                                               Foreground="#9FB8E5"
+                                                               FontSize="12"/>
+                                                </StackPanel>
+                                            </Grid>
+
+                                            <ItemsControl ItemsSource="{Binding Tiers}">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Grid Margin="0,2">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*"/>
+                                                                <ColumnDefinition Width="32"/>
+                                                                <ColumnDefinition Width="42"/>
+                                                                <ColumnDefinition Width="32"/>
+                                                            </Grid.ColumnDefinitions>
+
+                                                            <StackPanel>
+                                                                <TextBlock Text="{Binding TierName}"
+                                                                           Foreground="White"
+                                                                           FontWeight="Bold"
+                                                                           FontSize="14"/>
+                                                                <TextBlock Foreground="#8CB4E8"
+                                                                           FontSize="10">
+                                                                    <Run Text="{Binding DustCost, StringFormat={}{0:N0}}"/>
+                                                                    <Run Text=" Staub · "/>
+                                                                    <Run Text="{Binding GoldCost, StringFormat={}{0:N0}}"/>
+                                                                    <Run Text=" Gold"/>
+                                                                </TextBlock>
+                                                            </StackPanel>
+
+                                                            <Button Grid.Column="1"
+                                                                    Content="−"
+                                                                    Padding="0"
+                                                                    Margin="2"
+                                                                    Tag="{Binding}"
+                                                                    Click="GemCardMinus_OnClick"/>
+
+                                                            <Border Grid.Column="2"
+                                                                    Background="#07101C"
+                                                                    BorderBrush="#2B374B"
+                                                                    BorderThickness="1"
+                                                                    CornerRadius="7"
+                                                                    Margin="2">
+                                                                <TextBlock Text="{Binding Quantity}"
+                                                                           Foreground="White"
+                                                                           HorizontalAlignment="Center"
+                                                                           VerticalAlignment="Center"/>
+                                                            </Border>
+
+                                                            <Button Grid.Column="3"
+                                                                    Content="+"
+                                                                    Padding="0"
+                                                                    Margin="2"
+                                                                    Background="{StaticResource AccentBrush}"
+                                                                    Tag="{Binding}"
+                                                                    Click="GemCardPlus_OnClick"/>
+                                                        </Grid>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+
+                                            <Separator Background="#2B374B" Margin="0,8,0,6"/>
+
+                                            <Grid>
+                                                <TextBlock Foreground="#9FB8E5">
+                                                    <Run Text="Staub: "/>
+                                                    <Run Text="{Binding TotalDust, StringFormat={}{0:N0}}"
+                                                         Foreground="White"
+                                                         FontWeight="Bold"/>
+                                                </TextBlock>
+                                                <TextBlock HorizontalAlignment="Right"
+                                                           Foreground="#9FB8E5">
+                                                    <Run Text="Gold: "/>
+                                                    <Run Text="{Binding TotalGold, StringFormat={}{0:N0}}"
+                                                         Foreground="White"
+                                                         FontWeight="Bold"/>
+                                                </TextBlock>
+                                            </Grid>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </ScrollViewer>
 
                 <ScrollViewer x:Name="RunesPage" Visibility="Collapsed" Background="{StaticResource BackgroundBrush}">
                     <StackPanel Margin="18">
