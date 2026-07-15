@@ -1,4 +1,4 @@
-DSO COMPANION VERSION 0.3
+DSO COMPANION VERSION 0.4
 
 1. GitHub Desktop schließen.
 
@@ -9,17 +9,17 @@ DSO COMPANION VERSION 0.3
    .git
 
 4. Entpacke:
-   DSO_Companion_V0_3_AUSRUESTUNG.zip
+   DSO_Companion_V0_4_NAVIGATION.zip
 
-5. Kopiere den gesamten Inhalt des Ordners
-   DSO_Companion_V0_3_AUSRUESTUNG
+5. Kopiere den gesamten Inhalt aus
+   DSO_Companion_V0_4_NAVIGATION
    nach:
    Dokumente\GitHub\DSO-Companion
 
 6. GitHub Desktop öffnen.
 
 7. Summary:
-   Version 0.3 Ausrüstung und Builds
+   Version 0.4 Navigation
 
 8. Commit to main.
 
@@ -30,4 +30,4 @@ DSO COMPANION VERSION 0.3
 11. Bei grünem Haken das Artefakt
     DSO-Companion-Windows herunterladen.
 
-12. ZIP vollständig entpacken und DSO Companion.exe starten.
+12. ZIP entpacken und DSO Companion.exe starten.

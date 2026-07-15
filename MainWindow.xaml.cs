@@ -1,5 +1,6 @@
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using DSOCompanion.Models;
 using DSOCompanion.Services;
 
@@ -29,6 +30,7 @@ public partial class MainWindow : Window
         _state = _storage.Load();
         NormalizeState();
         RefreshAll();
+        ShowPage(DashboardPage, DashboardButton);
     }
 
     private void NormalizeState()
@@ -88,12 +90,43 @@ public partial class MainWindow : Window
         SummaryClassText.Text =
             $"{ActiveCharacter.CharacterClass} · {ActiveCharacter.Server} · Level {ActiveCharacter.Level}";
         SummaryBuildCountText.Text = ActiveCharacter.Builds.Count.ToString();
+
+        DashboardCharacterText.Text = ActiveCharacter.Name;
+        DashboardBuildText.Text = $"{ActiveBuild.Name} · {ActiveBuild.BuildType}";
+        DashboardBuildCountText.Text = ActiveCharacter.Builds.Count.ToString();
+
         ActiveBuildHeader.Text = $"{ActiveBuild.Name} · {ActiveBuild.BuildType}";
     }
 
     private void Save()
     {
         _storage.Save(_state);
+    }
+
+    private void ShowPage(UIElement page, Button activeButton)
+    {
+        DashboardPage.Visibility = Visibility.Collapsed;
+        CharactersPage.Visibility = Visibility.Collapsed;
+        EquipmentPage.Visibility = Visibility.Collapsed;
+        GemsPage.Visibility = Visibility.Collapsed;
+        RunesPage.Visibility = Visibility.Collapsed;
+        JewelsPage.Visibility = Visibility.Collapsed;
+        MortisPage.Visibility = Visibility.Collapsed;
+
+        page.Visibility = Visibility.Visible;
+
+        Brush normal = (Brush)FindResource("Panel2Brush");
+        Brush accent = (Brush)FindResource("AccentBrush");
+
+        DashboardButton.Background = normal;
+        CharactersButton.Background = normal;
+        EquipmentButton.Background = normal;
+        GemsButton.Background = normal;
+        RunesButton.Background = normal;
+        JewelsButton.Background = normal;
+        MortisButton.Background = normal;
+
+        activeButton.Background = accent;
     }
 
     private void LoadSelectedEquipmentSlot()
@@ -144,8 +177,8 @@ public partial class MainWindow : Window
             Width = 420,
             Height = 170,
             WindowStartupLocation = WindowStartupLocation.CenterScreen,
-            Background = System.Windows.Media.Brushes.Black,
-            Foreground = System.Windows.Media.Brushes.White
+            Background = Brushes.Black,
+            Foreground = Brushes.White
         };
 
         StackPanel panel = new() { Margin = new Thickness(16) };
@@ -192,6 +225,30 @@ public partial class MainWindow : Window
         dialog.ShowDialog();
         return result;
     }
+
+    private void DashboardButton_OnClick(object sender, RoutedEventArgs e) =>
+        ShowPage(DashboardPage, DashboardButton);
+
+    private void CharactersButton_OnClick(object sender, RoutedEventArgs e) =>
+        ShowPage(CharactersPage, CharactersButton);
+
+    private void EquipmentButton_OnClick(object sender, RoutedEventArgs e)
+    {
+        RefreshAll();
+        ShowPage(EquipmentPage, EquipmentButton);
+    }
+
+    private void GemsButton_OnClick(object sender, RoutedEventArgs e) =>
+        ShowPage(GemsPage, GemsButton);
+
+    private void RunesButton_OnClick(object sender, RoutedEventArgs e) =>
+        ShowPage(RunesPage, RunesButton);
+
+    private void JewelsButton_OnClick(object sender, RoutedEventArgs e) =>
+        ShowPage(JewelsPage, JewelsButton);
+
+    private void MortisButton_OnClick(object sender, RoutedEventArgs e) =>
+        ShowPage(MortisPage, MortisButton);
 
     private void CharacterCombo_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
