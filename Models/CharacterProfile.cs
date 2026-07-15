@@ -14,4 +14,9 @@ public sealed class CharacterProfile
     public int OwnedGemDust { get; set; }
     public int OwnedGold { get; set; }
     public List<GemCollection> Gems { get; set; } = [];
+
+    public int OwnedRuneDust { get; set; }
+    public int OwnedRuneGold { get; set; }
+    public List<RuneCollection> Runes { get; set; } = [];
+    public MortisPlan Mortis { get; set; } = new();
 }

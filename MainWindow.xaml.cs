@@ -1,7 +1,9 @@
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Threading;
+using System.Text.Json;
+using Microsoft.Win32;
 using DSOCompanion.Models;
 using DSOCompanion.Services;
 
@@ -14,8 +16,7 @@ public partial class MainWindow : Window
     private bool _loading;
     private EquipmentSlot? _selectedEquipmentSlot;
     private string _activeGemFilter = "Alle";
-    private DsoItem? _selectedLibraryItem;
-    private Point _itemDragStartPoint;
+    private string _activeRuneFilter = "Alle";
 
     private CharacterProfile ActiveCharacter =>
         _state.Characters.First(x => x.Id == _state.ActiveCharacterId);
@@ -84,12 +85,27 @@ public partial class MainWindow : Window
         OwnedGemDustBox.Text = ActiveCharacter.OwnedGemDust.ToString();
         OwnedGoldBox.Text = ActiveCharacter.OwnedGold.ToString();
 
-        RefreshItemLibrary();
+        OwnedRuneDustBox.Text = ActiveCharacter.OwnedRuneDust.ToString();
+        OwnedRuneGoldBox.Text = ActiveCharacter.OwnedRuneGold.ToString();
+
+        MortisTargetBox.Text = ActiveCharacter.Mortis.TargetBones.ToString();
+        MortisCurrentBox.Text = ActiveCharacter.Mortis.CurrentBones.ToString();
+        MortisDaysBox.Text = ActiveCharacter.Mortis.DaysLeft.ToString();
+        MortisHoursBox.Text = ActiveCharacter.Mortis.HoursPerDay.ToString();
+        MortisMinutesBox.Text = ActiveCharacter.Mortis.MinutesPerRun.ToString();
+        MortisAndermantBox.Text = ActiveCharacter.Mortis.AndermantPerEntry.ToString();
+        MortisElixirBox.Text = ActiveCharacter.Mortis.ElixirCostPerRun.ToString();
+        MortisCoinsBox.Text = ActiveCharacter.Mortis.MortisCoins.ToString();
+
+        MortisGrid.ItemsSource = null;
+        MortisGrid.ItemsSource = ActiveCharacter.Mortis.Activities;
 
         _loading = false;
 
         LoadSelectedEquipmentSlot();
         RefreshGemPage();
+        RefreshRunePage();
+        UpdateMortisSummary();
         UpdateSummary();
         Save();
     }
@@ -154,12 +170,6 @@ public partial class MainWindow : Window
         RunesBox.Text = _selectedEquipmentSlot?.Runes ?? "";
         JewelBox.Text = _selectedEquipmentSlot?.Jewel ?? "";
         EquipmentNotesBox.Text = _selectedEquipmentSlot?.Notes ?? "";
-        RarityTypeBox.Text = _selectedEquipmentSlot is null
-            ? ""
-            : $"{_selectedEquipmentSlot.Rarity} · {_selectedEquipmentSlot.ItemType}";
-        SetBonusBox.Text = _selectedEquipmentSlot?.SetBonus ?? "";
-        ObtainableFromBox.Text = _selectedEquipmentSlot?.ObtainableFrom ?? "";
-        SourceUrlBox.Text = _selectedEquipmentSlot?.SourceUrl ?? "";
 
         _loading = false;
     }
@@ -181,8 +191,6 @@ public partial class MainWindow : Window
         _selectedEquipmentSlot.Runes = RunesBox.Text;
         _selectedEquipmentSlot.Jewel = JewelBox.Text;
         _selectedEquipmentSlot.Notes = EquipmentNotesBox.Text;
-        _selectedEquipmentSlot.SetBonus = SetBonusBox.Text;
-        _selectedEquipmentSlot.ObtainableFrom = ObtainableFromBox.Text;
 
         Save();
     }
@@ -324,163 +332,228 @@ public partial class MainWindow : Window
     private void GemFilterDiamonds_OnClick(object sender, RoutedEventArgs e) =>
         SetGemFilter("Diamanten");
 
-    private void RefreshItemLibrary()
+    private void RefreshRunePage()
     {
-        string search = ItemSearchBox?.Text?.Trim() ?? "";
-        IEnumerable<DsoItem> items =
-            ItemDatabaseService.GetForClass(ActiveCharacter.CharacterClass);
-
-        if (!string.IsNullOrWhiteSpace(search))
+        IEnumerable<RuneCollection> filtered = _activeRuneFilter switch
         {
-            items = items.Where(item =>
-                item.Name.Contains(search, StringComparison.OrdinalIgnoreCase) ||
-                item.SlotName.Contains(search, StringComparison.OrdinalIgnoreCase) ||
-                item.Rarity.Contains(search, StringComparison.OrdinalIgnoreCase) ||
-                item.ItemType.Contains(search, StringComparison.OrdinalIgnoreCase));
-        }
+            "Offensiv" => ActiveCharacter.Runes.Where(x => x.Category == "Offensiv"),
+            "Defensiv" => ActiveCharacter.Runes.Where(x => x.Category == "Defensiv"),
+            "Sonstige" => ActiveCharacter.Runes.Where(x => x.Category == "Sonstige"),
+            _ => ActiveCharacter.Runes
+        };
 
-        ItemLibraryList.ItemsSource = null;
-        ItemLibraryList.ItemsSource = items.ToList();
+        RuneCardsControl.ItemsSource = null;
+        RuneCardsControl.ItemsSource = filtered.ToList();
+        UpdateRuneTotals();
+        UpdateRuneFilterButtons();
     }
 
-    private void ItemSearchBox_OnTextChanged(object sender, TextChangedEventArgs e)
+    private void UpdateRuneTotals()
+    {
+        long dust = ActiveCharacter.Runes.SelectMany(x => x.Tiers)
+            .Sum(x => (long)x.DustCost * x.Quantity);
+        long gold = ActiveCharacter.Runes.SelectMany(x => x.Tiers)
+            .Sum(x => (long)x.GoldCost * x.Quantity);
+
+        RuneNeededDustText.Text = dust.ToString("N0");
+        RuneMissingDustText.Text =
+            Math.Max(0, dust - ActiveCharacter.OwnedRuneDust).ToString("N0");
+        RuneNeededGoldText.Text = gold.ToString("N0");
+        RuneMissingGoldText.Text =
+            Math.Max(0, gold - ActiveCharacter.OwnedRuneGold).ToString("N0");
+
+        RuneCardsControl.Items.Refresh();
+        Save();
+    }
+
+    private void UpdateRuneFilterButtons()
+    {
+        Brush normal = (Brush)FindResource("Panel2Brush");
+        Brush accent = (Brush)FindResource("AccentBrush");
+
+        RuneFilterAllButton.Background = normal;
+        RuneFilterOffensiveButton.Background = normal;
+        RuneFilterDefensiveButton.Background = normal;
+        RuneFilterOtherButton.Background = normal;
+
+        Button active = _activeRuneFilter switch
+        {
+            "Offensiv" => RuneFilterOffensiveButton,
+            "Defensiv" => RuneFilterDefensiveButton,
+            "Sonstige" => RuneFilterOtherButton,
+            _ => RuneFilterAllButton
+        };
+
+        active.Background = accent;
+    }
+
+    private void RuneResource_OnChanged(object sender, TextChangedEventArgs e)
     {
         if (_loading)
             return;
 
-        RefreshItemLibrary();
+        ActiveCharacter.OwnedRuneDust =
+            int.TryParse(OwnedRuneDustBox.Text, out int dust) ? Math.Max(0, dust) : 0;
+        ActiveCharacter.OwnedRuneGold =
+            int.TryParse(OwnedRuneGoldBox.Text, out int gold) ? Math.Max(0, gold) : 0;
+
+        UpdateRuneTotals();
     }
 
-    private void ItemLibraryList_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    private void RuneCardPlus_OnClick(object sender, RoutedEventArgs e)
     {
-        _selectedLibraryItem = ItemLibraryList.SelectedItem as DsoItem;
-    }
-
-    private void ItemLibraryList_OnPreviewMouseLeftButtonDown(
-        object sender,
-        MouseButtonEventArgs e)
-    {
-        _itemDragStartPoint = e.GetPosition(null);
-    }
-
-    private void ItemLibraryList_OnPreviewMouseMove(
-        object sender,
-        MouseEventArgs e)
-    {
-        if (e.LeftButton != MouseButtonState.Pressed ||
-            ItemLibraryList.SelectedItem is not DsoItem item)
+        if (sender is Button button && button.Tag is RuneTierEntry tier)
         {
-            return;
+            tier.Quantity++;
+            UpdateRuneTotals();
         }
-
-        Point currentPosition = e.GetPosition(null);
-        Vector difference = _itemDragStartPoint - currentPosition;
-
-        if (Math.Abs(difference.X) < SystemParameters.MinimumHorizontalDragDistance &&
-            Math.Abs(difference.Y) < SystemParameters.MinimumVerticalDragDistance)
-        {
-            return;
-        }
-
-        DragDrop.DoDragDrop(
-            ItemLibraryList,
-            new DataObject(typeof(DsoItem), item),
-            DragDropEffects.Copy);
     }
 
-    private void EquipmentSlotList_OnDragOver(object sender, DragEventArgs e)
+    private void RuneCardMinus_OnClick(object sender, RoutedEventArgs e)
     {
-        if (!e.Data.GetDataPresent(typeof(DsoItem)))
+        if (sender is Button button && button.Tag is RuneTierEntry tier)
         {
-            e.Effects = DragDropEffects.None;
-            e.Handled = true;
-            return;
+            tier.Quantity = Math.Max(0, tier.Quantity - 1);
+            UpdateRuneTotals();
         }
-
-        e.Effects = DragDropEffects.Copy;
-        e.Handled = true;
     }
 
-    private void EquipmentSlotList_OnDrop(object sender, DragEventArgs e)
+    private void ClearAllRunes_OnClick(object sender, RoutedEventArgs e)
     {
-        if (e.Data.GetData(typeof(DsoItem)) is not DsoItem item)
-            return;
-
-        EquipmentSlot? targetSlot =
-            FindListBoxItemUnderMouse(EquipmentSlotList, e.GetPosition(EquipmentSlotList))
-            ?? EquipmentSlotList.SelectedItem as EquipmentSlot;
-
-        if (targetSlot is null)
-        {
-            MessageBox.Show("Bitte zuerst einen Ausrüstungsslot auswählen.");
-            return;
-        }
-
-        ApplyLibraryItem(item, targetSlot);
-    }
-
-    private static EquipmentSlot? FindListBoxItemUnderMouse(
-        ListBox listBox,
-        Point position)
-    {
-        HitTestResult? result =
-            VisualTreeHelper.HitTest(listBox, position);
-
-        DependencyObject? current = result?.VisualHit;
-
-        while (current is not null && current is not ListBoxItem)
-            current = VisualTreeHelper.GetParent(current);
-
-        return current is ListBoxItem container
-            ? container.DataContext as EquipmentSlot
-            : null;
-    }
-
-    private void ApplySelectedItem_OnClick(object sender, RoutedEventArgs e)
-    {
-        if (_selectedLibraryItem is null)
-        {
-            MessageBox.Show("Bitte zuerst ein Item aus der Bibliothek auswählen.");
-            return;
-        }
-
-        if (EquipmentSlotList.SelectedItem is not EquipmentSlot slot)
-        {
-            MessageBox.Show("Bitte zuerst einen Ausrüstungsslot auswählen.");
-            return;
-        }
-
-        ApplyLibraryItem(_selectedLibraryItem, slot);
-    }
-
-    private void ApplyLibraryItem(DsoItem item, EquipmentSlot slot)
-    {
-        if (!string.Equals(item.SlotName, slot.SlotName, StringComparison.OrdinalIgnoreCase))
-        {
-            MessageBoxResult result = MessageBox.Show(
-                $"{item.Name} gehört zum Slot „{item.SlotName}“, " +
-                $"du hast aber „{slot.SlotName}“ gewählt.\n\nTrotzdem übernehmen?",
-                "Slot stimmt nicht überein",
+        if (MessageBox.Show(
+                "Alle Runenmengen dieses Charakters auf 0 setzen?",
+                "Bestätigung",
                 MessageBoxButton.YesNo,
-                MessageBoxImage.Warning);
+                MessageBoxImage.Warning) != MessageBoxResult.Yes)
+            return;
 
-            if (result != MessageBoxResult.Yes)
-                return;
-        }
+        foreach (RuneTierEntry tier in ActiveCharacter.Runes.SelectMany(x => x.Tiers))
+            tier.Quantity = 0;
 
-        slot.ItemName = item.Name;
-        slot.ItemLevel = item.ItemLevel;
-        slot.BaseValues = item.BaseValues;
-        slot.Enchantments = item.UniqueValues;
-        slot.Rarity = item.Rarity;
-        slot.ItemType = item.ItemType;
-        slot.SetBonus = item.SetBonus;
-        slot.ObtainableFrom = item.ObtainableFrom;
-        slot.SourceUrl = item.SourceUrl;
+        UpdateRuneTotals();
+    }
 
-        EquipmentSlotList.SelectedItem = slot;
-        LoadSelectedEquipmentSlot();
+    private void SetRuneFilter(string filter)
+    {
+        _activeRuneFilter = filter;
+        RefreshRunePage();
+    }
+
+    private void RuneFilterAll_OnClick(object sender, RoutedEventArgs e) =>
+        SetRuneFilter("Alle");
+
+    private void RuneFilterOffensive_OnClick(object sender, RoutedEventArgs e) =>
+        SetRuneFilter("Offensiv");
+
+    private void RuneFilterDefensive_OnClick(object sender, RoutedEventArgs e) =>
+        SetRuneFilter("Defensiv");
+
+    private void RuneFilterOther_OnClick(object sender, RoutedEventArgs e) =>
+        SetRuneFilter("Sonstige");
+
+    private void MortisInput_OnChanged(object sender, TextChangedEventArgs e)
+    {
+        if (_loading)
+            return;
+
+        MortisPlan plan = ActiveCharacter.Mortis;
+        plan.TargetBones = ParseInt(MortisTargetBox.Text);
+        plan.CurrentBones = ParseInt(MortisCurrentBox.Text);
+        plan.DaysLeft = ParseInt(MortisDaysBox.Text);
+        plan.HoursPerDay = ParseDecimal(MortisHoursBox.Text);
+        plan.MinutesPerRun = ParseDecimal(MortisMinutesBox.Text);
+        plan.AndermantPerEntry = ParseInt(MortisAndermantBox.Text);
+        plan.ElixirCostPerRun = ParseInt(MortisElixirBox.Text);
+        plan.MortisCoins = ParseInt(MortisCoinsBox.Text);
+
+        UpdateMortisSummary();
+    }
+
+    private static int ParseInt(string value) =>
+        int.TryParse(value, out int result) ? Math.Max(0, result) : 0;
+
+    private static decimal ParseDecimal(string value) =>
+        decimal.TryParse(value, out decimal result) ? Math.Max(0, result) : 0;
+
+    private void MortisGrid_OnCellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+    {
+        Dispatcher.BeginInvoke(
+            new Action(UpdateMortisSummary),
+            DispatcherPriority.Background);
+    }
+
+    private void UpdateMortisSummary()
+    {
+        if (ActiveCharacter.Mortis is null)
+            return;
+
+        MortisGrid.Items.Refresh();
+        MortisPlan plan = ActiveCharacter.Mortis;
+
+        double progress = plan.TargetBones > 0
+            ? Math.Min(100, plan.FinalBones * 100.0 / plan.TargetBones)
+            : 0;
+
+        MortisProgressBar.Value = progress;
+        MortisSummaryText.Text =
+            $"Fortschritt: {progress:N1} % · Geplante Knochen: {plan.PlannedBones:N0} · " +
+            $"Knochen danach: {plan.FinalBones:N0} · Noch fehlend: {plan.MissingBones:N0} · " +
+            $"Überschuss: {plan.ExcessBones:N0}\n" +
+            $"Runs: {plan.TotalRuns:N0} · Eingänge: {plan.TotalEntries:N0} · " +
+            $"Zeit: {plan.TotalHours:N1} h · Zeitbudget: {plan.TimeBudgetHours:N1} h · " +
+            $"Pro Tag nötig: {plan.BonesPerDay:N0}\n" +
+            $"Andermantkosten: {plan.AndermantCost:N0} · Elixierkosten: {plan.ElixirCost:N0} · " +
+            $"Mortis-Münzen: {plan.MortisCoins:N0}";
+
         Save();
+    }
+
+    private void ExportCharacter_OnClick(object sender, RoutedEventArgs e)
+    {
+        SaveFileDialog dialog = new()
+        {
+            Filter = "DSO Charakter (*.dsocharacter)|*.dsocharacter|JSON (*.json)|*.json",
+            FileName = $"{ActiveCharacter.Name}.dsocharacter"
+        };
+
+        if (dialog.ShowDialog() != true)
+            return;
+
+        JsonSerializerOptions options = new() { WriteIndented = true };
+        File.WriteAllText(dialog.FileName, JsonSerializer.Serialize(ActiveCharacter, options));
+    }
+
+    private void ImportCharacter_OnClick(object sender, RoutedEventArgs e)
+    {
+        OpenFileDialog dialog = new()
+        {
+            Filter = "DSO Charakter (*.dsocharacter;*.json)|*.dsocharacter;*.json"
+        };
+
+        if (dialog.ShowDialog() != true)
+            return;
+
+        try
+        {
+            string json = File.ReadAllText(dialog.FileName);
+            CharacterProfile? character = JsonSerializer.Deserialize<CharacterProfile>(json);
+
+            if (character is null)
+                throw new InvalidDataException("Ungültige Charakterdatei.");
+
+            character.Id = Guid.NewGuid();
+            foreach (BuildProfile build in character.Builds)
+                build.Id = Guid.NewGuid();
+
+            AppDataService.NormalizeCharacter(character);
+            _state.Characters.Add(character);
+            _state.ActiveCharacterId = character.Id;
+            RefreshAll();
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message, "Import fehlgeschlagen");
+        }
     }
 
     private static string? Prompt(string title, string initialValue)
@@ -555,14 +628,20 @@ public partial class MainWindow : Window
     private void GemsButton_OnClick(object sender, RoutedEventArgs e) =>
         ShowPage(GemsPage, GemsButton);
 
-    private void RunesButton_OnClick(object sender, RoutedEventArgs e) =>
+    private void RunesButton_OnClick(object sender, RoutedEventArgs e)
+    {
+        RefreshRunePage();
         ShowPage(RunesPage, RunesButton);
+    }
 
     private void JewelsButton_OnClick(object sender, RoutedEventArgs e) =>
         ShowPage(JewelsPage, JewelsButton);
 
-    private void MortisButton_OnClick(object sender, RoutedEventArgs e) =>
+    private void MortisButton_OnClick(object sender, RoutedEventArgs e)
+    {
+        UpdateMortisSummary();
         ShowPage(MortisPage, MortisButton);
+    }
 
     private void CharacterCombo_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
@@ -717,12 +796,7 @@ public partial class MainWindow : Window
                     Gems = item.Gems,
                     Runes = item.Runes,
                     Jewel = item.Jewel,
-                    Notes = item.Notes,
-                    Rarity = item.Rarity,
-                    ItemType = item.ItemType,
-                    SetBonus = item.SetBonus,
-                    ObtainableFrom = item.ObtainableFrom,
-                    SourceUrl = item.SourceUrl
+                    Notes = item.Notes
                 })
                 .ToList()
         };

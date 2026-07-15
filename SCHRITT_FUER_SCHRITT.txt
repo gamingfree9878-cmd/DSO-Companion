@@ -1,4 +1,4 @@
-DSO COMPANION VERSION 0.8
+DSO COMPANION VERSION 1.0
 
 1. GitHub Desktop schließen.
 
@@ -9,15 +9,15 @@ DSO COMPANION VERSION 0.8
    .git
 
 4. Entpacke:
-   DSO_Companion_V0_8_ITEM_BROWSER.zip
+   DSO_Companion_V1_0_RUNEN_MORTIS.zip
 
-5. Kopiere den gesamten Inhalt nach:
+5. Kopiere den gesamten Inhalt des Projektordners nach:
    Dokumente\GitHub\DSO-Companion
 
 6. GitHub Desktop öffnen.
 
 7. Summary:
-   Version 0.8 DSOFUN Item Browser
+   Version 1.0 Runen und Mortis BGH
 
 8. Commit to main.
 
@@ -27,9 +27,9 @@ DSO COMPANION VERSION 0.8
 
 11. Artefakt DSO-Companion-Windows herunterladen und entpacken.
 
-TEST:
-1. Zirkelmagier als Charakterklasse wählen.
-2. Ausrüstung öffnen.
-3. Ein Item in der linken Bibliothek auswählen.
-4. Das Item auf Waffe oder Umhang ziehen.
-5. Prüfen, ob Werte, Fundort und Quelle übernommen wurden.
+12. Testen:
+    - Runen öffnen
+    - Filter und Plus/Minus prüfen
+    - Mortis/BGH öffnen
+    - Runs und Eingänge eintragen
+    - Charakter exportieren und wieder importieren

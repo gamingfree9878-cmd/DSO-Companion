@@ -11,9 +11,4 @@ public sealed class EquipmentSlot
     public string Runes { get; set; } = "";
     public string Jewel { get; set; } = "";
     public string Notes { get; set; } = "";
-    public string Rarity { get; set; } = "";
-    public string ItemType { get; set; } = "";
-    public string SetBonus { get; set; } = "";
-    public string ObtainableFrom { get; set; } = "";
-    public string SourceUrl { get; set; } = "";
 }

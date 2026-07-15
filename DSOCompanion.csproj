@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <Resource Include="Assets\Gems\*.png" />
+      <Resource Include="Assets\Runes\*.png" />
   </ItemGroup>
 
 </Project>

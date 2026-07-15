@@ -99,10 +99,15 @@
                             Content="Umbenennen"
                             Click="RenameCharacter_OnClick"/>
 
-                    <Button Grid.Column="4"
-                            Content="Löschen"
-                            Background="{StaticResource DangerBrush}"
-                            Click="DeleteCharacter_OnClick"/>
+                    <StackPanel Grid.Column="4" Orientation="Horizontal">
+                        <Button Content="Export"
+                                Click="ExportCharacter_OnClick"/>
+                        <Button Content="Import"
+                                Click="ImportCharacter_OnClick"/>
+                        <Button Content="Löschen"
+                                Background="{StaticResource DangerBrush}"
+                                Click="DeleteCharacter_OnClick"/>
+                    </StackPanel>
                 </Grid>
             </Border>
 
@@ -332,131 +337,47 @@
                     </Grid.RowDefinitions>
 
                     <Border Style="{StaticResource CardStyle}">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Ausrüstung des Builds:"
-                                           Foreground="{StaticResource MutedBrush}"
-                                           VerticalAlignment="Center"
-                                           Margin="4"/>
-                                <TextBlock x:Name="ActiveBuildHeader"
-                                           Foreground="White"
-                                           FontSize="20"
-                                           FontWeight="Bold"
-                                           VerticalAlignment="Center"
-                                           Margin="8,4"/>
-                            </StackPanel>
-                            <TextBlock Grid.Column="1"
-                                       Text="Gegenstand aus der Bibliothek auf einen Slot ziehen"
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Ausrüstung des Builds:"
                                        Foreground="{StaticResource MutedBrush}"
                                        VerticalAlignment="Center"
-                                       Margin="8"/>
-                        </Grid>
+                                       Margin="4"/>
+                            <TextBlock x:Name="ActiveBuildHeader"
+                                       Foreground="White"
+                                       FontSize="20"
+                                       FontWeight="Bold"
+                                       VerticalAlignment="Center"
+                                       Margin="8,4"/>
+                        </StackPanel>
                     </Border>
 
                     <Grid Grid.Row="1">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="350"/>
-                            <ColumnDefinition Width="230"/>
+                            <ColumnDefinition Width="250"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
-                        <!-- Item library -->
                         <Border Grid.Column="0" Style="{StaticResource CardStyle}">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="*"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-
-                                <TextBlock Text="DSOFUN-Itembibliothek"
-                                           Foreground="White"
-                                           FontSize="20"
-                                           FontWeight="Bold"
-                                           Margin="4,0,4,10"/>
-
-                                <TextBox x:Name="ItemSearchBox"
-                                         Grid.Row="1"
-                                         ToolTip="Nach Name, Slot oder Seltenheit suchen"
-                                         TextChanged="ItemSearchBox_OnTextChanged"/>
-
-                                <ListBox x:Name="ItemLibraryList"
-                                         Grid.Row="2"
-                                         PreviewMouseLeftButtonDown="ItemLibraryList_OnPreviewMouseLeftButtonDown"
-                                         PreviewMouseMove="ItemLibraryList_OnPreviewMouseMove"
-                                         SelectionChanged="ItemLibraryList_OnSelectionChanged">
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <Border Margin="3"
-                                                    Padding="10"
-                                                    Background="#111824"
-                                                    BorderBrush="#8061F1"
-                                                    BorderThickness="1"
-                                                    CornerRadius="8">
-                                                <StackPanel>
-                                                    <TextBlock Text="{Binding Name}"
-                                                               Foreground="White"
-                                                               FontSize="15"
-                                                               FontWeight="Bold"
-                                                               TextWrapping="Wrap"/>
-                                                    <TextBlock Text="{Binding Subtitle}"
-                                                               Foreground="#9FB8E5"
-                                                               FontSize="11"
-                                                               Margin="0,3,0,0"/>
-                                                    <TextBlock Text="{Binding ItemType}"
-                                                               Foreground="#99A9C0"
-                                                               FontSize="11"/>
-                                                </StackPanel>
-                                            </Border>
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>
-                                </ListBox>
-
-                                <Button Grid.Row="3"
-                                        Content="Ausgewähltes Item übernehmen"
-                                        Background="{StaticResource AccentBrush}"
-                                        Click="ApplySelectedItem_OnClick"/>
-                            </Grid>
-                        </Border>
-
-                        <!-- Equipment slots -->
-                        <Border Grid.Column="1" Style="{StaticResource CardStyle}">
                             <StackPanel>
                                 <TextBlock Text="Ausrüstungsslots"
                                            Foreground="White"
                                            FontSize="20"
                                            FontWeight="Bold"
                                            Margin="4,0,4,12"/>
-                                <TextBlock Text="Hierhin ziehen:"
-                                           Foreground="{StaticResource MutedBrush}"
-                                           Margin="4,0,4,6"/>
                                 <ListBox x:Name="EquipmentSlotList"
                                          DisplayMemberPath="SlotName"
-                                         AllowDrop="True"
-                                         DragOver="EquipmentSlotList_OnDragOver"
-                                         Drop="EquipmentSlotList_OnDrop"
                                          SelectionChanged="EquipmentSlotList_OnSelectionChanged"/>
                             </StackPanel>
                         </Border>
 
-                        <!-- Item editor -->
-                        <Border Grid.Column="2" Style="{StaticResource CardStyle}">
+                        <Border Grid.Column="1" Style="{StaticResource CardStyle}">
                             <ScrollViewer>
                                 <Grid>
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="175"/>
+                                        <ColumnDefinition Width="180"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="Auto"/>
@@ -480,52 +401,36 @@
                                     <TextBlock Grid.Row="1" Text="Itemname" Foreground="{StaticResource MutedBrush}" Margin="8"/>
                                     <TextBox x:Name="ItemNameBox" Grid.Row="1" Grid.Column="1" TextChanged="EquipmentField_OnChanged"/>
 
-                                    <TextBlock Grid.Row="2" Text="Seltenheit / Typ" Foreground="{StaticResource MutedBrush}" Margin="8"/>
-                                    <TextBox x:Name="RarityTypeBox" Grid.Row="2" Grid.Column="1" IsReadOnly="True"/>
+                                    <TextBlock Grid.Row="2" Text="Gegenstandsstufe" Foreground="{StaticResource MutedBrush}" Margin="8"/>
+                                    <TextBox x:Name="ItemLevelBox" Grid.Row="2" Grid.Column="1" TextChanged="EquipmentField_OnChanged"/>
 
-                                    <TextBlock Grid.Row="3" Text="Gegenstandsstufe" Foreground="{StaticResource MutedBrush}" Margin="8"/>
-                                    <TextBox x:Name="ItemLevelBox" Grid.Row="3" Grid.Column="1" TextChanged="EquipmentField_OnChanged"/>
-
-                                    <TextBlock Grid.Row="4" Text="Basiswerte" Foreground="{StaticResource MutedBrush}" Margin="8"/>
-                                    <TextBox x:Name="BaseValuesBox" Grid.Row="4" Grid.Column="1" Height="75"
+                                    <TextBlock Grid.Row="3" Text="Basiswerte" Foreground="{StaticResource MutedBrush}" Margin="8"/>
+                                    <TextBox x:Name="BaseValuesBox" Grid.Row="3" Grid.Column="1" Height="75"
                                              AcceptsReturn="True" TextWrapping="Wrap"
                                              VerticalScrollBarVisibility="Auto"
                                              TextChanged="EquipmentField_OnChanged"/>
 
-                                    <TextBlock Grid.Row="5" Text="Einzigartige Werte" Foreground="{StaticResource MutedBrush}" Margin="8"/>
-                                    <TextBox x:Name="EnchantmentsBox" Grid.Row="5" Grid.Column="1" Height="120"
+                                    <TextBlock Grid.Row="4" Text="Verzauberungen" Foreground="{StaticResource MutedBrush}" Margin="8"/>
+                                    <TextBox x:Name="EnchantmentsBox" Grid.Row="4" Grid.Column="1" Height="95"
                                              AcceptsReturn="True" TextWrapping="Wrap"
                                              VerticalScrollBarVisibility="Auto"
                                              TextChanged="EquipmentField_OnChanged"/>
 
-                                    <TextBlock Grid.Row="6" Text="Setbonus" Foreground="{StaticResource MutedBrush}" Margin="8"/>
-                                    <TextBox x:Name="SetBonusBox" Grid.Row="6" Grid.Column="1" Height="70"
+                                    <TextBlock Grid.Row="5" Text="Edelsteine" Foreground="{StaticResource MutedBrush}" Margin="8"/>
+                                    <TextBox x:Name="GemsBox" Grid.Row="5" Grid.Column="1" Height="70"
                                              AcceptsReturn="True" TextWrapping="Wrap"
                                              TextChanged="EquipmentField_OnChanged"/>
 
-                                    <TextBlock Grid.Row="7" Text="Fundort" Foreground="{StaticResource MutedBrush}" Margin="8"/>
-                                    <TextBox x:Name="ObtainableFromBox" Grid.Row="7" Grid.Column="1" Height="55"
+                                    <TextBlock Grid.Row="6" Text="Runen" Foreground="{StaticResource MutedBrush}" Margin="8"/>
+                                    <TextBox x:Name="RunesBox" Grid.Row="6" Grid.Column="1" Height="65"
                                              AcceptsReturn="True" TextWrapping="Wrap"
                                              TextChanged="EquipmentField_OnChanged"/>
 
-                                    <TextBlock Grid.Row="8" Text="Edelsteine" Foreground="{StaticResource MutedBrush}" Margin="8"/>
-                                    <TextBox x:Name="GemsBox" Grid.Row="8" Grid.Column="1" Height="60"
-                                             AcceptsReturn="True" TextWrapping="Wrap"
-                                             TextChanged="EquipmentField_OnChanged"/>
+                                    <TextBlock Grid.Row="7" Text="Juwel" Foreground="{StaticResource MutedBrush}" Margin="8"/>
+                                    <TextBox x:Name="JewelBox" Grid.Row="7" Grid.Column="1" TextChanged="EquipmentField_OnChanged"/>
 
-                                    <TextBlock Grid.Row="9" Text="Runen" Foreground="{StaticResource MutedBrush}" Margin="8"/>
-                                    <TextBox x:Name="RunesBox" Grid.Row="9" Grid.Column="1" Height="55"
-                                             AcceptsReturn="True" TextWrapping="Wrap"
-                                             TextChanged="EquipmentField_OnChanged"/>
-
-                                    <TextBlock Grid.Row="10" Text="Juwel" Foreground="{StaticResource MutedBrush}" Margin="8"/>
-                                    <TextBox x:Name="JewelBox" Grid.Row="10" Grid.Column="1" TextChanged="EquipmentField_OnChanged"/>
-
-                                    <TextBlock Grid.Row="11" Text="Quelle" Foreground="{StaticResource MutedBrush}" Margin="8"/>
-                                    <TextBox x:Name="SourceUrlBox" Grid.Row="11" Grid.Column="1" IsReadOnly="True"/>
-
-                                    <TextBlock Grid.Row="12" Text="Notizen" Foreground="{StaticResource MutedBrush}" Margin="8"/>
-                                    <TextBox x:Name="EquipmentNotesBox" Grid.Row="12" Grid.Column="1" Height="75"
+                                    <TextBlock Grid.Row="8" Text="Notizen" Foreground="{StaticResource MutedBrush}" Margin="8"/>
+                                    <TextBox x:Name="EquipmentNotesBox" Grid.Row="8" Grid.Column="1" Height="85"
                                              AcceptsReturn="True" TextWrapping="Wrap"
                                              VerticalScrollBarVisibility="Auto"
                                              TextChanged="EquipmentField_OnChanged"/>
@@ -796,22 +701,170 @@
                     </StackPanel>
                 </ScrollViewer>
 
-                <ScrollViewer x:Name="RunesPage" Visibility="Collapsed" Background="{StaticResource BackgroundBrush}">
-                    <StackPanel Margin="18">
-                        <TextBlock Text="ᚱ Runen"
+                <ScrollViewer x:Name="RunesPage"
+                              Visibility="Collapsed"
+                              Background="{StaticResource BackgroundBrush}"
+                              VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="16">
+                        <TextBlock Text="Runen"
                                    Foreground="White"
-                                   FontSize="32"
+                                   FontSize="30"
                                    FontWeight="Bold"/>
-                        <TextBlock Text="Der getrennte Runenrechner wird auf dieser Seite eingebaut."
+                        <TextBlock Text="Originalbilder und Kosten aus deiner Runenliste und Excel."
                                    Foreground="{StaticResource MutedBrush}"
-                                   FontSize="16"
-                                   Margin="0,8,0,20"/>
-                        <Border Style="{StaticResource CardStyle}">
-                            <TextBlock Text="Vorbereitet für offensive, defensive und sonstige Runen mit eigenen Stufen und Staubkosten."
-                                       Foreground="White"
-                                       TextWrapping="Wrap"
-                                       FontSize="18"/>
+                                   Margin="0,4,0,0"/>
+
+                        <UniformGrid Columns="4" Margin="0,14,0,0">
+                            <Border Style="{StaticResource CardStyle}">
+                                <StackPanel>
+                                    <TextBlock Text="Benötigter Runenstaub" Foreground="{StaticResource MutedBrush}"/>
+                                    <TextBlock x:Name="RuneNeededDustText" Foreground="#9B7BFF"
+                                               FontSize="26" FontWeight="Bold" Margin="0,6,0,0"/>
+                                </StackPanel>
+                            </Border>
+                            <Border Style="{StaticResource CardStyle}">
+                                <StackPanel>
+                                    <TextBlock Text="Fehlender Runenstaub" Foreground="{StaticResource MutedBrush}"/>
+                                    <TextBlock x:Name="RuneMissingDustText" Foreground="#FF5578"
+                                               FontSize="26" FontWeight="Bold" Margin="0,6,0,0"/>
+                                </StackPanel>
+                            </Border>
+                            <Border Style="{StaticResource CardStyle}">
+                                <StackPanel>
+                                    <TextBlock Text="Benötigtes Gold" Foreground="{StaticResource MutedBrush}"/>
+                                    <TextBlock x:Name="RuneNeededGoldText" Foreground="#FFD34F"
+                                               FontSize="26" FontWeight="Bold" Margin="0,6,0,0"/>
+                                </StackPanel>
+                            </Border>
+                            <Border Style="{StaticResource CardStyle}">
+                                <StackPanel>
+                                    <TextBlock Text="Fehlendes Gold" Foreground="{StaticResource MutedBrush}"/>
+                                    <TextBlock x:Name="RuneMissingGoldText" Foreground="#FF5578"
+                                               FontSize="26" FontWeight="Bold" Margin="0,6,0,0"/>
+                                </StackPanel>
+                            </Border>
+                        </UniformGrid>
+
+                        <Border Style="{StaticResource CardStyle}" Margin="6,10,6,6">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel>
+                                    <TextBlock Text="Vorhandener Runenstaub" Foreground="{StaticResource MutedBrush}"/>
+                                    <TextBox x:Name="OwnedRuneDustBox" TextChanged="RuneResource_OnChanged"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="1">
+                                    <TextBlock Text="Vorhandenes Gold für Runen" Foreground="{StaticResource MutedBrush}"/>
+                                    <TextBox x:Name="OwnedRuneGoldBox" TextChanged="RuneResource_OnChanged"/>
+                                </StackPanel>
+                                <Button Grid.Column="2" Content="Runen leeren"
+                                        Background="{StaticResource DangerBrush}"
+                                        VerticalAlignment="Bottom"
+                                        Click="ClearAllRunes_OnClick"/>
+                            </Grid>
                         </Border>
+
+                        <StackPanel Orientation="Horizontal" Margin="2,6,2,8">
+                            <Button x:Name="RuneFilterAllButton" Content="Alle"
+                                    Background="{StaticResource AccentBrush}"
+                                    Click="RuneFilterAll_OnClick"/>
+                            <Button x:Name="RuneFilterOffensiveButton" Content="Offensiv"
+                                    Click="RuneFilterOffensive_OnClick"/>
+                            <Button x:Name="RuneFilterDefensiveButton" Content="Defensiv"
+                                    Click="RuneFilterDefensive_OnClick"/>
+                            <Button x:Name="RuneFilterOtherButton" Content="Sonstige"
+                                    Click="RuneFilterOther_OnClick"/>
+                        </StackPanel>
+
+                        <ItemsControl x:Name="RuneCardsControl">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <UniformGrid Columns="3"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Margin="6" Padding="12" CornerRadius="12"
+                                            Background="#111824" BorderBrush="#8061F1" BorderThickness="1.5">
+                                        <StackPanel>
+                                            <Grid Margin="0,0,0,10">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="62"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Border Width="54" Height="54" CornerRadius="7"
+                                                        Background="#17130D" BorderBrush="#776A4E"
+                                                        BorderThickness="1" Padding="2">
+                                                    <Image Source="{Binding ImagePath, Mode=OneWay}"
+                                                           Stretch="Uniform"
+                                                           RenderOptions.BitmapScalingMode="HighQuality"/>
+                                                </Border>
+                                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                                    <TextBlock Text="{Binding RuneName}" Foreground="White"
+                                                               FontSize="16" FontWeight="Bold" TextWrapping="Wrap"/>
+                                                    <TextBlock Text="{Binding Category}" Foreground="#9FB8E5"
+                                                               FontSize="12"/>
+                                                </StackPanel>
+                                            </Grid>
+
+                                            <ItemsControl ItemsSource="{Binding Tiers}">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Grid Margin="0,3">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*"/>
+                                                                <ColumnDefinition Width="32"/>
+                                                                <ColumnDefinition Width="42"/>
+                                                                <ColumnDefinition Width="32"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <StackPanel>
+                                                                <TextBlock Text="{Binding TierName}" Foreground="White"
+                                                                           FontWeight="Bold"/>
+                                                                <TextBlock Foreground="#8CB4E8" FontSize="10">
+                                                                    <Run Text="{Binding DustCost, StringFormat={}{0:N0}}"/>
+                                                                    <Run Text=" Staub · "/>
+                                                                    <Run Text="{Binding GoldCost, StringFormat={}{0:N0}}"/>
+                                                                    <Run Text=" Gold"/>
+                                                                </TextBlock>
+                                                            </StackPanel>
+                                                            <Button Grid.Column="1" Content="−" Padding="0" Margin="2"
+                                                                    Tag="{Binding}" Click="RuneCardMinus_OnClick"/>
+                                                            <Border Grid.Column="2" Background="#07101C"
+                                                                    BorderBrush="#2B374B" BorderThickness="1"
+                                                                    CornerRadius="7" Margin="2">
+                                                                <TextBlock Text="{Binding Quantity}" Foreground="White"
+                                                                           HorizontalAlignment="Center"
+                                                                           VerticalAlignment="Center"/>
+                                                            </Border>
+                                                            <Button Grid.Column="3" Content="+" Padding="0" Margin="2"
+                                                                    Background="{StaticResource AccentBrush}"
+                                                                    Tag="{Binding}" Click="RuneCardPlus_OnClick"/>
+                                                        </Grid>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+
+                                            <Separator Background="#2B374B" Margin="0,8,0,6"/>
+                                            <Grid>
+                                                <TextBlock Foreground="#9FB8E5">
+                                                    <Run Text="Staub: "/>
+                                                    <Run Text="{Binding TotalDust, Mode=OneWay, StringFormat={}{0:N0}}"
+                                                         Foreground="White" FontWeight="Bold"/>
+                                                </TextBlock>
+                                                <TextBlock HorizontalAlignment="Right" Foreground="#9FB8E5">
+                                                    <Run Text="Gold: "/>
+                                                    <Run Text="{Binding TotalGold, Mode=OneWay, StringFormat={}{0:N0}}"
+                                                         Foreground="White" FontWeight="Bold"/>
+                                                </TextBlock>
+                                            </Grid>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
                     </StackPanel>
                 </ScrollViewer>
 
@@ -834,44 +887,101 @@
                     </StackPanel>
                 </ScrollViewer>
 
-                <ScrollViewer x:Name="MortisPage" Visibility="Collapsed" Background="{StaticResource BackgroundBrush}">
-                    <StackPanel Margin="18">
-                        <TextBlock Text="🦴 Mortis / BGH"
-                                   Foreground="White"
-                                   FontSize="32"
-                                   FontWeight="Bold"/>
-                        <TextBlock Text="Der komplette Knochen-, Run-, Zeit- und Eingangsrechner wird hier eingebaut."
-                                   Foreground="{StaticResource MutedBrush}"
-                                   FontSize="16"
-                                   Margin="0,8,0,20"/>
-                        <UniformGrid Columns="3">
+                <Grid x:Name="MortisPage"
+                      Visibility="Collapsed"
+                      Background="{StaticResource BackgroundBrush}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <ScrollViewer Grid.Row="0" HorizontalScrollBarVisibility="Auto"
+                                  VerticalScrollBarVisibility="Disabled">
+                        <StackPanel Orientation="Horizontal" Margin="12">
                             <Border Style="{StaticResource CardStyle}">
                                 <StackPanel>
-                                    <TextBlock Text="Mortis" Foreground="White" FontSize="21" FontWeight="Bold"/>
-                                    <TextBlock Text="Infernal: 25&#x0a;Gnadenlos: 35&#x0a;Blutvergießen: 35"
-                                               Foreground="{StaticResource MutedBrush}"
-                                               Margin="0,10,0,0"/>
+                                    <TextBlock Text="Ziel-Knochen" Foreground="{StaticResource MutedBrush}"/>
+                                    <TextBox x:Name="MortisTargetBox" Width="120" TextChanged="MortisInput_OnChanged"/>
                                 </StackPanel>
                             </Border>
                             <Border Style="{StaticResource CardStyle}">
                                 <StackPanel>
-                                    <TextBlock Text="Inferno" Foreground="White" FontSize="21" FontWeight="Bold"/>
-                                    <TextBlock Text="Infernal: 40&#x0a;Gnadenlos: 50&#x0a;Blutvergießen: 60"
-                                               Foreground="{StaticResource MutedBrush}"
-                                               Margin="0,10,0,0"/>
+                                    <TextBlock Text="Aktuelle Knochen" Foreground="{StaticResource MutedBrush}"/>
+                                    <TextBox x:Name="MortisCurrentBox" Width="120" TextChanged="MortisInput_OnChanged"/>
                                 </StackPanel>
                             </Border>
                             <Border Style="{StaticResource CardStyle}">
                                 <StackPanel>
-                                    <TextBlock Text="Wächter" Foreground="White" FontSize="21" FontWeight="Bold"/>
-                                    <TextBlock Text="Wächter: 5&#x0a;Wächtergruppe: 25"
-                                               Foreground="{StaticResource MutedBrush}"
-                                               Margin="0,10,0,0"/>
+                                    <TextBlock Text="Tage übrig" Foreground="{StaticResource MutedBrush}"/>
+                                    <TextBox x:Name="MortisDaysBox" Width="90" TextChanged="MortisInput_OnChanged"/>
                                 </StackPanel>
                             </Border>
-                        </UniformGrid>
-                    </StackPanel>
-                </ScrollViewer>
+                            <Border Style="{StaticResource CardStyle}">
+                                <StackPanel>
+                                    <TextBlock Text="Stunden/Tag" Foreground="{StaticResource MutedBrush}"/>
+                                    <TextBox x:Name="MortisHoursBox" Width="90" TextChanged="MortisInput_OnChanged"/>
+                                </StackPanel>
+                            </Border>
+                            <Border Style="{StaticResource CardStyle}">
+                                <StackPanel>
+                                    <TextBlock Text="Minuten/Run" Foreground="{StaticResource MutedBrush}"/>
+                                    <TextBox x:Name="MortisMinutesBox" Width="90" TextChanged="MortisInput_OnChanged"/>
+                                </StackPanel>
+                            </Border>
+                            <Border Style="{StaticResource CardStyle}">
+                                <StackPanel>
+                                    <TextBlock Text="Andermant/Eingang" Foreground="{StaticResource MutedBrush}"/>
+                                    <TextBox x:Name="MortisAndermantBox" Width="110" TextChanged="MortisInput_OnChanged"/>
+                                </StackPanel>
+                            </Border>
+                            <Border Style="{StaticResource CardStyle}">
+                                <StackPanel>
+                                    <TextBlock Text="Elixierkosten/Run" Foreground="{StaticResource MutedBrush}"/>
+                                    <TextBox x:Name="MortisElixirBox" Width="110" TextChanged="MortisInput_OnChanged"/>
+                                </StackPanel>
+                            </Border>
+                            <Border Style="{StaticResource CardStyle}">
+                                <StackPanel>
+                                    <TextBlock Text="Mortis-Münzen" Foreground="{StaticResource MutedBrush}"/>
+                                    <TextBox x:Name="MortisCoinsBox" Width="110" TextChanged="MortisInput_OnChanged"/>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <DataGrid x:Name="MortisGrid" Grid.Row="1" Margin="18,4"
+                              AutoGenerateColumns="False" CanUserAddRows="False"
+                              Background="White" Foreground="Black"
+                              CellEditEnding="MortisGrid_OnCellEditEnding">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Boss / Aktivität"
+                                                Binding="{Binding Name}" IsReadOnly="True" Width="*"/>
+                            <DataGridTextColumn Header="Schwierigkeit"
+                                                Binding="{Binding Difficulty}" IsReadOnly="True" Width="150"/>
+                            <DataGridTextColumn Header="Knochen/Run"
+                                                Binding="{Binding BonesPerRun}" IsReadOnly="True" Width="120"/>
+                            <DataGridTextColumn Header="Eingänge"
+                                                Binding="{Binding Entries}" Width="100"/>
+                            <DataGridTextColumn Header="Runs"
+                                                Binding="{Binding Runs}" Width="100"/>
+                            <DataGridTextColumn Header="Gesamtknochen"
+                                                Binding="{Binding TotalBones, Mode=OneWay}"
+                                                IsReadOnly="True" Width="140"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <Border Grid.Row="2" Style="{StaticResource CardStyle}" Margin="18,4,18,18">
+                        <StackPanel>
+                            <ProgressBar x:Name="MortisProgressBar" Height="20"
+                                         Minimum="0" Maximum="100" Margin="0,0,0,10"/>
+                            <TextBlock x:Name="MortisSummaryText"
+                                       Foreground="White" FontSize="16"
+                                       FontWeight="Bold" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+
             </Grid>
         </Grid>
     </Grid>

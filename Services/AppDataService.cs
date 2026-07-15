@@ -33,38 +33,9 @@ public static class AppDataService
 
     public static readonly string[] EquipmentSlots =
     [
-        "Helm",
-        "Schultern",
-        "Torso",
-        "Handschuhe",
-        "Stiefel",
-        "Waffe",
-        "Nebenhand",
-        "Amulett",
-        "Ring 1",
-        "Ring 2",
-        "Gürtel",
-        "Umhang",
-        "Juwelen-Zier"
+        "Helm", "Schultern", "Torso", "Handschuhe", "Stiefel", "Waffe",
+        "Nebenhand", "Amulett", "Ring 1", "Ring 2", "Gürtel", "Umhang", "Juwelen-Zier"
     ];
-
-    public static readonly Dictionary<string, string> GemImages = new()
-    {
-        ["Rubin"] = "/Assets/Gems/ruby.png",
-        ["Onyx"] = "/Assets/Gems/onyx.png",
-        ["Rhodolith"] = "/Assets/Gems/rhodolith.png",
-        ["Zirkon"] = "/Assets/Gems/zircon.png",
-        ["Amethyst"] = "/Assets/Gems/amethyst.png",
-        ["Cyanit"] = "/Assets/Gems/cyanite.png",
-        ["Smaragd"] = "/Assets/Gems/emerald.png",
-        ["Diamant"] = "/Assets/Gems/diamond.png",
-        ["Eisdiamant"] = "/Assets/Gems/ice.png",
-        ["Blitzdiamant"] = "/Assets/Gems/lightning.png",
-        ["Feuerdiamant"] = "/Assets/Gems/fire.png",
-        ["Andermachtdiamant"] = "/Assets/Gems/andermacht.png",
-        ["Giftdiamant"] = "/Assets/Gems/poison.png",
-        ["Opal"] = "/Assets/Gems/opal.png",
-    };
 
     public static readonly (string Name, string ColorName, string Color, string Category)[] GemTypes =
     [
@@ -83,6 +54,24 @@ public static class AppDataService
         ("Giftdiamant", "Grau / Grün", "#6F9D4B", "Diamanten"),
         ("Opal", "Regenbogen", "#63D7D1", "Opal")
     ];
+
+    public static readonly Dictionary<string, string> GemImages = new()
+    {
+        ["Rubin"] = "/Assets/Gems/ruby.png",
+        ["Onyx"] = "/Assets/Gems/onyx.png",
+        ["Rhodolith"] = "/Assets/Gems/rhodolith.png",
+        ["Zirkon"] = "/Assets/Gems/zircon.png",
+        ["Amethyst"] = "/Assets/Gems/amethyst.png",
+        ["Cyanit"] = "/Assets/Gems/cyanite.png",
+        ["Smaragd"] = "/Assets/Gems/emerald.png",
+        ["Diamant"] = "/Assets/Gems/diamond.png",
+        ["Eisdiamant"] = "/Assets/Gems/ice.png",
+        ["Blitzdiamant"] = "/Assets/Gems/lightning.png",
+        ["Feuerdiamant"] = "/Assets/Gems/fire.png",
+        ["Andermachtdiamant"] = "/Assets/Gems/andermacht.png",
+        ["Giftdiamant"] = "/Assets/Gems/poison.png",
+        ["Opal"] = "/Assets/Gems/opal.png"
+    };
 
     public static readonly (string Name, int Dust, int Gold)[] GemTiers =
     [
@@ -108,7 +97,9 @@ public static class AppDataService
             Server = "Heredur",
             Builds = [build],
             ActiveBuildId = build.Id,
-            Gems = CreateGemCollections()
+            Gems = CreateGemCollections(),
+            Runes = CreateRuneCollections(),
+            Mortis = CreateMortisPlan()
         };
     }
 
@@ -132,23 +123,222 @@ public static class AppDataService
             ColorName = type.ColorName,
             ColorHex = type.Color,
             Category = type.Category,
-            ImagePath = GemImages.TryGetValue(type.Name, out string? imagePath)
-                ? imagePath
-                : "",
+            ImagePath = GemImages[type.Name],
             Tiers = GemTiers.Select(tier => new GemTierEntry
             {
                 TierName = tier.Name,
                 DustCost = tier.Dust,
-                GoldCost = tier.Gold,
-                Quantity = 0
+                GoldCost = tier.Gold
             }).ToList()
         }).ToList();
+    }
+
+    public static List<RuneTierEntry> CreateRuneTiers(string category)
+    {
+        (int Dust, int Gold)[] values = category switch
+        {
+            "Offensiv" =>
+            [
+                (3126, 8631),
+                (8596, 17261),
+                (17188, 29031),
+                (28908, 43937)
+            ],
+            "Defensiv" =>
+            [
+                (2500, 4315),
+                (6876, 8630),
+                (13750, 14515),
+                (23126, 21968)
+            ],
+            _ =>
+            [
+                (250, 2877),
+                (688, 5753),
+                (1375, 9677),
+                (7492, 14645)
+            ]
+        };
+
+        string[] names = ["Grün", "Blau", "Lila", "Legendär"];
+
+        return names.Select((name, index) => new RuneTierEntry
+        {
+            TierName = name,
+            DustCost = values[index].Dust,
+            GoldCost = values[index].Gold
+        }).ToList();
+    }
+
+    public static List<RuneCollection> CreateRuneCollections()
+    {
+        return
+        [
+        new RuneCollection
+        {
+            RuneName = "Konzentrierte Herbstrune",
+            Category = "Offensiv",
+            ImagePath = "/Assets/Runes/concentrated_autumn.png",
+            Tiers = CreateRuneTiers("Offensiv")
+        },
+        new RuneCollection
+        {
+            RuneName = "Konzentrierte Sommerrune",
+            Category = "Offensiv",
+            ImagePath = "/Assets/Runes/concentrated_summer.png",
+            Tiers = CreateRuneTiers("Offensiv")
+        },
+        new RuneCollection
+        {
+            RuneName = "Konzentrierte Frühlingsrune",
+            Category = "Offensiv",
+            ImagePath = "/Assets/Runes/concentrated_spring.png",
+            Tiers = CreateRuneTiers("Offensiv")
+        },
+        new RuneCollection
+        {
+            RuneName = "Konzentrierte Mittwinterrune",
+            Category = "Offensiv",
+            ImagePath = "/Assets/Runes/concentrated_midwinter.png",
+            Tiers = CreateRuneTiers("Offensiv")
+        },
+        new RuneCollection
+        {
+            RuneName = "Rune der Beschleunigung",
+            Category = "Offensiv",
+            ImagePath = "/Assets/Runes/acceleration.png",
+            Tiers = CreateRuneTiers("Offensiv")
+        },
+        new RuneCollection
+        {
+            RuneName = "Rune der Macht",
+            Category = "Offensiv",
+            ImagePath = "/Assets/Runes/power.png",
+            Tiers = CreateRuneTiers("Offensiv")
+        },
+        new RuneCollection
+        {
+            RuneName = "Rune der Vitalität",
+            Category = "Defensiv",
+            ImagePath = "/Assets/Runes/vitality.png",
+            Tiers = CreateRuneTiers("Defensiv")
+        },
+        new RuneCollection
+        {
+            RuneName = "Rune der Schnelligkeit",
+            Category = "Offensiv",
+            ImagePath = "/Assets/Runes/speed.png",
+            Tiers = CreateRuneTiers("Offensiv")
+        },
+        new RuneCollection
+        {
+            RuneName = "Rune der Verwüstung",
+            Category = "Offensiv",
+            ImagePath = "/Assets/Runes/devastation.png",
+            Tiers = CreateRuneTiers("Offensiv")
+        },
+        new RuneCollection
+        {
+            RuneName = "Rune des Andermantfiebers",
+            Category = "Defensiv",
+            ImagePath = "/Assets/Runes/andermant_fever.png",
+            Tiers = CreateRuneTiers("Defensiv")
+        },
+        new RuneCollection
+        {
+            RuneName = "Rune der Ausdauer",
+            Category = "Defensiv",
+            ImagePath = "/Assets/Runes/endurance.png",
+            Tiers = CreateRuneTiers("Defensiv")
+        },
+        new RuneCollection
+        {
+            RuneName = "Rune der Aufladung",
+            Category = "Offensiv",
+            ImagePath = "/Assets/Runes/charge.png",
+            Tiers = CreateRuneTiers("Offensiv")
+        },
+        new RuneCollection
+        {
+            RuneName = "Rune der Effizienz",
+            Category = "Offensiv",
+            ImagePath = "/Assets/Runes/efficiency.png",
+            Tiers = CreateRuneTiers("Offensiv")
+        },
+        new RuneCollection
+        {
+            RuneName = "Rune des Materie-Segens",
+            Category = "Sonstige",
+            ImagePath = "/Assets/Runes/matter_blessing.png",
+            Tiers = CreateRuneTiers("Sonstige")
+        },
+        new RuneCollection
+        {
+            RuneName = "Rune des Sphären-Veränderers",
+            Category = "Defensiv",
+            ImagePath = "/Assets/Runes/sphere_changer.png",
+            Tiers = CreateRuneTiers("Defensiv")
+        },
+        new RuneCollection
+        {
+            RuneName = "Rune des Panikhüters",
+            Category = "Defensiv",
+            ImagePath = "/Assets/Runes/panic_keeper.png",
+            Tiers = CreateRuneTiers("Defensiv")
+        },
+        new RuneCollection
+        {
+            RuneName = "Rune der Beständigkeit",
+            Category = "Defensiv",
+            ImagePath = "/Assets/Runes/steadfastness.png",
+            Tiers = CreateRuneTiers("Defensiv")
+        },
+        new RuneCollection
+        {
+            RuneName = "Rune des Willens zur Macht",
+            Category = "Sonstige",
+            ImagePath = "/Assets/Runes/will_to_power.png",
+            Tiers = CreateRuneTiers("Sonstige")
+        },
+        new RuneCollection
+        {
+            RuneName = "Rune der wachsenden Lebenskraft",
+            Category = "Sonstige",
+            ImagePath = "/Assets/Runes/growing_vitality.png",
+            Tiers = CreateRuneTiers("Sonstige")
+        }
+        ];
+    }
+
+    public static MortisPlan CreateMortisPlan()
+    {
+        return new MortisPlan
+        {
+            Activities =
+            [
+                new() { Name = "Heredur", Difficulty = "-", BonesPerRun = 5 },
+                new() { Name = "Sargon", Difficulty = "-", BonesPerRun = 5 },
+                new() { Name = "Herold", Difficulty = "-", BonesPerRun = 5 },
+                new() { Name = "Nefertari", Difficulty = "-", BonesPerRun = 5 },
+                new() { Name = "Balor", Difficulty = "-", BonesPerRun = 5 },
+                new() { Name = "Mortis", Difficulty = "Infernal", BonesPerRun = 25 },
+                new() { Name = "Mortis", Difficulty = "Gnadenlos", BonesPerRun = 35 },
+                new() { Name = "Mortis", Difficulty = "Blutvergießen", BonesPerRun = 35 },
+                new() { Name = "Inferno", Difficulty = "Infernal", BonesPerRun = 40 },
+                new() { Name = "Inferno", Difficulty = "Gnadenlos", BonesPerRun = 50 },
+                new() { Name = "Inferno", Difficulty = "Blutvergießen", BonesPerRun = 60 },
+                new() { Name = "Wächter", Difficulty = "-", BonesPerRun = 5 },
+                new() { Name = "Gruppe Wächter", Difficulty = "-", BonesPerRun = 25 }
+            ]
+        };
     }
 
     public static void NormalizeCharacter(CharacterProfile character)
     {
         character.Builds ??= [];
         character.Gems ??= [];
+        character.Runes ??= [];
+        character.Mortis ??= CreateMortisPlan();
 
         if (character.Builds.Count == 0)
         {
@@ -166,48 +356,64 @@ public static class AppDataService
             character.ActiveBuildId = character.Builds[0].Id;
         }
 
-        foreach ((string Name, string ColorName, string Color, string Category) gemType in GemTypes)
+        List<GemCollection> defaultGems = CreateGemCollections();
+        foreach (GemCollection defaultGem in defaultGems)
         {
-            GemCollection? existing = character.Gems.FirstOrDefault(x => x.GemName == gemType.Name);
-
+            GemCollection? existing = character.Gems.FirstOrDefault(x => x.GemName == defaultGem.GemName);
             if (existing is null)
             {
-                existing = new GemCollection
-                {
-                    GemName = gemType.Name,
-                    Tiers = []
-                };
-                character.Gems.Add(existing);
+                character.Gems.Add(defaultGem);
+                continue;
             }
 
-            existing.ColorName = gemType.ColorName;
-            existing.ColorHex = gemType.Color;
-            existing.Category = gemType.Category;
-            existing.ImagePath = GemImages.TryGetValue(gemType.Name, out string? imagePath)
-                ? imagePath
-                : "";
+            existing.ColorName = defaultGem.ColorName;
+            existing.ColorHex = defaultGem.ColorHex;
+            existing.Category = defaultGem.Category;
+            existing.ImagePath = defaultGem.ImagePath;
             existing.Tiers ??= [];
 
-            foreach ((string Name, int Dust, int Gold) tier in GemTiers)
+            foreach (GemTierEntry defaultTier in defaultGem.Tiers)
             {
-                GemTierEntry? tierEntry = existing.Tiers.FirstOrDefault(x => x.TierName == tier.Name);
-
-                if (tierEntry is null)
-                {
-                    existing.Tiers.Add(new GemTierEntry
-                    {
-                        TierName = tier.Name,
-                        DustCost = tier.Dust,
-                        GoldCost = tier.Gold
-                    });
-                }
+                GemTierEntry? tier = existing.Tiers.FirstOrDefault(x => x.TierName == defaultTier.TierName);
+                if (tier is null)
+                    existing.Tiers.Add(defaultTier);
                 else
                 {
-                    tierEntry.DustCost = tier.Dust;
-                    tierEntry.GoldCost = tier.Gold;
+                    tier.DustCost = defaultTier.DustCost;
+                    tier.GoldCost = defaultTier.GoldCost;
                 }
             }
         }
+
+        List<RuneCollection> defaultRunes = CreateRuneCollections();
+        foreach (RuneCollection defaultRune in defaultRunes)
+        {
+            RuneCollection? existing = character.Runes.FirstOrDefault(x => x.RuneName == defaultRune.RuneName);
+            if (existing is null)
+            {
+                character.Runes.Add(defaultRune);
+                continue;
+            }
+
+            existing.Category = defaultRune.Category;
+            existing.ImagePath = defaultRune.ImagePath;
+            existing.Tiers ??= [];
+
+            foreach (RuneTierEntry defaultTier in defaultRune.Tiers)
+            {
+                RuneTierEntry? tier = existing.Tiers.FirstOrDefault(x => x.TierName == defaultTier.TierName);
+                if (tier is null)
+                    existing.Tiers.Add(defaultTier);
+                else
+                {
+                    tier.DustCost = defaultTier.DustCost;
+                    tier.GoldCost = defaultTier.GoldCost;
+                }
+            }
+        }
+
+        if (character.Mortis.Activities is null || character.Mortis.Activities.Count == 0)
+            character.Mortis = CreateMortisPlan();
     }
 
     public static void NormalizeBuild(BuildProfile build)
