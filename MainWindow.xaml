@@ -636,6 +636,9 @@
                                                                            Foreground="White"
                                                                            FontWeight="Bold"
                                                                            FontSize="14"/>
+                                                                <TextBlock Text="Besitz"
+                                                                           Foreground="#7F91AC"
+                                                                           FontSize="9"/>
                                                                 <TextBlock Foreground="#8CB4E8"
                                                                            FontSize="10">
                                                                     <Run Text="{Binding DustCost, StringFormat={}{0:N0}}"/>
@@ -652,17 +655,20 @@
                                                                     Tag="{Binding}"
                                                                     Click="GemCardMinus_OnClick"/>
 
-                                                            <Border Grid.Column="2"
-                                                                    Background="#07101C"
-                                                                    BorderBrush="#2B374B"
-                                                                    BorderThickness="1"
-                                                                    CornerRadius="7"
-                                                                    Margin="2">
-                                                                <TextBlock Text="{Binding Quantity}"
-                                                                           Foreground="White"
-                                                                           HorizontalAlignment="Center"
-                                                                           VerticalAlignment="Center"/>
-                                                            </Border>
+                                                            <TextBox Grid.Column="2"
+                                                                     Text="{Binding Quantity, UpdateSourceTrigger=PropertyChanged}"
+                                                                     Tag="{Binding}"
+                                                                     TextAlignment="Center"
+                                                                     VerticalContentAlignment="Center"
+                                                                     FontWeight="Bold"
+                                                                     Background="#07101C"
+                                                                     Foreground="White"
+                                                                     BorderBrush="#2B374B"
+                                                                     BorderThickness="1"
+                                                                     Margin="2"
+                                                                     Padding="2"
+                                                                     ToolTip="Besitz direkt eingeben"
+                                                                     TextChanged="GemQuantityTextBox_OnChanged"/>
 
                                                             <Button Grid.Column="3"
                                                                     Content="+"
@@ -832,13 +838,20 @@
                                                             </StackPanel>
                                                             <Button Grid.Column="1" Content="−" Padding="0" Margin="2"
                                                                     Tag="{Binding}" Click="RuneCardMinus_OnClick"/>
-                                                            <Border Grid.Column="2" Background="#07101C"
-                                                                    BorderBrush="#2B374B" BorderThickness="1"
-                                                                    CornerRadius="7" Margin="2">
-                                                                <TextBlock Text="{Binding Quantity}" Foreground="White"
-                                                                           HorizontalAlignment="Center"
-                                                                           VerticalAlignment="Center"/>
-                                                            </Border>
+                                                            <TextBox Grid.Column="2"
+                                                                     Text="{Binding Quantity, UpdateSourceTrigger=PropertyChanged}"
+                                                                     Tag="{Binding}"
+                                                                     TextAlignment="Center"
+                                                                     VerticalContentAlignment="Center"
+                                                                     FontWeight="Bold"
+                                                                     Background="#07101C"
+                                                                     Foreground="White"
+                                                                     BorderBrush="#2B374B"
+                                                                     BorderThickness="1"
+                                                                     Margin="2"
+                                                                     Padding="2"
+                                                                     ToolTip="Besitz direkt eingeben"
+                                                                     TextChanged="RuneQuantityTextBox_OnChanged"/>
                                                             <Button Grid.Column="3" Content="+" Padding="0" Margin="2"
                                                                     Background="{StaticResource AccentBrush}"
                                                                     Tag="{Binding}" Click="RuneCardPlus_OnClick"/>
@@ -987,11 +1000,17 @@
                         </Grid>
 
                         <!-- Bosskarten -->
-                        <TextBlock Text="BGH-Runs"
-                                   Foreground="White"
-                                   FontSize="23"
-                                   FontWeight="Bold"
-                                   Margin="6,12,6,6"/>
+                        <Grid Margin="6,12,6,6">
+                            <TextBlock Text="BGH-Runs"
+                                       Foreground="White"
+                                       FontSize="23"
+                                       FontWeight="Bold"/>
+                            <TextBlock Text="Die Zahl kann direkt eingetippt oder mit − / + geändert werden."
+                                       HorizontalAlignment="Right"
+                                       VerticalAlignment="Bottom"
+                                       Foreground="{StaticResource MutedBrush}"
+                                       FontSize="12"/>
+                        </Grid>
 
                         <ItemsControl x:Name="MortisCardsControl">
                             <ItemsControl.ItemsPanel>
@@ -1042,19 +1061,21 @@
                                                         Tag="{Binding}"
                                                         Click="MortisRunMinus_OnClick"/>
 
-                                                <Border Grid.Column="1"
-                                                        Background="#07101C"
-                                                        BorderBrush="#2B374B"
-                                                        BorderThickness="1"
-                                                        CornerRadius="8"
-                                                        Margin="5,2">
-                                                    <TextBlock Text="{Binding Runs}"
-                                                               Foreground="White"
-                                                               FontSize="22"
-                                                               FontWeight="Bold"
-                                                               HorizontalAlignment="Center"
-                                                               VerticalAlignment="Center"/>
-                                                </Border>
+                                                <TextBox Grid.Column="1"
+                                                         Text="{Binding Runs, UpdateSourceTrigger=PropertyChanged}"
+                                                         Tag="{Binding}"
+                                                         TextAlignment="Center"
+                                                         VerticalContentAlignment="Center"
+                                                         Foreground="White"
+                                                         Background="#07101C"
+                                                         BorderBrush="#2B374B"
+                                                         BorderThickness="1"
+                                                         FontSize="22"
+                                                         FontWeight="Bold"
+                                                         Margin="5,2"
+                                                         Padding="3"
+                                                         ToolTip="Runs direkt eingeben"
+                                                         TextChanged="MortisRunTextBox_OnChanged"/>
 
                                                 <Button Grid.Column="2"
                                                         Content="+"

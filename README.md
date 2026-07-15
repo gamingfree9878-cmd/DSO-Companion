@@ -1,31 +1,39 @@
-# DSO Companion 1.1 – Mortis/BGH im Web-Kartenstil
+# DSO Companion 1.2 – Direkte Eingabe
 
-## Mortis/BGH
+## Neu
 
-- keine große weiße Tabelle mehr
-- keine Felder für Minuten pro Run
-- kein Feld für Tage bis Eventende
-- jeder Boss und jede Schwierigkeit als eigene dunkle Karte
-- Runs mit Plus und Minus
-- Knochen und Eingänge werden sofort berechnet
-- Ziel-Knochen, aktuelle Knochen, geplante Knochen und fehlende Knochen
-- Andermantkosten und Mortis-Münzen
-- Fortschrittsanzeige
+### Mortis / BGH
 
-## Mortis-Knochenelixier
-
-Es gibt einen Elixiertyp mit einem 15-Minuten-Buff.
-
-Der Rechner verwendet:
-
-- geplante Mortis-Runs
-- durchschnittliche Runs je 15-Minuten-Elixier
-- automatisch benötigte Elixiere
+Die Anzahl der Runs kann jetzt direkt in das Zahlenfeld geschrieben werden.
 
 Beispiel:
 
-30 geplante Mortis-Runs und 3 Runs pro Elixier ergeben 10 benötigte Elixiere.
+- Feld anklicken
+- 250 eingeben
+- Knochen, Eingänge, Fortschritt und Kosten werden sofort berechnet
 
-## Weitere Bereiche
+Die Plus- und Minus-Schaltflächen bleiben erhalten.
 
-Runen, Edelsteine, Charaktere, Builds und Export/Import bleiben enthalten.
+### Edelsteine
+
+Die Anzahl jeder einzelnen Edelsteinstufe ist jetzt ein direkt editierbares Besitzfeld.
+
+Beispiel:
+
+Rubin → Imperial Brillant → Besitz 12
+
+Diese Anzahl wird pro Charakter gespeichert und fließt sofort in Staub- und Goldberechnung ein.
+
+### Runen
+
+Auch die Mengen jeder Runenstufe können direkt eingetragen werden.
+
+## Bedienung
+
+Überall gilt:
+
+- direkte Zahleneingabe
+- Plus und Minus
+- keine negativen Werte
+- Punkte und Kommas in großen Zahlen werden beim Einlesen entfernt
+- automatische Speicherung pro Charakter

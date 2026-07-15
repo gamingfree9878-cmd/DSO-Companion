@@ -293,6 +293,15 @@ public partial class MainWindow : Window
         }
     }
 
+    private void GemQuantityTextBox_OnChanged(object sender, TextChangedEventArgs e)
+    {
+        if (_loading || sender is not TextBox box || box.Tag is not GemTierEntry tier)
+            return;
+
+        tier.Quantity = ParseNonNegativeInt(box.Text);
+        UpdateGemTotals();
+    }
+
     private void ClearAllGems_OnClick(object sender, RoutedEventArgs e)
     {
         if (MessageBox.Show(
@@ -417,6 +426,15 @@ public partial class MainWindow : Window
         }
     }
 
+    private void RuneQuantityTextBox_OnChanged(object sender, TextChangedEventArgs e)
+    {
+        if (_loading || sender is not TextBox box || box.Tag is not RuneTierEntry tier)
+            return;
+
+        tier.Quantity = ParseNonNegativeInt(box.Text);
+        UpdateRuneTotals();
+    }
+
     private void ClearAllRunes_OnClick(object sender, RoutedEventArgs e)
     {
         if (MessageBox.Show(
@@ -467,8 +485,33 @@ public partial class MainWindow : Window
         UpdateMortisSummary();
     }
 
+    private static int ParseNonNegativeInt(string? value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+            return 0;
+
+        string cleaned = value
+            .Replace(".", "")
+            .Replace(",", "")
+            .Trim();
+
+        return int.TryParse(cleaned, out int result)
+            ? Math.Max(0, result)
+            : 0;
+    }
+
     private static int ParseInt(string value) =>
-        int.TryParse(value, out int result) ? Math.Max(0, result) : 0;
+        ParseNonNegativeInt(value);
+
+    private void MortisRunTextBox_OnChanged(object sender, TextChangedEventArgs e)
+    {
+        if (_loading || sender is not TextBox box || box.Tag is not MortisActivity activity)
+            return;
+
+        activity.Runs = ParseNonNegativeInt(box.Text);
+        activity.Entries = activity.Runs;
+        UpdateMortisSummary();
+    }
 
     private void MortisRunPlus_OnClick(object sender, RoutedEventArgs e)
     {

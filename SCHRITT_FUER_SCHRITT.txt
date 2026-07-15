@@ -1,4 +1,4 @@
-DSO COMPANION VERSION 1.1
+DSO COMPANION VERSION 1.2
 
 1. GitHub Desktop schließen.
 
@@ -9,7 +9,7 @@ DSO COMPANION VERSION 1.1
    .git
 
 4. Entpacke:
-   DSO_Companion_V1_1_MORTIS_WEB.zip
+   DSO_Companion_V1_2_DIREKTE_EINGABE.zip
 
 5. Kopiere den gesamten Inhalt nach:
    Dokumente\GitHub\DSO-Companion
@@ -17,7 +17,7 @@ DSO COMPANION VERSION 1.1
 6. GitHub Desktop öffnen.
 
 7. Summary:
-   Version 1.1 Mortis Web Karten
+   Version 1.2 Direkte Eingabe
 
 8. Commit to main.
 
@@ -28,8 +28,7 @@ DSO COMPANION VERSION 1.1
 11. Artefakt herunterladen und vollständig entpacken.
 
 TEST:
-- Mortis / BGH öffnen
-- bei mehreren Bossen Runs mit Plus/Minus einstellen
-- Knochen und Eingänge prüfen
-- geplante Mortis-Runs und Runs je Elixier eintragen
-- berechnete Mortis-Knochenelixiere prüfen
+- Mortis öffnen und 100 direkt in ein Runs-Feld schreiben
+- Edelsteine öffnen und bei einer Stufe direkt 12 eintragen
+- Runen öffnen und bei einer Stufe direkt 8 eintragen
+- Programm neu starten und prüfen, ob die Werte gespeichert sind
