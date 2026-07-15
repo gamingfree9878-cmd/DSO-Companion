@@ -178,10 +178,10 @@ public partial class MainWindow : Window
     {
         IEnumerable<GemCollection> filtered = _activeGemFilter switch
         {
-            "Offensiv" => ActiveCharacter.Gems.Where(x => x.Category == "Offensiv"),
-            "Defensiv" => ActiveCharacter.Gems.Where(x => x.Category == "Defensiv"),
-            "Diamanten" => ActiveCharacter.Gems.Where(x => x.Category == "Diamanten"),
-            "Opal" => ActiveCharacter.Gems.Where(x => x.Category == "Opal"),
+            "Offensiv" => ActiveCharacter.Gems.Where(x => string.Equals(x.Category, "Offensiv", StringComparison.OrdinalIgnoreCase)),
+            "Defensiv" => ActiveCharacter.Gems.Where(x => string.Equals(x.Category, "Defensiv", StringComparison.OrdinalIgnoreCase)),
+            "Diamanten" => ActiveCharacter.Gems.Where(x => string.Equals(x.Category, "Diamanten", StringComparison.OrdinalIgnoreCase)),
+            "Opal" => ActiveCharacter.Gems.Where(x => string.Equals(x.Category, "Opal", StringComparison.OrdinalIgnoreCase)),
             _ => ActiveCharacter.Gems
         };
 

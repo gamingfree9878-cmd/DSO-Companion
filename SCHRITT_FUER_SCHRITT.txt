@@ -1,4 +1,4 @@
-DSO COMPANION VERSION 0.6.2
+DSO COMPANION VERSION 0.7
 
 1. GitHub Desktop schließen.
 
@@ -9,7 +9,7 @@ DSO COMPANION VERSION 0.6.2
    .git
 
 4. Entpacke:
-   DSO_Companion_V0_6_2_ORIGINALBILDER.zip
+   DSO_Companion_V0_7_EDELSTEINE_KOMPLETT.zip
 
 5. Kopiere den gesamten Inhalt des entpackten Ordners nach:
    Dokumente\GitHub\DSO-Companion
@@ -17,7 +17,7 @@ DSO COMPANION VERSION 0.6.2
 6. GitHub Desktop öffnen.
 
 7. Summary:
-   Version 0.6.2 Originale Edelsteinbilder
+   Version 0.7 Edelsteine komplett
 
 8. Commit to main.
 
@@ -29,4 +29,4 @@ DSO COMPANION VERSION 0.6.2
 
 12. ZIP vollständig entpacken und DSO Companion.exe starten.
 
-13. Edelsteine öffnen und die Bilder prüfen.
+13. Edelsteine öffnen und besonders den Filter Opal testen.

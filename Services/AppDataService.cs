@@ -63,6 +63,7 @@ public static class AppDataService
         ["Feuerdiamant"] = "/Assets/Gems/fire.png",
         ["Andermachtdiamant"] = "/Assets/Gems/andermacht.png",
         ["Giftdiamant"] = "/Assets/Gems/poison.png",
+        ["Opal"] = "/Assets/Gems/opal.png",
     };
 
     public static readonly (string Name, string ColorName, string Color, string Category)[] GemTypes =
@@ -74,12 +75,13 @@ public static class AppDataService
         ("Amethyst", "Lila", "#9C4DFF", "Defensiv"),
         ("Cyanit", "Türkis", "#20C6C7", "Defensiv"),
         ("Smaragd", "Dunkelgrün", "#149447", "Defensiv"),
+        ("Diamant", "Grau", "#AEB7C2", "Diamanten"),
         ("Eisdiamant", "Grau / Blau", "#70A8C5", "Diamanten"),
         ("Blitzdiamant", "Grau / Gelb", "#D0B84F", "Diamanten"),
         ("Feuerdiamant", "Grau / Rot", "#D04A45", "Diamanten"),
-        ("Diamant", "Grau", "#AEB7C2", "Diamanten"),
         ("Andermachtdiamant", "Grau / Lila", "#8A64C8", "Diamanten"),
-        ("Giftdiamant", "Grau / Grün", "#6F9D4B", "Diamanten")
+        ("Giftdiamant", "Grau / Grün", "#6F9D4B", "Diamanten"),
+        ("Opal", "Regenbogen", "#63D7D1", "Opal")
     ];
 
     public static readonly (string Name, int Dust, int Gold)[] GemTiers =
