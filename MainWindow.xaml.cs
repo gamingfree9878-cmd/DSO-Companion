@@ -1,9 +1,9 @@
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Threading;
 using System.Text.Json;
-using System.IO;
 using Microsoft.Win32;
 using DSOCompanion.Models;
 using DSOCompanion.Services;
@@ -91,15 +91,13 @@ public partial class MainWindow : Window
 
         MortisTargetBox.Text = ActiveCharacter.Mortis.TargetBones.ToString();
         MortisCurrentBox.Text = ActiveCharacter.Mortis.CurrentBones.ToString();
-        MortisDaysBox.Text = ActiveCharacter.Mortis.DaysLeft.ToString();
-        MortisHoursBox.Text = ActiveCharacter.Mortis.HoursPerDay.ToString();
-        MortisMinutesBox.Text = ActiveCharacter.Mortis.MinutesPerRun.ToString();
         MortisAndermantBox.Text = ActiveCharacter.Mortis.AndermantPerEntry.ToString();
-        MortisElixirBox.Text = ActiveCharacter.Mortis.ElixirCostPerRun.ToString();
         MortisCoinsBox.Text = ActiveCharacter.Mortis.MortisCoins.ToString();
+        ElixirPlannedRunsBox.Text = ActiveCharacter.Mortis.ElixirPlannedRuns.ToString();
+        RunsPerElixirBox.Text = ActiveCharacter.Mortis.RunsPerElixir.ToString();
 
-        MortisExcelItemsControl.ItemsSource = null;
-        MortisExcelItemsControl.ItemsSource = ActiveCharacter.Mortis.Activities;
+        MortisCardsControl.ItemsSource = null;
+        MortisCardsControl.ItemsSource = ActiveCharacter.Mortis.Activities;
 
         _loading = false;
 
@@ -458,14 +456,13 @@ public partial class MainWindow : Window
             return;
 
         MortisPlan plan = ActiveCharacter.Mortis;
+
         plan.TargetBones = ParseInt(MortisTargetBox.Text);
         plan.CurrentBones = ParseInt(MortisCurrentBox.Text);
-        plan.DaysLeft = ParseInt(MortisDaysBox.Text);
-        plan.HoursPerDay = ParseDecimal(MortisHoursBox.Text);
-        plan.MinutesPerRun = ParseDecimal(MortisMinutesBox.Text);
         plan.AndermantPerEntry = ParseInt(MortisAndermantBox.Text);
-        plan.ElixirCostPerRun = ParseInt(MortisElixirBox.Text);
         plan.MortisCoins = ParseInt(MortisCoinsBox.Text);
+        plan.ElixirPlannedRuns = ParseInt(ElixirPlannedRunsBox.Text);
+        plan.RunsPerElixir = Math.Max(1, ParseInt(RunsPerElixirBox.Text));
 
         UpdateMortisSummary();
     }
@@ -473,15 +470,23 @@ public partial class MainWindow : Window
     private static int ParseInt(string value) =>
         int.TryParse(value, out int result) ? Math.Max(0, result) : 0;
 
-    private static decimal ParseDecimal(string value) =>
-        decimal.TryParse(value, out decimal result) ? Math.Max(0, result) : 0;
-
-    private void MortisExcelEntry_OnChanged(object sender, TextChangedEventArgs e)
+    private void MortisRunPlus_OnClick(object sender, RoutedEventArgs e)
     {
-        if (_loading || sender is not TextBox box || box.Tag is not MortisActivity activity)
+        if (sender is not Button button || button.Tag is not MortisActivity activity)
             return;
 
-        activity.Entries = ParseInt(box.Text);
+        activity.Runs++;
+        activity.Entries = activity.Runs;
+        UpdateMortisSummary();
+    }
+
+    private void MortisRunMinus_OnClick(object sender, RoutedEventArgs e)
+    {
+        if (sender is not Button button || button.Tag is not MortisActivity activity)
+            return;
+
+        activity.Runs = Math.Max(0, activity.Runs - 1);
+        activity.Entries = activity.Runs;
         UpdateMortisSummary();
     }
 
@@ -490,31 +495,37 @@ public partial class MainWindow : Window
         if (ActiveCharacter.Mortis is null)
             return;
 
-        MortisExcelItemsControl.Items.Refresh();
         MortisPlan plan = ActiveCharacter.Mortis;
+
+        foreach (MortisActivity activity in plan.Activities)
+            activity.Entries = activity.Runs;
+
+        MortisCardsControl.Items.Refresh();
 
         double progress = plan.TargetBones > 0
             ? Math.Min(100, plan.FinalBones * 100.0 / plan.TargetBones)
             : 0;
 
         MortisProgressBar.Value = progress;
+        MortisPlannedBonesText.Text = plan.PlannedBones.ToString("N0");
+        MortisMissingBonesText.Text = plan.MissingBones.ToString("N0");
+        MortisAndermantCostText.Text = plan.AndermantCost.ToString("N0");
+        RequiredElixirsText.Text = plan.RequiredElixirs.ToString("N0");
 
-        MortisRateSumText.Text =
-            plan.Activities.Sum(x => x.BonesPerRun).ToString("N0");
-        MortisEntrySumText.Text =
-            plan.Activities.Sum(x => x.Entries).ToString("N0");
-        MortisBoneSumText.Text =
-            plan.PlannedBones.ToString("N0");
+        MortisCompactSummaryText.Text =
+            $"Runs: {plan.TotalRuns:N0}\n" +
+            $"Eingänge: {plan.TotalEntries:N0}\n" +
+            $"Knochen danach: {plan.FinalBones:N0}\n" +
+            $"Mortis-Münzen: {plan.MortisCoins:N0}\n" +
+            $"Elixiere: {plan.RequiredElixirs:N0}";
 
         MortisSummaryText.Text =
-            $"Fortschritt: {progress:N1} % · Geplante Knochen: {plan.PlannedBones:N0} · " +
-            $"Knochen danach: {plan.FinalBones:N0} · Noch fehlend: {plan.MissingBones:N0} · " +
-            $"Überschuss: {plan.ExcessBones:N0}\n" +
-            $"Runs: {plan.TotalRuns:N0} · Eingänge: {plan.TotalEntries:N0} · " +
-            $"Zeit: {plan.TotalHours:N1} h · Zeitbudget: {plan.TimeBudgetHours:N1} h · " +
-            $"Pro Tag nötig: {plan.BonesPerDay:N0}\n" +
-            $"Andermantkosten: {plan.AndermantCost:N0} · Elixierkosten: {plan.ElixirCost:N0} · " +
-            $"Mortis-Münzen: {plan.MortisCoins:N0}";
+            $"Fortschritt: {progress:N1} %  ·  " +
+            $"Ziel: {plan.TargetBones:N0}  ·  " +
+            $"Aktuell: {plan.CurrentBones:N0}  ·  " +
+            $"Geplant: {plan.PlannedBones:N0}  ·  " +
+            $"Fehlend: {plan.MissingBones:N0}  ·  " +
+            $"Überschuss: {plan.ExcessBones:N0}";
 
         Save();
     }

@@ -1,4 +1,4 @@
-DSO COMPANION VERSION 1.0.1
+DSO COMPANION VERSION 1.1
 
 1. GitHub Desktop schließen.
 
@@ -9,7 +9,7 @@ DSO COMPANION VERSION 1.0.1
    .git
 
 4. Entpacke:
-   DSO_Companion_V1_0_1_MORTIS_EXCEL.zip
+   DSO_Companion_V1_1_MORTIS_WEB.zip
 
 5. Kopiere den gesamten Inhalt nach:
    Dokumente\GitHub\DSO-Companion
@@ -17,7 +17,7 @@ DSO COMPANION VERSION 1.0.1
 6. GitHub Desktop öffnen.
 
 7. Summary:
-   Version 1.0.1 Mortis Excel Design
+   Version 1.1 Mortis Web Karten
 
 8. Commit to main.
 
@@ -25,9 +25,11 @@ DSO COMPANION VERSION 1.0.1
 
 10. GitHub → Actions → grünen Build abwarten.
 
-11. Artefakt herunterladen, entpacken und starten.
+11. Artefakt herunterladen und vollständig entpacken.
 
 TEST:
 - Mortis / BGH öffnen
-- In der Zeile Eingänge Werte eintragen
-- Prüfen, ob Knochen und Summe sofort berechnet werden
+- bei mehreren Bossen Runs mit Plus/Minus einstellen
+- Knochen und Eingänge prüfen
+- geplante Mortis-Runs und Runs je Elixier eintragen
+- berechnete Mortis-Knochenelixiere prüfen

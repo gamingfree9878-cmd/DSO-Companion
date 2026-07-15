@@ -890,278 +890,302 @@
                 <ScrollViewer x:Name="MortisPage"
                               Visibility="Collapsed"
                               Background="{StaticResource BackgroundBrush}"
-                              VerticalScrollBarVisibility="Auto"
-                              HorizontalScrollBarVisibility="Disabled">
-                    <StackPanel Margin="14">
-
+                              VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="16">
                         <TextBlock Text="Mortis / BGH"
                                    Foreground="White"
                                    FontSize="30"
                                    FontWeight="Bold"/>
-                        <TextBlock Text="Aufbau wie in deiner Excel: Ertrag pro Runde, Eingänge und Gesamtknochen."
+                        <TextBlock Text="Runs planen, Knochen berechnen und den Bedarf an Mortis-Knochenelixieren ermitteln."
                                    Foreground="{StaticResource MutedBrush}"
                                    Margin="0,4,0,14"/>
 
-                        <!-- Excel matrix -->
-                        <Border Background="#315B9A"
-                                BorderBrush="#0E284D"
-                                BorderThickness="1"
-                                CornerRadius="6"
-                                Padding="0"
-                                Margin="0,0,0,14">
-                            <StackPanel>
-                                <Border Background="#315B9A"
-                                        BorderBrush="#0E284D"
-                                        BorderThickness="0,0,0,1"
-                                        Padding="8">
-                                    <TextBlock Text="BGH Event"
-                                               HorizontalAlignment="Center"
-                                               Foreground="Black"
-                                               FontSize="22"
-                                               FontWeight="Bold"/>
-                                </Border>
-
-                                <ScrollViewer HorizontalScrollBarVisibility="Auto"
-                                              VerticalScrollBarVisibility="Disabled">
-                                    <Grid MinWidth="1540">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="220"/>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="150"/>
-                                        </Grid.ColumnDefinitions>
-
-                                        <!-- row labels -->
-                                        <Grid Grid.Column="0" Background="#315B9A">
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="86"/>
-                                                <RowDefinition Height="42"/>
-                                                <RowDefinition Height="42"/>
-                                                <RowDefinition Height="42"/>
-                                            </Grid.RowDefinitions>
-
-                                            <Border Grid.Row="0" BorderBrush="#0E284D" BorderThickness="0,0,1,1">
-                                                <TextBlock Text="Bosse"
-                                                           Foreground="Black"
-                                                           FontSize="20"
-                                                           FontWeight="Bold"
-                                                           HorizontalAlignment="Center"
-                                                           VerticalAlignment="Center"/>
-                                            </Border>
-                                            <Border Grid.Row="1" BorderBrush="#0E284D" BorderThickness="0,0,1,1">
-                                                <TextBlock Text="pro Runde"
-                                                           Foreground="Black"
-                                                           FontSize="18"
-                                                           FontWeight="Bold"
-                                                           HorizontalAlignment="Center"
-                                                           VerticalAlignment="Center"/>
-                                            </Border>
-                                            <Border Grid.Row="2" BorderBrush="#0E284D" BorderThickness="0,0,1,1">
-                                                <TextBlock Text="Eingänge"
-                                                           Foreground="Black"
-                                                           FontSize="18"
-                                                           FontWeight="Bold"
-                                                           HorizontalAlignment="Center"
-                                                           VerticalAlignment="Center"/>
-                                            </Border>
-                                            <Border Grid.Row="3" BorderBrush="#0E284D" BorderThickness="0,0,1,0">
-                                                <TextBlock Text="Knochen"
-                                                           Foreground="Black"
-                                                           FontSize="18"
-                                                           FontWeight="Bold"
-                                                           HorizontalAlignment="Center"
-                                                           VerticalAlignment="Center"/>
-                                            </Border>
-                                        </Grid>
-
-                                        <!-- activity columns -->
-                                        <ItemsControl x:Name="MortisExcelItemsControl"
-                                                      Grid.Column="1"
-                                                      ItemsSource="{Binding}">
-                                            <ItemsControl.ItemsPanel>
-                                                <ItemsPanelTemplate>
-                                                    <UniformGrid Rows="1"/>
-                                                </ItemsPanelTemplate>
-                                            </ItemsControl.ItemsPanel>
-                                            <ItemsControl.ItemTemplate>
-                                                <DataTemplate>
-                                                    <Grid MinWidth="96" Background="#315B9A">
-                                                        <Grid.RowDefinitions>
-                                                            <RowDefinition Height="86"/>
-                                                            <RowDefinition Height="42"/>
-                                                            <RowDefinition Height="42"/>
-                                                            <RowDefinition Height="42"/>
-                                                        </Grid.RowDefinitions>
-
-                                                        <Border Grid.Row="0"
-                                                                BorderBrush="#0E284D"
-                                                                BorderThickness="0,0,1,1">
-                                                            <StackPanel VerticalAlignment="Center">
-                                                                <TextBlock Text="{Binding Name}"
-                                                                           Foreground="Black"
-                                                                           FontWeight="Bold"
-                                                                           FontStyle="Italic"
-                                                                           FontSize="15"
-                                                                           TextAlignment="Center"
-                                                                           TextWrapping="Wrap"/>
-                                                                <TextBlock Text="{Binding Difficulty}"
-                                                                           Foreground="Black"
-                                                                           FontWeight="Bold"
-                                                                           FontSize="12"
-                                                                           TextAlignment="Center"
-                                                                           TextWrapping="Wrap"
-                                                                           Margin="0,3,0,0"/>
-                                                            </StackPanel>
-                                                        </Border>
-
-                                                        <Border Grid.Row="1"
-                                                                BorderBrush="#0E284D"
-                                                                BorderThickness="0,0,1,1">
-                                                            <TextBlock Text="{Binding BonesPerRun}"
-                                                                       Foreground="Black"
-                                                                       FontSize="18"
-                                                                       FontWeight="Bold"
-                                                                       HorizontalAlignment="Center"
-                                                                       VerticalAlignment="Center"/>
-                                                        </Border>
-
-                                                        <Border Grid.Row="2"
-                                                                BorderBrush="#0E284D"
-                                                                BorderThickness="0,0,1,1"
-                                                                Padding="5">
-                                                            <TextBox Text="{Binding Entries, UpdateSourceTrigger=PropertyChanged}"
-                                                                     Tag="{Binding}"
-                                                                     TextAlignment="Center"
-                                                                     FontSize="17"
-                                                                     FontWeight="Bold"
-                                                                     Background="#244C84"
-                                                                     Foreground="White"
-                                                                     BorderBrush="#D8E3F2"
-                                                                     BorderThickness="1"
-                                                                     TextChanged="MortisExcelEntry_OnChanged"/>
-                                                        </Border>
-
-                                                        <Border Grid.Row="3"
-                                                                BorderBrush="#0E284D"
-                                                                BorderThickness="0,0,1,0">
-                                                            <TextBlock Text="{Binding TotalBones, Mode=OneWay}"
-                                                                       Foreground="Black"
-                                                                       FontSize="18"
-                                                                       FontWeight="Bold"
-                                                                       HorizontalAlignment="Center"
-                                                                       VerticalAlignment="Center"/>
-                                                        </Border>
-                                                    </Grid>
-                                                </DataTemplate>
-                                            </ItemsControl.ItemTemplate>
-                                        </ItemsControl>
-
-                                        <!-- totals -->
-                                        <Grid Grid.Column="2" Background="#315B9A">
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="86"/>
-                                                <RowDefinition Height="42"/>
-                                                <RowDefinition Height="42"/>
-                                                <RowDefinition Height="42"/>
-                                            </Grid.RowDefinitions>
-
-                                            <Border Grid.Row="0" BorderBrush="#0E284D" BorderThickness="0,0,0,1">
-                                                <TextBlock Text="Knochen&#x0a;BGH&#x0a;Summe"
-                                                           Foreground="Black"
-                                                           FontSize="18"
-                                                           FontWeight="Bold"
-                                                           TextAlignment="Center"
-                                                           HorizontalAlignment="Center"
-                                                           VerticalAlignment="Center"/>
-                                            </Border>
-                                            <Border Grid.Row="1" BorderBrush="#0E284D" BorderThickness="0,0,0,1">
-                                                <TextBlock x:Name="MortisRateSumText"
-                                                           Foreground="Black"
-                                                           FontSize="18"
-                                                           FontWeight="Bold"
-                                                           HorizontalAlignment="Center"
-                                                           VerticalAlignment="Center"/>
-                                            </Border>
-                                            <Border Grid.Row="2" BorderBrush="#0E284D" BorderThickness="0,0,0,1">
-                                                <TextBlock x:Name="MortisEntrySumText"
-                                                           Foreground="Black"
-                                                           FontSize="18"
-                                                           FontWeight="Bold"
-                                                           HorizontalAlignment="Center"
-                                                           VerticalAlignment="Center"/>
-                                            </Border>
-                                            <Border Grid.Row="3">
-                                                <TextBlock x:Name="MortisBoneSumText"
-                                                           Foreground="Black"
-                                                           FontSize="18"
-                                                           FontWeight="Bold"
-                                                           HorizontalAlignment="Center"
-                                                           VerticalAlignment="Center"/>
-                                            </Border>
-                                        </Grid>
-                                    </Grid>
-                                </ScrollViewer>
-                            </StackPanel>
-                        </Border>
-
-                        <!-- compact settings -->
+                        <!-- Hauptwerte -->
                         <UniformGrid Columns="4">
                             <Border Style="{StaticResource CardStyle}">
                                 <StackPanel>
-                                    <TextBlock Text="Ziel-Knochen" Foreground="{StaticResource MutedBrush}"/>
-                                    <TextBox x:Name="MortisTargetBox" TextChanged="MortisInput_OnChanged"/>
+                                    <TextBlock Text="Ziel-Knochen"
+                                               Foreground="{StaticResource MutedBrush}"/>
+                                    <TextBox x:Name="MortisTargetBox"
+                                             FontSize="20"
+                                             TextChanged="MortisInput_OnChanged"/>
                                 </StackPanel>
                             </Border>
+
                             <Border Style="{StaticResource CardStyle}">
                                 <StackPanel>
-                                    <TextBlock Text="Aktuelle Knochen" Foreground="{StaticResource MutedBrush}"/>
-                                    <TextBox x:Name="MortisCurrentBox" TextChanged="MortisInput_OnChanged"/>
+                                    <TextBlock Text="Aktuelle Knochen"
+                                               Foreground="{StaticResource MutedBrush}"/>
+                                    <TextBox x:Name="MortisCurrentBox"
+                                             FontSize="20"
+                                             TextChanged="MortisInput_OnChanged"/>
                                 </StackPanel>
                             </Border>
+
                             <Border Style="{StaticResource CardStyle}">
                                 <StackPanel>
-                                    <TextBlock Text="Tage übrig" Foreground="{StaticResource MutedBrush}"/>
-                                    <TextBox x:Name="MortisDaysBox" TextChanged="MortisInput_OnChanged"/>
+                                    <TextBlock Text="Geplante Knochen"
+                                               Foreground="{StaticResource MutedBrush}"/>
+                                    <TextBlock x:Name="MortisPlannedBonesText"
+                                               Foreground="#9B7BFF"
+                                               FontSize="27"
+                                               FontWeight="Bold"
+                                               Margin="0,8,0,0"/>
                                 </StackPanel>
                             </Border>
+
                             <Border Style="{StaticResource CardStyle}">
                                 <StackPanel>
-                                    <TextBlock Text="Stunden pro Tag" Foreground="{StaticResource MutedBrush}"/>
-                                    <TextBox x:Name="MortisHoursBox" TextChanged="MortisInput_OnChanged"/>
-                                </StackPanel>
-                            </Border>
-                            <Border Style="{StaticResource CardStyle}">
-                                <StackPanel>
-                                    <TextBlock Text="Ø Minuten pro Runde" Foreground="{StaticResource MutedBrush}"/>
-                                    <TextBox x:Name="MortisMinutesBox" TextChanged="MortisInput_OnChanged"/>
-                                </StackPanel>
-                            </Border>
-                            <Border Style="{StaticResource CardStyle}">
-                                <StackPanel>
-                                    <TextBlock Text="Andermant je Eingang" Foreground="{StaticResource MutedBrush}"/>
-                                    <TextBox x:Name="MortisAndermantBox" TextChanged="MortisInput_OnChanged"/>
-                                </StackPanel>
-                            </Border>
-                            <Border Style="{StaticResource CardStyle}">
-                                <StackPanel>
-                                    <TextBlock Text="Elixierkosten je Runde" Foreground="{StaticResource MutedBrush}"/>
-                                    <TextBox x:Name="MortisElixirBox" TextChanged="MortisInput_OnChanged"/>
-                                </StackPanel>
-                            </Border>
-                            <Border Style="{StaticResource CardStyle}">
-                                <StackPanel>
-                                    <TextBlock Text="Mortis-Münzen" Foreground="{StaticResource MutedBrush}"/>
-                                    <TextBox x:Name="MortisCoinsBox" TextChanged="MortisInput_OnChanged"/>
+                                    <TextBlock Text="Noch fehlend"
+                                               Foreground="{StaticResource MutedBrush}"/>
+                                    <TextBlock x:Name="MortisMissingBonesText"
+                                               Foreground="#FF5578"
+                                               FontSize="27"
+                                               FontWeight="Bold"
+                                               Margin="0,8,0,0"/>
                                 </StackPanel>
                             </Border>
                         </UniformGrid>
 
-                        <Border Style="{StaticResource CardStyle}" Margin="6,12,6,6">
+                        <!-- Kosten -->
+                        <Grid Margin="0,8,0,8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Border Grid.Column="0" Style="{StaticResource CardStyle}">
+                                <StackPanel>
+                                    <TextBlock Text="Andermant je Eingang"
+                                               Foreground="{StaticResource MutedBrush}"/>
+                                    <TextBox x:Name="MortisAndermantBox"
+                                             TextChanged="MortisInput_OnChanged"/>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Grid.Column="1" Style="{StaticResource CardStyle}">
+                                <StackPanel>
+                                    <TextBlock Text="Mortis-Münzen"
+                                               Foreground="{StaticResource MutedBrush}"/>
+                                    <TextBox x:Name="MortisCoinsBox"
+                                             TextChanged="MortisInput_OnChanged"/>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Grid.Column="2" Style="{StaticResource CardStyle}">
+                                <StackPanel>
+                                    <TextBlock Text="Andermantkosten gesamt"
+                                               Foreground="{StaticResource MutedBrush}"/>
+                                    <TextBlock x:Name="MortisAndermantCostText"
+                                               Foreground="#55D6C2"
+                                               FontSize="23"
+                                               FontWeight="Bold"
+                                               Margin="0,8,0,0"/>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+
+                        <!-- Bosskarten -->
+                        <TextBlock Text="BGH-Runs"
+                                   Foreground="White"
+                                   FontSize="23"
+                                   FontWeight="Bold"
+                                   Margin="6,12,6,6"/>
+
+                        <ItemsControl x:Name="MortisCardsControl">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <UniformGrid Columns="3"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Margin="6"
+                                            Padding="14"
+                                            CornerRadius="12"
+                                            Background="#111824"
+                                            BorderBrush="#8061F1"
+                                            BorderThickness="1.5">
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding Name}"
+                                                       Foreground="White"
+                                                       FontSize="19"
+                                                       FontWeight="Bold"
+                                                       TextAlignment="Center"/>
+
+                                            <TextBlock Text="{Binding Difficulty}"
+                                                       Foreground="#9FB8E5"
+                                                       FontSize="13"
+                                                       FontWeight="SemiBold"
+                                                       TextAlignment="Center"
+                                                       Margin="0,3,0,12"/>
+
+                                            <TextBlock HorizontalAlignment="Center"
+                                                       Foreground="{StaticResource MutedBrush}">
+                                                <Run Text="{Binding BonesPerRun}"/>
+                                                <Run Text=" Knochen pro Run"/>
+                                            </TextBlock>
+
+                                            <Grid Margin="0,14,0,10">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="44"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="44"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <Button Grid.Column="0"
+                                                        Content="−"
+                                                        FontSize="20"
+                                                        Padding="0"
+                                                        Tag="{Binding}"
+                                                        Click="MortisRunMinus_OnClick"/>
+
+                                                <Border Grid.Column="1"
+                                                        Background="#07101C"
+                                                        BorderBrush="#2B374B"
+                                                        BorderThickness="1"
+                                                        CornerRadius="8"
+                                                        Margin="5,2">
+                                                    <TextBlock Text="{Binding Runs}"
+                                                               Foreground="White"
+                                                               FontSize="22"
+                                                               FontWeight="Bold"
+                                                               HorizontalAlignment="Center"
+                                                               VerticalAlignment="Center"/>
+                                                </Border>
+
+                                                <Button Grid.Column="2"
+                                                        Content="+"
+                                                        FontSize="20"
+                                                        Padding="0"
+                                                        Background="{StaticResource AccentBrush}"
+                                                        Tag="{Binding}"
+                                                        Click="MortisRunPlus_OnClick"/>
+                                            </Grid>
+
+                                            <Separator Background="#2B374B"
+                                                       Margin="0,5,0,8"/>
+
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <StackPanel>
+                                                    <TextBlock Text="Knochen"
+                                                               Foreground="{StaticResource MutedBrush}"
+                                                               FontSize="11"/>
+                                                    <TextBlock Text="{Binding TotalBones, Mode=OneWay}"
+                                                               Foreground="White"
+                                                               FontSize="17"
+                                                               FontWeight="Bold"/>
+                                                </StackPanel>
+
+                                                <StackPanel Grid.Column="1"
+                                                            HorizontalAlignment="Right">
+                                                    <TextBlock Text="Eingänge"
+                                                               Foreground="{StaticResource MutedBrush}"
+                                                               FontSize="11"/>
+                                                    <TextBlock Text="{Binding Entries}"
+                                                               Foreground="White"
+                                                               FontSize="17"
+                                                               FontWeight="Bold"
+                                                               HorizontalAlignment="Right"/>
+                                                </StackPanel>
+                                            </Grid>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <!-- Elixierrechner -->
+                        <TextBlock Text="Mortis-Knochenelixier"
+                                   Foreground="White"
+                                   FontSize="23"
+                                   FontWeight="Bold"
+                                   Margin="6,18,6,6"/>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Border Grid.Column="0" Style="{StaticResource CardStyle}">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="Geplante Mortis-Runs"
+                                                   Foreground="{StaticResource MutedBrush}"/>
+                                        <TextBox x:Name="ElixirPlannedRunsBox"
+                                                 TextChanged="MortisInput_OnChanged"/>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="1">
+                                        <TextBlock Text="Runs je 15-Min.-Elixier"
+                                                   Foreground="{StaticResource MutedBrush}"/>
+                                        <TextBox x:Name="RunsPerElixirBox"
+                                                 TextChanged="MortisInput_OnChanged"/>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Text="Benötigte Elixiere"
+                                                   Foreground="{StaticResource MutedBrush}"/>
+                                        <TextBlock x:Name="RequiredElixirsText"
+                                                   Foreground="#55D6C2"
+                                                   FontSize="27"
+                                                   FontWeight="Bold"
+                                                   Margin="0,8,0,0"/>
+                                    </StackPanel>
+
+                                    <TextBlock Grid.Row="1"
+                                               Grid.ColumnSpan="3"
+                                               Text="Ein Mortis-Knochenelixier hält 15 Minuten. Trage ein, wie viele Mortis-Runs du planst und wie viele Runs du durchschnittlich während eines Buffs schaffst."
+                                               Foreground="{StaticResource MutedBrush}"
+                                               TextWrapping="Wrap"
+                                               Margin="4,12,4,0"/>
+                                </Grid>
+                            </Border>
+
+                            <Border Grid.Column="1" Style="{StaticResource CardStyle}">
+                                <StackPanel>
+                                    <TextBlock Text="Zusammenfassung"
+                                               Foreground="White"
+                                               FontSize="20"
+                                               FontWeight="Bold"
+                                               Margin="0,0,0,10"/>
+
+                                    <TextBlock x:Name="MortisCompactSummaryText"
+                                               Foreground="White"
+                                               FontSize="16"
+                                               FontWeight="SemiBold"
+                                               TextWrapping="Wrap"/>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+
+                        <!-- Fortschritt -->
+                        <Border Style="{StaticResource CardStyle}" Margin="6,14,6,8">
                             <StackPanel>
                                 <ProgressBar x:Name="MortisProgressBar"
                                              Height="22"
                                              Minimum="0"
                                              Maximum="100"
-                                             Margin="0,0,0,12"/>
+                                             Margin="0,0,0,10"/>
                                 <TextBlock x:Name="MortisSummaryText"
                                            Foreground="White"
                                            FontSize="16"
