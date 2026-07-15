@@ -3,6 +3,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Threading;
 using System.Text.Json;
+using System.IO;
 using Microsoft.Win32;
 using DSOCompanion.Models;
 using DSOCompanion.Services;
