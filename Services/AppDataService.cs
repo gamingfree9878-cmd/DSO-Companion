@@ -48,6 +48,23 @@ public static class AppDataService
         "Juwelen-Zier"
     ];
 
+    public static readonly Dictionary<string, string> GemImages = new()
+    {
+        ["Rubin"] = "/Assets/Gems/ruby.png",
+        ["Onyx"] = "/Assets/Gems/onyx.png",
+        ["Rhodolith"] = "/Assets/Gems/rhodolith.png",
+        ["Zirkon"] = "/Assets/Gems/zircon.png",
+        ["Amethyst"] = "/Assets/Gems/amethyst.png",
+        ["Cyanit"] = "/Assets/Gems/cyanite.png",
+        ["Smaragd"] = "/Assets/Gems/emerald.png",
+        ["Diamant"] = "/Assets/Gems/diamond.png",
+        ["Eisdiamant"] = "/Assets/Gems/ice.png",
+        ["Blitzdiamant"] = "/Assets/Gems/lightning.png",
+        ["Feuerdiamant"] = "/Assets/Gems/fire.png",
+        ["Andermachtdiamant"] = "/Assets/Gems/andermacht.png",
+        ["Giftdiamant"] = "/Assets/Gems/poison.png",
+    };
+
     public static readonly (string Name, string ColorName, string Color, string Category)[] GemTypes =
     [
         ("Rubin", "Rot", "#FF3B30", "Offensiv"),
@@ -113,6 +130,9 @@ public static class AppDataService
             ColorName = type.ColorName,
             ColorHex = type.Color,
             Category = type.Category,
+            ImagePath = GemImages.TryGetValue(type.Name, out string? imagePath)
+                ? imagePath
+                : "",
             Tiers = GemTiers.Select(tier => new GemTierEntry
             {
                 TierName = tier.Name,
@@ -161,6 +181,9 @@ public static class AppDataService
             existing.ColorName = gemType.ColorName;
             existing.ColorHex = gemType.Color;
             existing.Category = gemType.Category;
+            existing.ImagePath = GemImages.TryGetValue(gemType.Name, out string? imagePath)
+                ? imagePath
+                : "";
             existing.Tiers ??= [];
 
             foreach ((string Name, int Dust, int Gold) tier in GemTiers)

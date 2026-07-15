@@ -8,6 +8,9 @@ public sealed class GemCollection
     public string ColorName { get; set; } = "";
     public string ColorHex { get; set; } = "#8061F1";
     public string Category { get; set; } = "Offensiv";
+
+    [JsonIgnore]
+    public string ImagePath { get; set; } = "";
     public List<GemTierEntry> Tiers { get; set; } = [];
 
     [JsonIgnore]

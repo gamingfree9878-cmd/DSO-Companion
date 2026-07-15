@@ -10,4 +10,8 @@
     <RootNamespace>DSOCompanion</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Resource Include="Assets\Gems\*.png" />
+  </ItemGroup>
+
 </Project>

@@ -591,19 +591,16 @@
                                                     <ColumnDefinition Width="*"/>
                                                 </Grid.ColumnDefinitions>
 
-                                                <Border Width="46"
-                                                        Height="46"
-                                                        CornerRadius="8"
-                                                        Background="#1A2230"
+                                                <Border Width="54"
+                                                        Height="54"
+                                                        CornerRadius="7"
+                                                        Background="#17130D"
                                                         BorderBrush="#776A4E"
-                                                        BorderThickness="1">
-                                                    <Grid>
-                                                        <Polygon Points="23,5 40,16 34,38 12,38 6,16"
-                                                                 Fill="{Binding ColorHex}"
-                                                                 Stroke="White"
-                                                                 StrokeThickness="1"
-                                                                 Opacity="0.95"/>
-                                                    </Grid>
+                                                        BorderThickness="1"
+                                                        Padding="2">
+                                                    <Image Source="{Binding ImagePath, Mode=OneWay}"
+                                                           Stretch="Uniform"
+                                                           RenderOptions.BitmapScalingMode="HighQuality"/>
                                                 </Border>
 
                                                 <StackPanel Grid.Column="1"

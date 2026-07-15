@@ -1,15 +1,28 @@
 # DSO Companion
 
-## Version 0.6.1 – Web-Design Absturz behoben
+## Version 0.6.2 – Originale Edelsteinbilder
 
-Behoben:
+Neu und behoben:
 
-- Absturz beim Öffnen des Edelstein-Reiters
-- `TotalDust` und `TotalGold` werden jetzt korrekt als OneWay-Bindings angezeigt
-- Web-Design der Edelsteinseite bleibt unverändert
+- originale Edelsteinbilder aus der früheren Web-Version extrahiert
+- korrekte Zuordnung zwischen Bild und Edelsteinname
+- Bilder fest als WPF-Ressourcen in die EXE eingebettet
+- keine externen Bilddateien nach der Veröffentlichung erforderlich
+- bisherige Web-Kartenansicht bleibt erhalten
 - Plus/Minus, Filter, Summen und Speicherung bleiben erhalten
 
-Ursache:
+Enthaltene Bilder:
 
-Die berechneten Eigenschaften `TotalDust` und `TotalGold` sind schreibgeschützt.
-WPF hatte versucht, diese wie bearbeitbare Werte zu behandeln.
+- Rubin
+- Onyx
+- Rhodolith
+- Zirkon
+- Amethyst
+- Cyanit
+- Smaragd
+- Diamant
+- Eisdiamant
+- Blitzdiamant
+- Feuerdiamant
+- Andermachtdiamant
+- Giftdiamant

@@ -1,4 +1,4 @@
-DSO COMPANION VERSION 0.6.1
+DSO COMPANION VERSION 0.6.2
 
 1. GitHub Desktop schließen.
 
@@ -9,7 +9,7 @@ DSO COMPANION VERSION 0.6.1
    .git
 
 4. Entpacke:
-   DSO_Companion_V0_6_1_WEB_DESIGN_FIX.zip
+   DSO_Companion_V0_6_2_ORIGINALBILDER.zip
 
 5. Kopiere den gesamten Inhalt des entpackten Ordners nach:
    Dokumente\GitHub\DSO-Companion
@@ -17,7 +17,7 @@ DSO COMPANION VERSION 0.6.1
 6. GitHub Desktop öffnen.
 
 7. Summary:
-   Version 0.6.1 Edelstein Absturz behoben
+   Version 0.6.2 Originale Edelsteinbilder
 
 8. Commit to main.
 
@@ -27,6 +27,6 @@ DSO COMPANION VERSION 0.6.1
 
 11. Artefakt DSO-Companion-Windows herunterladen.
 
-12. ZIP entpacken und DSO Companion.exe starten.
+12. ZIP vollständig entpacken und DSO Companion.exe starten.
 
-13. Edelsteine anklicken und testen.
+13. Edelsteine öffnen und die Bilder prüfen.
