@@ -1,20 +1,26 @@
 # DSO Companion
 
-## Version 0.7 – Edelsteine komplett
+## Version 0.8 – DSOFUN Item-Browser (Prototyp)
 
-Neu und behoben:
+Neu:
 
-- Opal ist wieder vollständig enthalten
-- originales Opalbild aus der Web-Version
-- insgesamt 14 Edelsteinarten
-- Filter Alle, Offensiv, Defensiv, Opal und Diamanten funktionieren
-- korrekte Kategorien und Bildzuordnungen
-- Originalbilder fest in die EXE eingebettet
-- Web-Kartenansicht bleibt erhalten
-- Plus/Minus, Summen, Ressourcen und Speicherung bleiben erhalten
+- lokale Itembibliothek für Zirkelmagier
+- Suche nach Name, Slot, Seltenheit oder Typ
+- Gegenstände per Drag-and-drop auf einen Ausrüstungsslot ziehen
+- alternativ per Schaltfläche übernehmen
+- Name, Stufe, Basiswerte, einzigartige Werte, Setbonus, Fundort und Quelle werden übernommen
+- übernommene Werte können anschließend für das tatsächlich gedroppte Item angepasst werden
+- Speicherung getrennt pro Charakter und Build
 
-Enthalten:
+Erste Testgegenstände:
 
-Rubin, Onyx, Rhodolith, Zirkon, Amethyst, Cyanit, Smaragd,
-Diamant, Eisdiamant, Blitzdiamant, Feuerdiamant,
-Andermachtdiamant, Giftdiamant und Opal.
+- Grimace of the Immortal Beast
+- Old Glory
+- Kaylin Lefrye's Cloak
+- Kraken
+
+Datenquelle:
+
+DSOFUN – Gear Database. Die Quellenadresse bleibt bei jedem übernommenen Item gespeichert.
+
+Diese Version testet zuerst den Item-Browser und Drag-and-drop. Danach wird die Datenbank schrittweise um weitere Klassen, Slots und Gegenstände ergänzt.

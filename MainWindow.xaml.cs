@@ -1,5 +1,6 @@
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using DSOCompanion.Models;
 using DSOCompanion.Services;
@@ -13,6 +14,8 @@ public partial class MainWindow : Window
     private bool _loading;
     private EquipmentSlot? _selectedEquipmentSlot;
     private string _activeGemFilter = "Alle";
+    private DsoItem? _selectedLibraryItem;
+    private Point _itemDragStartPoint;
 
     private CharacterProfile ActiveCharacter =>
         _state.Characters.First(x => x.Id == _state.ActiveCharacterId);
@@ -80,6 +83,8 @@ public partial class MainWindow : Window
 
         OwnedGemDustBox.Text = ActiveCharacter.OwnedGemDust.ToString();
         OwnedGoldBox.Text = ActiveCharacter.OwnedGold.ToString();
+
+        RefreshItemLibrary();
 
         _loading = false;
 
@@ -149,6 +154,12 @@ public partial class MainWindow : Window
         RunesBox.Text = _selectedEquipmentSlot?.Runes ?? "";
         JewelBox.Text = _selectedEquipmentSlot?.Jewel ?? "";
         EquipmentNotesBox.Text = _selectedEquipmentSlot?.Notes ?? "";
+        RarityTypeBox.Text = _selectedEquipmentSlot is null
+            ? ""
+            : $"{_selectedEquipmentSlot.Rarity} · {_selectedEquipmentSlot.ItemType}";
+        SetBonusBox.Text = _selectedEquipmentSlot?.SetBonus ?? "";
+        ObtainableFromBox.Text = _selectedEquipmentSlot?.ObtainableFrom ?? "";
+        SourceUrlBox.Text = _selectedEquipmentSlot?.SourceUrl ?? "";
 
         _loading = false;
     }
@@ -170,6 +181,8 @@ public partial class MainWindow : Window
         _selectedEquipmentSlot.Runes = RunesBox.Text;
         _selectedEquipmentSlot.Jewel = JewelBox.Text;
         _selectedEquipmentSlot.Notes = EquipmentNotesBox.Text;
+        _selectedEquipmentSlot.SetBonus = SetBonusBox.Text;
+        _selectedEquipmentSlot.ObtainableFrom = ObtainableFromBox.Text;
 
         Save();
     }
@@ -310,6 +323,165 @@ public partial class MainWindow : Window
 
     private void GemFilterDiamonds_OnClick(object sender, RoutedEventArgs e) =>
         SetGemFilter("Diamanten");
+
+    private void RefreshItemLibrary()
+    {
+        string search = ItemSearchBox?.Text?.Trim() ?? "";
+        IEnumerable<DsoItem> items =
+            ItemDatabaseService.GetForClass(ActiveCharacter.CharacterClass);
+
+        if (!string.IsNullOrWhiteSpace(search))
+        {
+            items = items.Where(item =>
+                item.Name.Contains(search, StringComparison.OrdinalIgnoreCase) ||
+                item.SlotName.Contains(search, StringComparison.OrdinalIgnoreCase) ||
+                item.Rarity.Contains(search, StringComparison.OrdinalIgnoreCase) ||
+                item.ItemType.Contains(search, StringComparison.OrdinalIgnoreCase));
+        }
+
+        ItemLibraryList.ItemsSource = null;
+        ItemLibraryList.ItemsSource = items.ToList();
+    }
+
+    private void ItemSearchBox_OnTextChanged(object sender, TextChangedEventArgs e)
+    {
+        if (_loading)
+            return;
+
+        RefreshItemLibrary();
+    }
+
+    private void ItemLibraryList_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        _selectedLibraryItem = ItemLibraryList.SelectedItem as DsoItem;
+    }
+
+    private void ItemLibraryList_OnPreviewMouseLeftButtonDown(
+        object sender,
+        MouseButtonEventArgs e)
+    {
+        _itemDragStartPoint = e.GetPosition(null);
+    }
+
+    private void ItemLibraryList_OnPreviewMouseMove(
+        object sender,
+        MouseEventArgs e)
+    {
+        if (e.LeftButton != MouseButtonState.Pressed ||
+            ItemLibraryList.SelectedItem is not DsoItem item)
+        {
+            return;
+        }
+
+        Point currentPosition = e.GetPosition(null);
+        Vector difference = _itemDragStartPoint - currentPosition;
+
+        if (Math.Abs(difference.X) < SystemParameters.MinimumHorizontalDragDistance &&
+            Math.Abs(difference.Y) < SystemParameters.MinimumVerticalDragDistance)
+        {
+            return;
+        }
+
+        DragDrop.DoDragDrop(
+            ItemLibraryList,
+            new DataObject(typeof(DsoItem), item),
+            DragDropEffects.Copy);
+    }
+
+    private void EquipmentSlotList_OnDragOver(object sender, DragEventArgs e)
+    {
+        if (!e.Data.GetDataPresent(typeof(DsoItem)))
+        {
+            e.Effects = DragDropEffects.None;
+            e.Handled = true;
+            return;
+        }
+
+        e.Effects = DragDropEffects.Copy;
+        e.Handled = true;
+    }
+
+    private void EquipmentSlotList_OnDrop(object sender, DragEventArgs e)
+    {
+        if (e.Data.GetData(typeof(DsoItem)) is not DsoItem item)
+            return;
+
+        EquipmentSlot? targetSlot =
+            FindListBoxItemUnderMouse(EquipmentSlotList, e.GetPosition(EquipmentSlotList))
+            ?? EquipmentSlotList.SelectedItem as EquipmentSlot;
+
+        if (targetSlot is null)
+        {
+            MessageBox.Show("Bitte zuerst einen Ausrüstungsslot auswählen.");
+            return;
+        }
+
+        ApplyLibraryItem(item, targetSlot);
+    }
+
+    private static EquipmentSlot? FindListBoxItemUnderMouse(
+        ListBox listBox,
+        Point position)
+    {
+        HitTestResult? result =
+            VisualTreeHelper.HitTest(listBox, position);
+
+        DependencyObject? current = result?.VisualHit;
+
+        while (current is not null && current is not ListBoxItem)
+            current = VisualTreeHelper.GetParent(current);
+
+        return current is ListBoxItem container
+            ? container.DataContext as EquipmentSlot
+            : null;
+    }
+
+    private void ApplySelectedItem_OnClick(object sender, RoutedEventArgs e)
+    {
+        if (_selectedLibraryItem is null)
+        {
+            MessageBox.Show("Bitte zuerst ein Item aus der Bibliothek auswählen.");
+            return;
+        }
+
+        if (EquipmentSlotList.SelectedItem is not EquipmentSlot slot)
+        {
+            MessageBox.Show("Bitte zuerst einen Ausrüstungsslot auswählen.");
+            return;
+        }
+
+        ApplyLibraryItem(_selectedLibraryItem, slot);
+    }
+
+    private void ApplyLibraryItem(DsoItem item, EquipmentSlot slot)
+    {
+        if (!string.Equals(item.SlotName, slot.SlotName, StringComparison.OrdinalIgnoreCase))
+        {
+            MessageBoxResult result = MessageBox.Show(
+                $"{item.Name} gehört zum Slot „{item.SlotName}“, " +
+                $"du hast aber „{slot.SlotName}“ gewählt.\n\nTrotzdem übernehmen?",
+                "Slot stimmt nicht überein",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning);
+
+            if (result != MessageBoxResult.Yes)
+                return;
+        }
+
+        slot.ItemName = item.Name;
+        slot.ItemLevel = item.ItemLevel;
+        slot.BaseValues = item.BaseValues;
+        slot.Enchantments = item.UniqueValues;
+        slot.Rarity = item.Rarity;
+        slot.ItemType = item.ItemType;
+        slot.SetBonus = item.SetBonus;
+        slot.ObtainableFrom = item.ObtainableFrom;
+        slot.SourceUrl = item.SourceUrl;
+
+        EquipmentSlotList.SelectedItem = slot;
+        LoadSelectedEquipmentSlot();
+        Save();
+    }
 
     private static string? Prompt(string title, string initialValue)
     {
@@ -545,7 +717,12 @@ public partial class MainWindow : Window
                     Gems = item.Gems,
                     Runes = item.Runes,
                     Jewel = item.Jewel,
-                    Notes = item.Notes
+                    Notes = item.Notes,
+                    Rarity = item.Rarity,
+                    ItemType = item.ItemType,
+                    SetBonus = item.SetBonus,
+                    ObtainableFrom = item.ObtainableFrom,
+                    SourceUrl = item.SourceUrl
                 })
                 .ToList()
         };
