@@ -12,6 +12,8 @@ public partial class MainWindow : Window
     private AppState _state;
     private bool _loading;
     private EquipmentSlot? _selectedEquipmentSlot;
+    private GemCollection? _selectedGemCollection;
+    private GemTierEntry? _selectedGemTier;
 
     private CharacterProfile ActiveCharacter =>
         _state.Characters.First(x => x.Id == _state.ActiveCharacterId);
@@ -77,9 +79,22 @@ public partial class MainWindow : Window
         EquipmentSlotList.ItemsSource = ActiveBuild.Equipment;
         EquipmentSlotList.SelectedIndex = 0;
 
+        GemTypeCombo.ItemsSource = null;
+        GemTypeCombo.ItemsSource = ActiveCharacter.Gems;
+
+        _selectedGemCollection =
+            _selectedGemCollection is not null
+                ? ActiveCharacter.Gems.FirstOrDefault(x => x.GemName == _selectedGemCollection.GemName)
+                : ActiveCharacter.Gems.FirstOrDefault();
+
+        GemTypeCombo.SelectedItem = _selectedGemCollection;
+        OwnedGemDustBox.Text = ActiveCharacter.OwnedGemDust.ToString();
+        OwnedGoldBox.Text = ActiveCharacter.OwnedGold.ToString();
+
         _loading = false;
 
         LoadSelectedEquipmentSlot();
+        RefreshGemPage();
         UpdateSummary();
         Save();
     }
@@ -167,6 +182,188 @@ public partial class MainWindow : Window
         _selectedEquipmentSlot.Notes = EquipmentNotesBox.Text;
 
         Save();
+    }
+
+    private void RefreshGemPage()
+    {
+        if (ActiveCharacter.Gems.Count == 0)
+            return;
+
+        _selectedGemCollection ??= ActiveCharacter.Gems[0];
+
+        GemTierGrid.ItemsSource = null;
+        GemTierGrid.ItemsSource = _selectedGemCollection.Tiers;
+
+        if (_selectedGemTier is not null)
+        {
+            _selectedGemTier = _selectedGemCollection.Tiers
+                .FirstOrDefault(x => x.TierName == _selectedGemTier.TierName);
+        }
+
+        GemTierGrid.SelectedItem = _selectedGemTier;
+        GemColorPreview.Background =
+            (Brush)new BrushConverter().ConvertFromString(_selectedGemCollection.ColorHex)!;
+
+        UpdateSelectedGemTierText();
+        UpdateGemTotals();
+    }
+
+    private void UpdateSelectedGemTierText()
+    {
+        SelectedGemTierText.Text =
+            _selectedGemTier is null
+                ? "Keine Stufe ausgewählt"
+                : $"{_selectedGemCollection?.GemName} · {_selectedGemTier.TierName}\nAnzahl: {_selectedGemTier.Quantity}";
+    }
+
+    private void UpdateGemTotals()
+    {
+        long dust = ActiveCharacter.Gems
+            .SelectMany(x => x.Tiers)
+            .Sum(x => (long)x.DustCost * x.Quantity);
+
+        long gold = ActiveCharacter.Gems
+            .SelectMany(x => x.Tiers)
+            .Sum(x => (long)x.GoldCost * x.Quantity);
+
+        long missingDust = Math.Max(0, dust - ActiveCharacter.OwnedGemDust);
+        long missingGold = Math.Max(0, gold - ActiveCharacter.OwnedGold);
+
+        GemNeededText.Text = $"{dust:N0} Staub\n{gold:N0} Gold";
+        GemMissingText.Text = $"{missingDust:N0} Staub\n{missingGold:N0} Gold";
+
+        GemTierGrid.Items.Refresh();
+        Save();
+    }
+
+    private void GemTypeCombo_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (_loading || GemTypeCombo.SelectedItem is not GemCollection collection)
+            return;
+
+        _selectedGemCollection = collection;
+        _selectedGemTier = null;
+        RefreshGemPage();
+    }
+
+    private void GemTierGrid_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (_loading)
+            return;
+
+        _selectedGemTier = GemTierGrid.SelectedItem as GemTierEntry;
+        UpdateSelectedGemTierText();
+    }
+
+    private void GemResource_OnChanged(object sender, TextChangedEventArgs e)
+    {
+        if (_loading)
+            return;
+
+        ActiveCharacter.OwnedGemDust =
+            int.TryParse(OwnedGemDustBox.Text, out int dust)
+                ? Math.Max(0, dust)
+                : 0;
+
+        ActiveCharacter.OwnedGold =
+            int.TryParse(OwnedGoldBox.Text, out int gold)
+                ? Math.Max(0, gold)
+                : 0;
+
+        UpdateGemTotals();
+    }
+
+    private void GemPlus_OnClick(object sender, RoutedEventArgs e)
+    {
+        if (_selectedGemTier is null)
+            return;
+
+        _selectedGemTier.Quantity++;
+        UpdateSelectedGemTierText();
+        UpdateGemTotals();
+    }
+
+    private void GemMinus_OnClick(object sender, RoutedEventArgs e)
+    {
+        if (_selectedGemTier is null)
+            return;
+
+        _selectedGemTier.Quantity = Math.Max(0, _selectedGemTier.Quantity - 1);
+        UpdateSelectedGemTierText();
+        UpdateGemTotals();
+    }
+
+    private void GemMoveUp_OnClick(object sender, RoutedEventArgs e)
+    {
+        if (_selectedGemCollection is null || _selectedGemTier is null)
+            return;
+
+        int index = _selectedGemCollection.Tiers.IndexOf(_selectedGemTier);
+
+        if (index < 0 || index >= _selectedGemCollection.Tiers.Count - 1)
+        {
+            MessageBox.Show("Diese Stufe kann nicht weiter erhöht werden.");
+            return;
+        }
+
+        if (_selectedGemTier.Quantity <= 0)
+        {
+            MessageBox.Show("Auf dieser Stufe ist kein Edelstein vorhanden.");
+            return;
+        }
+
+        _selectedGemTier.Quantity--;
+        _selectedGemCollection.Tiers[index + 1].Quantity++;
+        _selectedGemTier = _selectedGemCollection.Tiers[index + 1];
+
+        RefreshGemPage();
+    }
+
+    private void GemMoveDown_OnClick(object sender, RoutedEventArgs e)
+    {
+        if (_selectedGemCollection is null || _selectedGemTier is null)
+            return;
+
+        int index = _selectedGemCollection.Tiers.IndexOf(_selectedGemTier);
+
+        if (index <= 0)
+        {
+            MessageBox.Show("Diese Stufe kann nicht weiter abgesenkt werden.");
+            return;
+        }
+
+        if (_selectedGemTier.Quantity <= 0)
+        {
+            MessageBox.Show("Auf dieser Stufe ist kein Edelstein vorhanden.");
+            return;
+        }
+
+        _selectedGemTier.Quantity--;
+        _selectedGemCollection.Tiers[index - 1].Quantity++;
+        _selectedGemTier = _selectedGemCollection.Tiers[index - 1];
+
+        RefreshGemPage();
+    }
+
+    private void ClearGemType_OnClick(object sender, RoutedEventArgs e)
+    {
+        if (_selectedGemCollection is null)
+            return;
+
+        if (MessageBox.Show(
+                $"Alle Mengen für {_selectedGemCollection.GemName} auf 0 setzen?",
+                "Bestätigung",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning) != MessageBoxResult.Yes)
+        {
+            return;
+        }
+
+        foreach (GemTierEntry tier in _selectedGemCollection.Tiers)
+            tier.Quantity = 0;
+
+        _selectedGemTier = null;
+        RefreshGemPage();
     }
 
     private static string? Prompt(string title, string initialValue)

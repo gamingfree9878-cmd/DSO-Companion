@@ -10,4 +10,8 @@ public sealed class CharacterProfile
     public string Notes { get; set; } = "";
     public List<BuildProfile> Builds { get; set; } = [];
     public Guid? ActiveBuildId { get; set; }
+
+    public int OwnedGemDust { get; set; }
+    public int OwnedGold { get; set; }
+    public List<GemCollection> Gems { get; set; } = [];
 }

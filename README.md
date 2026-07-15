@@ -1,18 +1,22 @@
 # DSO Companion
 
-## Version 0.4 – Navigation
+## Version 0.5 – Edelsteine
 
 Neu:
 
-- alle Seitenleisten-Schaltflächen sind anklickbar
-- jede Schaltfläche öffnet eine eigene Seite
-- aktive Seite wird lila markiert
-- Übersicht mit aktivem Charakter und Build
-- Charakterseite
-- vollständige Ausrüstungsseite
-- Grundseiten für Edelsteine, Runen, Juwelen und Mortis/BGH
-- vorhandene Charakter-, Build- und Ausrüstungsdaten bleiben erhalten
+- eigener Edelsteinbereich
+- 13 Edelsteinsorten mit Farbcodierung
+- Qualitätsstufen:
+  - Trapez Brillant
+  - Trapez Exquisit
+  - Imperial
+  - Imperial Verfeinert
+  - Imperial Brillant
+- Mengen mit Plus und Minus
+- Edelsteine innerhalb derselben Sorte eine Stufe höher oder tiefer verschieben
+- Staub- und Goldkosten
+- vorhandener Staub und vorhandenes Gold
+- benötigte und noch fehlende Ressourcen
+- automatische Speicherung pro Charakter
 
-Speicherort:
-
-`%APPDATA%\DSO Companion\state.json`
+Die Kosten basieren auf den bisher festgelegten Werten und können in späteren Versionen um weitere Stufen erweitert werden.

@@ -48,6 +48,32 @@ public static class AppDataService
         "Juwelen-Zier"
     ];
 
+    public static readonly (string Name, string Color)[] GemTypes =
+    [
+        ("Rubin", "#D32F2F"),
+        ("Onyx", "#20242B"),
+        ("Rhodolith", "#EC407A"),
+        ("Zirkon", "#FDD835"),
+        ("Amethyst", "#8E44AD"),
+        ("Eisdiamant", "#78909C"),
+        ("Blitzdiamant", "#C0B84B"),
+        ("Cyanit", "#26A69A"),
+        ("Smaragd", "#0B6B3A"),
+        ("Feuerdiamant", "#A94442"),
+        ("Diamant", "#9E9E9E"),
+        ("Andermachtdiamant", "#7E57C2"),
+        ("Giftdiamant", "#558B2F")
+    ];
+
+    public static readonly (string Name, int Dust, int Gold)[] GemTiers =
+    [
+        ("Trapez Brillant", 5500, 5230),
+        ("Trapez Exquisit", 8000, 7192),
+        ("Imperial", 11000, 9480),
+        ("Imperial Verfeinert", 14500, 12095),
+        ("Imperial Brillant", 18500, 15038)
+    ];
+
     public static CharacterProfile CreateCharacter(string name = "Mein Charakter")
     {
         BuildProfile build = CreateBuild("Boss-Build", "Boss");
@@ -59,7 +85,8 @@ public static class AppDataService
             Level = 100,
             Server = "Heredur",
             Builds = [build],
-            ActiveBuildId = build.Id
+            ActiveBuildId = build.Id,
+            Gems = CreateGemCollections()
         };
     }
 
@@ -75,10 +102,26 @@ public static class AppDataService
         };
     }
 
+    public static List<GemCollection> CreateGemCollections()
+    {
+        return GemTypes.Select(type => new GemCollection
+        {
+            GemName = type.Name,
+            ColorHex = type.Color,
+            Tiers = GemTiers.Select(tier => new GemTierEntry
+            {
+                TierName = tier.Name,
+                DustCost = tier.Dust,
+                GoldCost = tier.Gold,
+                Quantity = 0
+            }).ToList()
+        }).ToList();
+    }
+
     public static void NormalizeCharacter(CharacterProfile character)
     {
-        if (character.Builds is null)
-            character.Builds = [];
+        character.Builds ??= [];
+        character.Gems ??= [];
 
         if (character.Builds.Count == 0)
         {
@@ -94,6 +137,45 @@ public static class AppDataService
             character.Builds.All(x => x.Id != character.ActiveBuildId))
         {
             character.ActiveBuildId = character.Builds[0].Id;
+        }
+
+        foreach ((string Name, string Color) gemType in GemTypes)
+        {
+            GemCollection? existing = character.Gems.FirstOrDefault(x => x.GemName == gemType.Name);
+
+            if (existing is null)
+            {
+                existing = new GemCollection
+                {
+                    GemName = gemType.Name,
+                    ColorHex = gemType.Color,
+                    Tiers = []
+                };
+                character.Gems.Add(existing);
+            }
+
+            existing.ColorHex = gemType.Color;
+            existing.Tiers ??= [];
+
+            foreach ((string Name, int Dust, int Gold) tier in GemTiers)
+            {
+                GemTierEntry? tierEntry = existing.Tiers.FirstOrDefault(x => x.TierName == tier.Name);
+
+                if (tierEntry is null)
+                {
+                    existing.Tiers.Add(new GemTierEntry
+                    {
+                        TierName = tier.Name,
+                        DustCost = tier.Dust,
+                        GoldCost = tier.Gold
+                    });
+                }
+                else
+                {
+                    tierEntry.DustCost = tier.Dust;
+                    tierEntry.GoldCost = tier.Gold;
+                }
+            }
         }
     }
 

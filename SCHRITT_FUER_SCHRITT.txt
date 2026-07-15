@@ -1,4 +1,4 @@
-DSO COMPANION VERSION 0.4
+DSO COMPANION VERSION 0.5
 
 1. GitHub Desktop schließen.
 
@@ -9,17 +9,17 @@ DSO COMPANION VERSION 0.4
    .git
 
 4. Entpacke:
-   DSO_Companion_V0_4_NAVIGATION.zip
+   DSO_Companion_V0_5_EDELSTEINE.zip
 
-5. Kopiere den gesamten Inhalt aus
-   DSO_Companion_V0_4_NAVIGATION
+5. Kopiere den gesamten Inhalt des Ordners
+   DSO_Companion_V0_5_EDELSTEINE
    nach:
    Dokumente\GitHub\DSO-Companion
 
 6. GitHub Desktop öffnen.
 
 7. Summary:
-   Version 0.4 Navigation
+   Version 0.5 Edelsteine
 
 8. Commit to main.
 
@@ -27,7 +27,7 @@ DSO COMPANION VERSION 0.4
 
 10. GitHub → Actions → neuesten Lauf abwarten.
 
-11. Bei grünem Haken das Artefakt
+11. Bei grünem Haken:
     DSO-Companion-Windows herunterladen.
 
 12. ZIP entpacken und DSO Companion.exe starten.
