@@ -86,6 +86,24 @@ public static class AppDataService
         ("Maximal", 0, 0)
     ];
 
+    public static readonly (string Name, int Dust, int Gold)[] OpalTiers =
+    [
+        ("Trapez", 4500, 0),
+        ("Trapez Verfeinerter", 7875, 20138),
+        ("Trapez Brillanter", 12375, 29291),
+        ("Trapez Exquisit", 18000, 40276),
+        ("Imperial", 25700, 53091),
+        ("Imperial Verfeinerter", 32625, 67737),
+        ("Imperial Brillanter", 41625, 84214),
+        ("Imperial Exquisit", 51750, 102521),
+        ("Maximal", 0, 0)
+    ];
+
+    private static (string Name, int Dust, int Gold)[] GetGemTiers(string category) =>
+        string.Equals(category, "Opal", StringComparison.OrdinalIgnoreCase)
+            ? OpalTiers
+            : GemTiers;
+
     public static CharacterProfile CreateCharacter(string name = "Mein Charakter")
     {
         BuildProfile build = CreateBuild("Boss-Build", "Boss");
@@ -125,7 +143,7 @@ public static class AppDataService
             ColorHex = type.Color,
             Category = type.Category,
             ImagePath = GemImages[type.Name],
-            Tiers = GemTiers.Select(tier => new GemTierEntry
+            Tiers = GetGemTiers(type.Category).Select(tier => new GemTierEntry
             {
                 TierName = tier.Name,
                 DustCost = tier.Dust,
@@ -178,7 +196,7 @@ public static class AppDataService
 
     public static List<RuneCollection> CreateRuneCollections()
     {
-        return
+        List<RuneCollection> collections =
         [
         new RuneCollection
         {
@@ -314,6 +332,11 @@ public static class AppDataService
             Tiers = CreateRuneTiers("Sonstige")
         }
         ];
+
+        foreach (RuneCollection collection in collections)
+            collection.AttachTierNotifications();
+
+        return collections;
     }
 
     public static MortisPlan CreateMortisPlan()
@@ -407,7 +430,7 @@ public static class AppDataService
                 }
             }
 
-            existing.Tiers = GemTiers
+            existing.Tiers = GetGemTiers(existing.Category)
                 .Select(definition => existing.Tiers.First(x => x.TierName == definition.Name))
                 .ToList();
             existing.AttachTierNotifications();
@@ -438,6 +461,8 @@ public static class AppDataService
                     tier.GoldCost = defaultTier.GoldCost;
                 }
             }
+
+            existing.AttachTierNotifications();
         }
 
         if (character.Mortis.Activities is null || character.Mortis.Activities.Count == 0)

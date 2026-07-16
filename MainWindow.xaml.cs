@@ -280,7 +280,6 @@ public partial class MainWindow : Window
         if (sender is Button button && button.Tag is GemTierEntry tier)
         {
             tier.Quantity++;
-            CascadeGemQuantityToHigherTiers(tier);
             UpdateGemTotals();
         }
     }
@@ -290,7 +289,6 @@ public partial class MainWindow : Window
         if (sender is Button button && button.Tag is GemTierEntry tier)
         {
             tier.Quantity = Math.Max(0, tier.Quantity - 1);
-            CascadeGemQuantityToHigherTiers(tier);
             UpdateGemTotals();
         }
     }
@@ -407,7 +405,6 @@ public partial class MainWindow : Window
         RuneMissingGoldText.Text =
             Math.Max(0, gold - ActiveCharacter.OwnedRuneGold).ToString("N0");
 
-        RuneCardsControl.Items.Refresh();
         Save();
     }
 
@@ -546,7 +543,6 @@ public partial class MainWindow : Window
             return;
 
         activity.Runs = ParseNonNegativeInt(box.Text);
-        activity.Entries = activity.Runs;
         UpdateMortisSummary();
     }
 
@@ -556,7 +552,6 @@ public partial class MainWindow : Window
             return;
 
         activity.Runs++;
-        activity.Entries = activity.Runs;
         UpdateMortisSummary();
     }
 
@@ -566,7 +561,6 @@ public partial class MainWindow : Window
             return;
 
         activity.Runs = Math.Max(0, activity.Runs - 1);
-        activity.Entries = activity.Runs;
         UpdateMortisSummary();
     }
 
@@ -579,8 +573,6 @@ public partial class MainWindow : Window
 
         foreach (MortisActivity activity in plan.Activities)
             activity.Entries = activity.Runs;
-
-        MortisCardsControl.Items.Refresh();
 
         double progress = plan.TargetBones > 0
             ? Math.Min(100, plan.FinalBones * 100.0 / plan.TargetBones)

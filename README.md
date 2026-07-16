@@ -1,26 +1,11 @@
-# DSO Companion 1.3 – Edelstein-Komfort
+# DSO Companion 1.3.1 – Bedienungs- und Rechenfix
 
-Neu:
+Behoben:
 
-- richtige Reihenfolge der Edelsteinstufen
-- neue Endstufe „Maximal“
-- direkte Eingabe sowie Minus/Plus
-- Tab wechselt zum nächsten Feld
-- Enter wechselt ebenfalls zum nächsten Feld
-- beim Anklicken wird die vorhandene Zahl komplett markiert
-- kein Neuaufbau der Karten nach jeder Ziffer, daher bleibt der Fokus erhalten
-- optionales automatisches Übernehmen einer Zahl auf alle höheren Stufen
-- Gesamtanzahl und Anzahl maximaler Edelsteine direkt auf jeder Karte
-- alte gespeicherte Stufennamen werden automatisch übernommen
-
-Reihenfolge:
-
-1. Trapez
-2. Trapez Verfeinerter
-3. Trapez Brillanter
-4. Trapez Exquisit
-5. Imperial
-6. Imperial Verfeinerter
-7. Imperial Brillanter
-8. Imperial Exquisit
-9. Maximal
+- Plus und Minus verändern bei Edelsteinen nur noch die ausgewählte Stufe.
+- Das optionale Übernehmen auf höhere Stufen wird nur noch bei direkter Texteingabe ausgeführt.
+- Opale verwenden jetzt ihre eigenen Staub- und Goldwerte aus der ursprünglichen Steine-Tabelle.
+- Runen lassen sich direkt mehrstellig eingeben, zusätzlich bleiben Minus und Plus erhalten.
+- Enter springt bei Runen zum nächsten Eingabefeld; Tab funktioniert wie gewohnt.
+- Mortis-Runs lassen sich mehrstellig ohne erneutes Anklicken eingeben.
+- Die Runen- und Mortis-Karten werden nicht mehr nach jeder Ziffer neu aufgebaut; dadurch bleibt der Fokus im Feld.

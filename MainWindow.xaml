@@ -877,6 +877,8 @@
                                                                      Margin="2"
                                                                      Padding="2"
                                                                      ToolTip="Besitz direkt eingeben"
+                                                                     GotKeyboardFocus="QuantityTextBox_OnGotKeyboardFocus"
+                                                                     PreviewKeyDown="QuantityTextBox_OnPreviewKeyDown"
                                                                      TextChanged="RuneQuantityTextBox_OnChanged"/>
                                                             <Button Grid.Column="3" Content="+" Padding="0" Margin="2"
                                                                     Background="{StaticResource AccentBrush}"
@@ -1101,6 +1103,8 @@
                                                          Margin="5,2"
                                                          Padding="3"
                                                          ToolTip="Runs direkt eingeben"
+                                                         GotKeyboardFocus="QuantityTextBox_OnGotKeyboardFocus"
+                                                         PreviewKeyDown="QuantityTextBox_OnPreviewKeyDown"
                                                          TextChanged="MortisRunTextBox_OnChanged"/>
 
                                                 <Button Grid.Column="2"
