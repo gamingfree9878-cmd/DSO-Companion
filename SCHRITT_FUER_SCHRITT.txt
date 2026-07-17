@@ -1,18 +1,18 @@
-DSO COMPANION VERSION 1.3.1
+DSO COMPANION VERSION 1.3.2
 
 1. GitHub Desktop schließen.
 2. Dokumente\GitHub\DSO-Companion öffnen.
 3. Alles AUSSER .git löschen.
-4. DSO_Companion_V1_3_1_BEDIENUNG_FIX.zip entpacken.
-5. Den gesamten Inhalt in Dokumente\GitHub\DSO-Companion kopieren.
+4. ZIP entpacken.
+5. Inhalt in den Repository-Ordner kopieren.
 6. GitHub Desktop öffnen.
-7. Summary: Version 1.3.1 Bedienung Fix
+7. Summary: Version 1.3.2 Max Übersicht Tapferkeit
 8. Commit to main.
 9. Push origin.
 10. Grünen GitHub-Actions-Build abwarten.
 
 TEST:
-- Bei Imperial Plus/Minus klicken: nur Imperial muss sich ändern.
-- Opalwerte eingeben und Staub/Gold kontrollieren.
-- Bei Runen 123 in einem Durchgang eingeben und Tab/Enter testen.
-- Bei Mortis 250 in einem Durchgang eingeben.
+- Imperial Exquisit = 10: alle niedrigeren Stufen müssen 10 werden.
+- Trapez ändern: höhere Stufen dürfen unverändert bleiben.
+- Maximal Rubin = 50: oben muss Rubin mit Bild und 50 stehen.
+- Rune der Tapferkeit muss bei Defensiv erscheinen.

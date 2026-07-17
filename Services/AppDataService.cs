@@ -249,6 +249,13 @@ public static class AppDataService
         },
         new RuneCollection
         {
+            RuneName = "Rune der Tapferkeit",
+            Category = "Defensiv",
+            ImagePath = "/Assets/Runes/bravery.png",
+            Tiers = CreateRuneTiers("Defensiv")
+        },
+        new RuneCollection
+        {
             RuneName = "Rune der Schnelligkeit",
             Category = "Offensiv",
             ImagePath = "/Assets/Runes/speed.png",

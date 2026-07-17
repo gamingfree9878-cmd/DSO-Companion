@@ -231,7 +231,17 @@ public partial class MainWindow : Window
         GemNeededGoldText.Text = gold.ToString("N0");
         GemMissingGoldText.Text = missingGold.ToString("N0");
 
+        RefreshMaximumGemOverview();
         Save();
+    }
+
+    private void RefreshMaximumGemOverview()
+    {
+        if (MaximumGemOverviewControl is null)
+            return;
+
+        MaximumGemOverviewControl.ItemsSource = null;
+        MaximumGemOverviewControl.ItemsSource = ActiveCharacter.Gems;
     }
 
     private void UpdateGemFilterButtons()
@@ -318,7 +328,10 @@ public partial class MainWindow : Window
         if (changedIndex < 0)
             return;
 
-        for (int index = changedIndex + 1; index < gem.Tiers.Count; index++)
+        // Nur von der gewählten höheren Stufe auf alle niedrigeren Stufen übernehmen.
+        // Beispiel: Imperial Exquisit = 10 setzt alle vorherigen Stufen auf 10.
+        // Trapez verändert dagegen keine höhere Stufe.
+        for (int index = 0; index < changedIndex; index++)
             gem.Tiers[index].Quantity = changedTier.Quantity;
     }
 
