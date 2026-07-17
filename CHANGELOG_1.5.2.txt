@@ -1,0 +1,6 @@
+DSO COMPANION 1.5.2
+
+- Versionsanzeige auf 1.5.2 aktualisiert
+- passend zum grafischen Lizenz-Admin 1.5.2
+- Aktivierung weiterhin über den vollständigen signierten Aktivierungscode
+- Lizenz-ID allein ist kein Aktivierungscode
