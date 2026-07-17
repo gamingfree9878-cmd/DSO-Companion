@@ -669,45 +669,12 @@ public partial class MainWindow : Window
         }
     }
 
-    private void VarnokDreamTextBox_OnTextChanged(
-        object sender,
-        TextChangedEventArgs e)
-    {
-        if (_loading ||
-            sender is not TextBox box ||
-            !box.IsKeyboardFocusWithin ||
-            box.Tag is not VarnokItem item)
-        {
-            return;
-        }
-
-        item.DreamOwned = ParseInt(box.Text);
-        UpdateVarnokSummary();
-        Save();
-    }
-
-    private void VarnokStarTextBox_OnTextChanged(
-        object sender,
-        TextChangedEventArgs e)
-    {
-        if (_loading ||
-            sender is not TextBox box ||
-            !box.IsKeyboardFocusWithin ||
-            box.Tag is not VarnokItem item)
-        {
-            return;
-        }
-
-        item.StarOwned = ParseInt(box.Text);
-        UpdateVarnokSummary();
-        Save();
-    }
-
     private void VarnokDreamPlus_OnClick(object sender, RoutedEventArgs e)
     {
         if (sender is Button button && button.Tag is VarnokItem item)
         {
             item.DreamOwned++;
+            RefreshVarnokRows();
             UpdateVarnokSummary();
             Save();
         }
@@ -718,6 +685,7 @@ public partial class MainWindow : Window
         if (sender is Button button && button.Tag is VarnokItem item)
         {
             item.DreamOwned = Math.Max(0, item.DreamOwned - 1);
+            RefreshVarnokRows();
             UpdateVarnokSummary();
             Save();
         }
@@ -728,6 +696,7 @@ public partial class MainWindow : Window
         if (sender is Button button && button.Tag is VarnokItem item)
         {
             item.StarOwned++;
+            RefreshVarnokRows();
             UpdateVarnokSummary();
             Save();
         }
@@ -738,6 +707,7 @@ public partial class MainWindow : Window
         if (sender is Button button && button.Tag is VarnokItem item)
         {
             item.StarOwned = Math.Max(0, item.StarOwned - 1);
+            RefreshVarnokRows();
             UpdateVarnokSummary();
             Save();
         }
@@ -778,7 +748,21 @@ public partial class MainWindow : Window
             box.SelectAll();
     }
 
-    private void NumericTextBox_OnPreviewKeyDown(
+    private void VarnokDream_OnLostFocus(
+        object sender,
+        KeyboardFocusChangedEventArgs e)
+    {
+        CommitVarnokValue(sender, isDream: true);
+    }
+
+    private void VarnokStar_OnLostFocus(
+        object sender,
+        KeyboardFocusChangedEventArgs e)
+    {
+        CommitVarnokValue(sender, isDream: false);
+    }
+
+    private void VarnokNumber_OnPreviewKeyDown(
         object sender,
         KeyEventArgs e)
     {
@@ -787,8 +771,20 @@ public partial class MainWindow : Window
 
         if (e.Key == Key.Enter)
         {
-            box.MoveFocus(
-                new TraversalRequest(FocusNavigationDirection.Next));
+            if (box.Tag is VarnokItem item)
+            {
+                if (ReferenceEquals(
+                    box.Parent,
+                    null))
+                {
+                    return;
+                }
+
+                bool isDream = IsDreamTextBox(box);
+                CommitVarnokValue(box, isDream);
+            }
+
+            box.MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
             e.Handled = true;
             return;
         }
@@ -805,6 +801,43 @@ public partial class MainWindow : Window
 
         if (!allowed)
             e.Handled = true;
+    }
+
+    private static bool IsDreamTextBox(TextBox box)
+    {
+        if (box.Parent is Grid grid)
+            return Grid.GetColumn(grid) == 1;
+
+        return true;
+    }
+
+    private void CommitVarnokValue(object sender, bool isDream)
+    {
+        if (_loading ||
+            sender is not TextBox box ||
+            box.Tag is not VarnokItem item)
+        {
+            return;
+        }
+
+        int value = ParseInt(box.Text);
+
+        if (isDream)
+            item.DreamOwned = value;
+        else
+            item.StarOwned = value;
+
+        RefreshVarnokRows();
+        UpdateVarnokSummary();
+        Save();
+    }
+
+    private void RefreshVarnokRows()
+    {
+        _loading = true;
+        VarnokCardsControl.ItemsSource = null;
+        VarnokCardsControl.ItemsSource = ActiveCharacter.Varnok.Items;
+        _loading = false;
     }
 
     private static string? Prompt(string title, string initialValue)
@@ -896,33 +929,17 @@ public partial class MainWindow : Window
 
     private void VarnokButton_OnClick(object sender, RoutedEventArgs e)
     {
-        try
+        ActiveCharacter.Varnok ??= AppDataService.CreateVarnokPlan();
+
+        if (ActiveCharacter.Varnok.Items is null ||
+            ActiveCharacter.Varnok.Items.Count == 0)
         {
-            ActiveCharacter.Varnok ??= AppDataService.CreateVarnokPlan();
-            ActiveCharacter.Varnok.Items ??= [];
-
-            if (ActiveCharacter.Varnok.Items.Count == 0)
-                ActiveCharacter.Varnok = AppDataService.CreateVarnokPlan();
-
-            _loading = true;
-            VarnokCardsControl.ItemsSource = null;
-            VarnokCardsControl.ItemsSource = ActiveCharacter.Varnok.Items;
-            _loading = false;
-
-            UpdateVarnokSummary();
-            ShowPage(VarnokPage, VarnokButton);
+            ActiveCharacter.Varnok = AppDataService.CreateVarnokPlan();
         }
-        catch (Exception ex)
-        {
-            _loading = false;
 
-            MessageBox.Show(
-                "Der Varnok-Reiter konnte nicht geöffnet werden.\n\n" +
-                ex.Message,
-                "Varnok-Fehler",
-                MessageBoxButton.OK,
-                MessageBoxImage.Error);
-        }
+        ShowPage(VarnokPage, VarnokButton);
+        RefreshVarnokRows();
+        UpdateVarnokSummary();
     }
 
     private void CharacterCombo_OnSelectionChanged(object sender, SelectionChangedEventArgs e)

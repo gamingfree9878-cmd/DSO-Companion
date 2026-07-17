@@ -1,36 +1,16 @@
-DSO COMPANION VERSION 1.4.1 – VARNOK CRASH-FIX
+DSO COMPANION 1.4.2
 
 1. GitHub Desktop schließen.
+2. Im Repository alles außer .git löschen.
+3. ZIP entpacken und den Inhalt in das Repository kopieren.
+4. GitHub Desktop öffnen.
+5. Summary: Version 1.4.2 Varnok Stable
+6. Commit to main.
+7. Push origin.
+8. Actions-Build abwarten.
+9. Artefakt vollständig entpacken und starten.
 
-2. Öffne:
-   Dokumente\GitHub\DSO-Companion
-
-3. Lösche alles AUSSER:
-   .git
-
-4. Entpacke:
-   DSO_Companion_V1_4_1_VARNOK_CRASH_FIX.zip
-
-5. Kopiere den Inhalt in:
-   Dokumente\GitHub\DSO-Companion
-
-6. GitHub Desktop öffnen.
-
-7. Summary:
-   Version 1.4.1 Varnok Crash Fix
-
-8. Commit to main.
-
-9. Push origin.
-
-10. GitHub Actions Build abwarten.
-
-TEST:
-- Programm öffnen
-- Varnok anklicken
-- prüfen, ob der Reiter offen bleibt
-- mehrstellige Zahl eingeben
-- Tab und Enter testen
-- Plus und Minus testen
-- Programm schließen und erneut öffnen
-- prüfen, ob die Werte gespeichert wurden
+Falls noch ein Fehler erscheint:
+Windows-Taste + R
+%LOCALAPPDATA%\DSOCompanion
+crash.log öffnen

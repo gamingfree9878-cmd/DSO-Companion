@@ -1,19 +1,14 @@
-# DSO Companion 1.4.1 – Varnok Crash-Fix
+# DSO Companion 1.4.2 – stabiler Varnok-Reiter
 
-Diese Version behebt den Absturz beim Öffnen des Varnok-Reiters.
+Der Varnok-Reiter wurde technisch neu aufgebaut.
 
-## Änderung
-
-Beim erstmaligen Anzeigen der Varnok-Karten wurden alle Textfelder gleichzeitig
-initialisiert. Jedes Feld hat dabei sofort eine Neuberechnung und Speicherung
-ausgelöst.
-
-Jetzt gilt:
-
-- Beim Öffnen werden keine künstlichen Eingaben verarbeitet.
-- Nur ein Feld mit aktivem Tastaturfokus verarbeitet Textänderungen.
-- Speichern erfolgt nur nach echter Eingabe oder über Plus/Minus.
-- Fehlende alte Varnok-Daten werden automatisch repariert.
-- Ein unerwarteter Fehler zeigt eine Meldung, statt das ganze Programm zu schließen.
-
-Alle Funktionen aus Version 1.4 bleiben erhalten.
+- kein Live-TextChanged mehr
+- keine zweispaltigen komplexen Karten
+- einfache stabile Excel-ähnliche Zeilen
+- mehrstellige Eingabe bleibt möglich
+- Enter übernimmt die Zahl und springt weiter
+- Tab springt normal weiter
+- Plus und Minus bleiben erhalten
+- Speicherung nach Eingabe
+- Crash-Protokoll unter:
+  `%LOCALAPPDATA%\DSOCompanion\crash.log`
