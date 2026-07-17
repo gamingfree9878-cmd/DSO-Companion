@@ -60,7 +60,7 @@
                                TextWrapping="Wrap"/>
                 </Border>
 
-                <TextBlock Text="DSO Companion · Version 1.5.0 · by Mcdead"
+                <TextBlock Text="DSO Companion · Version 1.5.1.1 · by Mcdead"
                            Foreground="{StaticResource MutedBrush}"
                            HorizontalAlignment="Center"
                            Margin="0,18,0,0"/>

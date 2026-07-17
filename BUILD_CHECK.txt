@@ -1,0 +1,3 @@
+BUILD NICHT LOKAL VERIFIZIERT
+
+dotnet SDK ist in dieser Umgebung nicht installiert.

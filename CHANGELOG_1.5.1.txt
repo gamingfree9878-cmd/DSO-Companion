@@ -1,0 +1,9 @@
+DSO COMPANION 1.5.1 – BUILD FIX
+
+Behoben:
+- fehlendes using System.IO in LicenseService.cs
+- fehlendes using System.Linq in LicenseService.cs
+- expliziter Namespace-Import für LicenseService in MainWindow.xaml.cs
+- Versionsanzeige auf 1.5.1 aktualisiert
+
+Das Admin-Tool bleibt weiterhin getrennt und darf nicht ins öffentliche Repository.

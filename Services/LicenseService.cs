@@ -1,6 +1,8 @@
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
+using System.Linq;
+using System.IO;
 using Microsoft.Win32;
 using DSOCompanion.Models;
 

@@ -8,7 +8,7 @@ NORMALE APP
 4. DSO_Companion_V1_5_LIZENZ.zip entpacken.
 5. Inhalt ins Repository kopieren.
 6. GitHub Desktop öffnen.
-7. Summary: Version 1.5 Lizenzsystem
+7. Summary: Version 1.5.1 Lizenzsystem
 8. Commit to main.
 9. Push origin.
 10. Actions-Build abwarten.
