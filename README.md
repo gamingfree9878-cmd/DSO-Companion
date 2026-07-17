@@ -1,14 +1,15 @@
-# DSO Companion 1.4.2 – stabiler Varnok-Reiter
+# DSO Companion 1.5 – Lizenzsystem
 
-Der Varnok-Reiter wurde technisch neu aufgebaut.
+- Aktivierungsfenster vor dem Programmstart
+- kryptografisch signierte Offline-Lizenzen
+- HWID-Bindung an einen Windows-PC
+- Lifetime- und Zeitlizenzen
+- verschlüsselte lokale Lizenzdatei
+- neuer Reiter „Lizenz“
+- HWID kopieren
+- Lizenz entfernen
+- stabiler Varnok-Reiter aus Version 1.4.2
 
-- kein Live-TextChanged mehr
-- keine zweispaltigen komplexen Karten
-- einfache stabile Excel-ähnliche Zeilen
-- mehrstellige Eingabe bleibt möglich
-- Enter übernimmt die Zahl und springt weiter
-- Tab springt normal weiter
-- Plus und Minus bleiben erhalten
-- Speicherung nach Eingabe
-- Crash-Protokoll unter:
-  `%LOCALAPPDATA%\DSOCompanion\crash.log`
+Wichtig: Die normale App enthält nur den öffentlichen Prüfschlüssel.
+Das getrennte OWNER-ONLY-Admin-Tool enthält den privaten Schlüssel und
+darf niemals verteilt oder öffentlich hochgeladen werden.

@@ -63,6 +63,11 @@
                         Content="⭐ Varnok"
                         Style="{StaticResource SidebarButtonStyle}"
                         Click="VarnokButton_OnClick"/>
+
+                <Button x:Name="LicenseButton"
+                        Content="🔐 Lizenz"
+                        Style="{StaticResource SidebarButtonStyle}"
+                        Click="LicenseButton_OnClick"/>
             </StackPanel>
         </Border>
 
@@ -1516,6 +1521,72 @@
                         </Border>
                     </StackPanel>
                 </ScrollViewer>
+
+                <!-- Lizenz -->
+                <ScrollViewer x:Name="LicensePage"
+                              Visibility="Collapsed"
+                              Background="{StaticResource BackgroundBrush}"
+                              VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="18">
+                        <TextBlock Text="Lizenz / HWID"
+                                   Foreground="White"
+                                   FontSize="30"
+                                   FontWeight="Bold"/>
+                        <TextBlock Text="Lizenzstatus dieses Computers"
+                                   Foreground="{StaticResource MutedBrush}"
+                                   Margin="0,4,0,18"/>
+
+                        <Border Style="{StaticResource CardStyle}"
+                                MaxWidth="850"
+                                HorizontalAlignment="Left">
+                            <StackPanel>
+                                <TextBlock x:Name="LicenseStatusText"
+                                           FontSize="22"
+                                           FontWeight="Bold"
+                                           Foreground="#66E0B5"/>
+
+                                <TextBlock Text="Lizenz-ID"
+                                           Foreground="{StaticResource MutedBrush}"
+                                           Margin="0,18,0,4"/>
+                                <TextBox x:Name="LicenseIdBox"
+                                         IsReadOnly="True"/>
+
+                                <TextBlock Text="Besitzer"
+                                           Foreground="{StaticResource MutedBrush}"
+                                           Margin="0,10,0,4"/>
+                                <TextBox x:Name="LicenseOwnerBox"
+                                         IsReadOnly="True"/>
+
+                                <TextBlock Text="Gültigkeit"
+                                           Foreground="{StaticResource MutedBrush}"
+                                           Margin="0,10,0,4"/>
+                                <TextBox x:Name="LicenseExpiryBox"
+                                         IsReadOnly="True"/>
+
+                                <TextBlock Text="HWID"
+                                           Foreground="{StaticResource MutedBrush}"
+                                           Margin="0,10,0,4"/>
+                                <TextBox x:Name="LicenseHardwareIdBox"
+                                         IsReadOnly="True"
+                                         FontFamily="Consolas"/>
+
+                                <StackPanel Orientation="Horizontal"
+                                            Margin="0,12,0,0">
+                                    <Button Content="HWID kopieren"
+                                            Click="CopyLicenseHardwareId_OnClick"/>
+                                    <Button Content="Lizenz entfernen"
+                                            Background="{StaticResource DangerBrush}"
+                                            Click="RemoveLicense_OnClick"/>
+                                </StackPanel>
+
+                                <TextBlock Text="Version 1.5.0 · © 2026 Mcdead"
+                                           Foreground="{StaticResource MutedBrush}"
+                                           Margin="4,18,4,0"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+
 
             </Grid>
         </Grid>

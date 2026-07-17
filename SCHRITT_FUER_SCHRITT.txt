@@ -1,16 +1,29 @@
-DSO COMPANION 1.4.2
+DSO COMPANION VERSION 1.5 – LIZENZSYSTEM
 
+NORMALE APP
+===========
 1. GitHub Desktop schließen.
-2. Im Repository alles außer .git löschen.
-3. ZIP entpacken und den Inhalt in das Repository kopieren.
-4. GitHub Desktop öffnen.
-5. Summary: Version 1.4.2 Varnok Stable
-6. Commit to main.
-7. Push origin.
-8. Actions-Build abwarten.
-9. Artefakt vollständig entpacken und starten.
+2. Dokumente\GitHub\DSO-Companion öffnen.
+3. Alles außer .git löschen.
+4. DSO_Companion_V1_5_LIZENZ.zip entpacken.
+5. Inhalt ins Repository kopieren.
+6. GitHub Desktop öffnen.
+7. Summary: Version 1.5 Lizenzsystem
+8. Commit to main.
+9. Push origin.
+10. Actions-Build abwarten.
 
-Falls noch ein Fehler erscheint:
-Windows-Taste + R
-%LOCALAPPDATA%\DSOCompanion
-crash.log öffnen
+ACHTUNG
+=======
+DSO_Companion_Lizenz_Admin_OWNER_ONLY niemals in das normale
+Repository kopieren und niemals an Nutzer weitergeben.
+
+ERSTE EIGENE LIZENZ
+===================
+1. Neue Companion-App starten.
+2. HWID kopieren.
+3. OWNER-ONLY-Admin-Tool starten.
+4. Besitzer und HWID eingeben.
+5. L für Lifetime auswählen.
+6. Aktivierungscode aus der erzeugten TXT kopieren.
+7. In der Companion-App einfügen und aktivieren.

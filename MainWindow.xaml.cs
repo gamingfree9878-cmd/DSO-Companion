@@ -143,6 +143,7 @@ public partial class MainWindow : Window
         JewelsPage.Visibility = Visibility.Collapsed;
         MortisPage.Visibility = Visibility.Collapsed;
         VarnokPage.Visibility = Visibility.Collapsed;
+        LicensePage.Visibility = Visibility.Collapsed;
 
         page.Visibility = Visibility.Visible;
 
@@ -157,6 +158,7 @@ public partial class MainWindow : Window
         JewelsButton.Background = normal;
         MortisButton.Background = normal;
         VarnokButton.Background = normal;
+        LicenseButton.Background = normal;
 
         activeButton.Background = accent;
     }
@@ -838,6 +840,73 @@ public partial class MainWindow : Window
         VarnokCardsControl.ItemsSource = null;
         VarnokCardsControl.ItemsSource = ActiveCharacter.Varnok.Items;
         _loading = false;
+    }
+
+    private void LicenseButton_OnClick(object sender, RoutedEventArgs e)
+    {
+        RefreshLicensePage();
+        ShowPage(LicensePage, LicenseButton);
+    }
+
+    private void RefreshLicensePage()
+    {
+        LicenseService service = App.LicenseService;
+        var license = service.CurrentLicense;
+
+        LicenseStatusText.Text =
+            license is null
+                ? "🔴 Keine gültige Lizenz"
+                : "🟢 Lizenz gültig – " + service.ExpiryText;
+
+        LicenseIdBox.Text =
+            license?.LicenseId ?? "Nicht aktiviert";
+
+        LicenseOwnerBox.Text =
+            license?.Owner ?? "–";
+
+        LicenseExpiryBox.Text =
+            service.ExpiryText;
+
+        LicenseHardwareIdBox.Text =
+            service.HardwareId;
+    }
+
+    private void CopyLicenseHardwareId_OnClick(
+        object sender,
+        RoutedEventArgs e)
+    {
+        Clipboard.SetText(App.LicenseService.HardwareId);
+
+        MessageBox.Show(
+            "Die HWID wurde kopiert.",
+            "DSO Companion",
+            MessageBoxButton.OK,
+            MessageBoxImage.Information);
+    }
+
+    private void RemoveLicense_OnClick(
+        object sender,
+        RoutedEventArgs e)
+    {
+        MessageBoxResult result = MessageBox.Show(
+            "Soll die lokale Lizenz wirklich entfernt werden?\n\n" +
+            "Beim nächsten Start ist eine neue Aktivierung erforderlich.",
+            "Lizenz entfernen",
+            MessageBoxButton.YesNo,
+            MessageBoxImage.Warning);
+
+        if (result != MessageBoxResult.Yes)
+            return;
+
+        App.LicenseService.RemoveLicense();
+
+        MessageBox.Show(
+            "Die Lizenz wurde entfernt. Das Programm wird beendet.",
+            "DSO Companion",
+            MessageBoxButton.OK,
+            MessageBoxImage.Information);
+
+        Application.Current.Shutdown();
     }
 
     private static string? Prompt(string title, string initialValue)
