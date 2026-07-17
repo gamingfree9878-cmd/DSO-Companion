@@ -675,6 +675,7 @@ public partial class MainWindow : Window
     {
         if (_loading ||
             sender is not TextBox box ||
+            !box.IsKeyboardFocusWithin ||
             box.Tag is not VarnokItem item)
         {
             return;
@@ -682,6 +683,7 @@ public partial class MainWindow : Window
 
         item.DreamOwned = ParseInt(box.Text);
         UpdateVarnokSummary();
+        Save();
     }
 
     private void VarnokStarTextBox_OnTextChanged(
@@ -690,6 +692,7 @@ public partial class MainWindow : Window
     {
         if (_loading ||
             sender is not TextBox box ||
+            !box.IsKeyboardFocusWithin ||
             box.Tag is not VarnokItem item)
         {
             return;
@@ -697,6 +700,7 @@ public partial class MainWindow : Window
 
         item.StarOwned = ParseInt(box.Text);
         UpdateVarnokSummary();
+        Save();
     }
 
     private void VarnokDreamPlus_OnClick(object sender, RoutedEventArgs e)
@@ -705,6 +709,7 @@ public partial class MainWindow : Window
         {
             item.DreamOwned++;
             UpdateVarnokSummary();
+            Save();
         }
     }
 
@@ -714,6 +719,7 @@ public partial class MainWindow : Window
         {
             item.DreamOwned = Math.Max(0, item.DreamOwned - 1);
             UpdateVarnokSummary();
+            Save();
         }
     }
 
@@ -723,6 +729,7 @@ public partial class MainWindow : Window
         {
             item.StarOwned++;
             UpdateVarnokSummary();
+            Save();
         }
     }
 
@@ -732,6 +739,7 @@ public partial class MainWindow : Window
         {
             item.StarOwned = Math.Max(0, item.StarOwned - 1);
             UpdateVarnokSummary();
+            Save();
         }
     }
 
@@ -760,8 +768,6 @@ public partial class MainWindow : Window
                 : $"{priority.Name}\n" +
                   $"Es fehlen {priority.DreamMissing:N0} Traumschleier " +
                   $"und {priority.StarMissing:N0} Heilige Sterne.";
-
-        Save();
     }
 
     private void NumericTextBox_OnGotKeyboardFocus(
@@ -890,8 +896,33 @@ public partial class MainWindow : Window
 
     private void VarnokButton_OnClick(object sender, RoutedEventArgs e)
     {
-        UpdateVarnokSummary();
-        ShowPage(VarnokPage, VarnokButton);
+        try
+        {
+            ActiveCharacter.Varnok ??= AppDataService.CreateVarnokPlan();
+            ActiveCharacter.Varnok.Items ??= [];
+
+            if (ActiveCharacter.Varnok.Items.Count == 0)
+                ActiveCharacter.Varnok = AppDataService.CreateVarnokPlan();
+
+            _loading = true;
+            VarnokCardsControl.ItemsSource = null;
+            VarnokCardsControl.ItemsSource = ActiveCharacter.Varnok.Items;
+            _loading = false;
+
+            UpdateVarnokSummary();
+            ShowPage(VarnokPage, VarnokButton);
+        }
+        catch (Exception ex)
+        {
+            _loading = false;
+
+            MessageBox.Show(
+                "Der Varnok-Reiter konnte nicht geöffnet werden.\n\n" +
+                ex.Message,
+                "Varnok-Fehler",
+                MessageBoxButton.OK,
+                MessageBoxImage.Error);
+        }
     }
 
     private void CharacterCombo_OnSelectionChanged(object sender, SelectionChangedEventArgs e)

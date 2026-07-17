@@ -1,42 +1,19 @@
-# DSO Companion 1.4 – Varnok
+# DSO Companion 1.4.1 – Varnok Crash-Fix
 
-Neues Varnok-Modul mit den exakten Zielwerten aus `Varnok.xlsx`.
+Diese Version behebt den Absturz beim Öffnen des Varnok-Reiters.
 
-## Zielwerte
+## Änderung
 
-### Traumschleier
+Beim erstmaligen Anzeigen der Varnok-Karten wurden alle Textfelder gleichzeitig
+initialisiert. Jedes Feld hat dabei sofort eine Neuberechnung und Speicherung
+ausgelöst.
 
-- Helm: 50
-- Schultern: 50
-- Torso: 50
-- Handschuhe: 50
-- Schuhe: 50
-- Mantel: 50
-- GB-Waffe: 100
-- Teppich: 100
-- Gesamt: 500
+Jetzt gilt:
 
-### Heilige Sterne
+- Beim Öffnen werden keine künstlichen Eingaben verarbeitet.
+- Nur ein Feld mit aktivem Tastaturfokus verarbeitet Textänderungen.
+- Speichern erfolgt nur nach echter Eingabe oder über Plus/Minus.
+- Fehlende alte Varnok-Daten werden automatisch repariert.
+- Ein unerwarteter Fehler zeigt eine Meldung, statt das ganze Programm zu schließen.
 
-- Helm: 5
-- Schultern: 5
-- Torso: 5
-- Handschuhe: 5
-- Schuhe: 5
-- Mantel: 5
-- GB-Waffe: 10
-- Pet: 20
-- Rune: 20
-- Teppich: 20
-- Gesamt: 100
-
-## Bedienung
-
-- direkte mehrstellige Eingabe
-- Plus und Minus
-- Tab springt zum nächsten Feld
-- Enter springt ebenfalls weiter
-- vorhandene Zahl wird beim Anklicken markiert
-- automatisches Speichern je Charakter
-- Fortschrittsbalken und fehlende Materialien
-- Anzeige der nächsten sinnvollen Priorität
+Alle Funktionen aus Version 1.4 bleiben erhalten.
