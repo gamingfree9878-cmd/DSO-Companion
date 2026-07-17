@@ -1,18 +1,34 @@
-DSO COMPANION VERSION 1.3.2
+DSO COMPANION VERSION 1.3.3
 
 1. GitHub Desktop schließen.
-2. Dokumente\GitHub\DSO-Companion öffnen.
-3. Alles AUSSER .git löschen.
-4. ZIP entpacken.
-5. Inhalt in den Repository-Ordner kopieren.
+
+2. Öffne:
+   Dokumente\GitHub\DSO-Companion
+
+3. Lösche alles AUSSER:
+   .git
+
+4. Entpacke:
+   DSO_Companion_V1_3_3_DEF_WERTE_EXCEL.zip
+
+5. Kopiere den gesamten Inhalt in:
+   Dokumente\GitHub\DSO-Companion
+
 6. GitHub Desktop öffnen.
-7. Summary: Version 1.3.2 Max Übersicht Tapferkeit
+
+7. Summary:
+   Version 1.3.3 Defensive Excel Werte
+
 8. Commit to main.
+
 9. Push origin.
-10. Grünen GitHub-Actions-Build abwarten.
+
+10. GitHub → Actions → grünen Build abwarten.
 
 TEST:
-- Imperial Exquisit = 10: alle niedrigeren Stufen müssen 10 werden.
-- Trapez ändern: höhere Stufen dürfen unverändert bleiben.
-- Maximal Rubin = 50: oben muss Rubin mit Bild und 50 stehen.
-- Rune der Tapferkeit muss bei Defensiv erscheinen.
+- Amethyst öffnen
+- Cyanit öffnen
+- Smaragd öffnen
+- einen Diamanten öffnen
+- prüfen, ob Trapez jeweils 1.600 Staub und 1.830 Gold zeigt
+- prüfen, ob Imperial Exquisit jeweils 18.400 Staub und 14.645 Gold zeigt

@@ -73,7 +73,9 @@ public static class AppDataService
         ["Opal"] = "/Assets/Gems/opal.png"
     };
 
-    public static readonly (string Name, int Dust, int Gold)[] GemTiers =
+    // Exakte Werte aus Steine_Rechnerd.xlsx
+    // Offensiv: Rubin, Onyx, Zirkon, Rhodolith
+    public static readonly (string Name, int Dust, int Gold)[] OffensiveGemTiers =
     [
         ("Trapez", 2000, 2288),
         ("Trapez Verfeinerter", 3500, 3596),
@@ -86,6 +88,21 @@ public static class AppDataService
         ("Maximal", 0, 0)
     ];
 
+    // Defensiv: Amethyst, Cyanit, Smaragd und alle Diamanten
+    public static readonly (string Name, int Dust, int Gold)[] DefensiveGemTiers =
+    [
+        ("Trapez", 1600, 1830),
+        ("Trapez Verfeinerter", 2800, 2876),
+        ("Trapez Brillanter", 4400, 4184),
+        ("Trapez Exquisit", 6400, 5753),
+        ("Imperial", 8800, 7584),
+        ("Imperial Verfeinerter", 11600, 9676),
+        ("Imperial Brillanter", 14800, 12030),
+        ("Imperial Exquisit", 18400, 14645),
+        ("Maximal", 0, 0)
+    ];
+
+    // Opale besitzen eine eigene Kostenreihe.
     public static readonly (string Name, int Dust, int Gold)[] OpalTiers =
     [
         ("Trapez", 4500, 0),
@@ -100,9 +117,13 @@ public static class AppDataService
     ];
 
     private static (string Name, int Dust, int Gold)[] GetGemTiers(string category) =>
-        string.Equals(category, "Opal", StringComparison.OrdinalIgnoreCase)
-            ? OpalTiers
-            : GemTiers;
+        category switch
+        {
+            "Defensiv" => DefensiveGemTiers,
+            "Diamanten" => DefensiveGemTiers,
+            "Opal" => OpalTiers,
+            _ => OffensiveGemTiers
+        };
 
     public static CharacterProfile CreateCharacter(string name = "Mein Charakter")
     {
