@@ -58,6 +58,11 @@
                         Content="🦴 Mortis / BGH"
                         Style="{StaticResource SidebarButtonStyle}"
                         Click="MortisButton_OnClick"/>
+
+                <Button x:Name="VarnokButton"
+                        Content="⭐ Varnok"
+                        Style="{StaticResource SidebarButtonStyle}"
+                        Click="VarnokButton_OnClick"/>
             </StackPanel>
         </Border>
 
@@ -1315,6 +1320,264 @@
                                            TextWrapping="Wrap"/>
                             </StackPanel>
                         </Border>
+                    </StackPanel>
+                </ScrollViewer>
+
+
+                <!-- Varnok -->
+                <ScrollViewer x:Name="VarnokPage"
+                              Visibility="Collapsed"
+                              Background="{StaticResource BackgroundBrush}"
+                              VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="16">
+                        <TextBlock Text="Varnok"
+                                   Foreground="White"
+                                   FontSize="30"
+                                   FontWeight="Bold"/>
+                        <TextBlock Text="Fortschritt für das Varnok-Set – Werte exakt nach deiner Excel."
+                                   Foreground="{StaticResource MutedBrush}"
+                                   Margin="0,4,0,14"/>
+
+                        <!-- Overview -->
+                        <UniformGrid Columns="4">
+                            <Border Style="{StaticResource CardStyle}">
+                                <StackPanel>
+                                    <TextBlock Text="Traumschleier benötigt"
+                                               Foreground="{StaticResource MutedBrush}"/>
+                                    <TextBlock x:Name="VarnokDreamRequiredText"
+                                               Foreground="#9B7BFF"
+                                               FontSize="27"
+                                               FontWeight="Bold"
+                                               Margin="0,7,0,0"/>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Style="{StaticResource CardStyle}">
+                                <StackPanel>
+                                    <TextBlock Text="Traumschleier fehlen"
+                                               Foreground="{StaticResource MutedBrush}"/>
+                                    <TextBlock x:Name="VarnokDreamMissingText"
+                                               Foreground="#FF5578"
+                                               FontSize="27"
+                                               FontWeight="Bold"
+                                               Margin="0,7,0,0"/>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Style="{StaticResource CardStyle}">
+                                <StackPanel>
+                                    <TextBlock Text="Heilige Sterne benötigt"
+                                               Foreground="{StaticResource MutedBrush}"/>
+                                    <TextBlock x:Name="VarnokStarRequiredText"
+                                               Foreground="#FFD34F"
+                                               FontSize="27"
+                                               FontWeight="Bold"
+                                               Margin="0,7,0,0"/>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Style="{StaticResource CardStyle}">
+                                <StackPanel>
+                                    <TextBlock Text="Heilige Sterne fehlen"
+                                               Foreground="{StaticResource MutedBrush}"/>
+                                    <TextBlock x:Name="VarnokStarMissingText"
+                                               Foreground="#FF5578"
+                                               FontSize="27"
+                                               FontWeight="Bold"
+                                               Margin="0,7,0,0"/>
+                                </StackPanel>
+                            </Border>
+                        </UniformGrid>
+
+                        <!-- Item cards -->
+                        <ItemsControl x:Name="VarnokCardsControl"
+                                      Margin="0,10,0,0">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <UniformGrid Columns="2"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Margin="6"
+                                            Padding="14"
+                                            CornerRadius="12"
+                                            Background="#111824"
+                                            BorderBrush="#8061F1"
+                                            BorderThickness="1.5">
+                                        <StackPanel>
+                                            <Grid Margin="0,0,0,12">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <TextBlock Text="{Binding Name}"
+                                                           Foreground="White"
+                                                           FontSize="21"
+                                                           FontWeight="Bold"/>
+
+                                                <TextBlock Grid.Column="1"
+                                                           Text="{Binding StatusText}"
+                                                           Foreground="#55D6C2"
+                                                           FontWeight="Bold"
+                                                           VerticalAlignment="Center"/>
+                                            </Grid>
+
+                                            <!-- Dream veil -->
+                                            <TextBlock Foreground="{StaticResource MutedBrush}">
+                                                <Run Text="Traumschleier · benötigt "/>
+                                                <Run Text="{Binding DreamRequired}"
+                                                     Foreground="White"
+                                                     FontWeight="Bold"/>
+                                            </TextBlock>
+
+                                            <Grid Margin="0,5,0,6">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="44"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="44"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <Button Grid.Column="0"
+                                                        Content="−"
+                                                        FontSize="19"
+                                                        Padding="0"
+                                                        Tag="{Binding}"
+                                                        Click="VarnokDreamMinus_OnClick"/>
+
+                                                <TextBox Grid.Column="1"
+                                                         Text="{Binding DreamOwned, Mode=OneWay}"
+                                                         Tag="{Binding}"
+                                                         TextAlignment="Center"
+                                                         FontSize="18"
+                                                         FontWeight="Bold"
+                                                         Margin="5,2"
+                                                         GotKeyboardFocus="NumericTextBox_OnGotKeyboardFocus"
+                                                         PreviewKeyDown="NumericTextBox_OnPreviewKeyDown"
+                                                         TextChanged="VarnokDreamTextBox_OnTextChanged"/>
+
+                                                <Button Grid.Column="2"
+                                                        Content="+"
+                                                        FontSize="19"
+                                                        Padding="0"
+                                                        Background="{StaticResource AccentBrush}"
+                                                        Tag="{Binding}"
+                                                        Click="VarnokDreamPlus_OnClick"/>
+                                            </Grid>
+
+                                            <TextBlock Foreground="#9FB8E5"
+                                                       Margin="2,0,2,10">
+                                                <Run Text="Fehlen: "/>
+                                                <Run Text="{Binding DreamMissing}"
+                                                     Foreground="White"
+                                                     FontWeight="Bold"/>
+                                            </TextBlock>
+
+                                            <!-- Stars -->
+                                            <TextBlock Foreground="{StaticResource MutedBrush}">
+                                                <Run Text="Heiliger Stern · benötigt "/>
+                                                <Run Text="{Binding StarRequired}"
+                                                     Foreground="White"
+                                                     FontWeight="Bold"/>
+                                            </TextBlock>
+
+                                            <Grid Margin="0,5,0,6">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="44"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="44"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <Button Grid.Column="0"
+                                                        Content="−"
+                                                        FontSize="19"
+                                                        Padding="0"
+                                                        Tag="{Binding}"
+                                                        Click="VarnokStarMinus_OnClick"/>
+
+                                                <TextBox Grid.Column="1"
+                                                         Text="{Binding StarOwned, Mode=OneWay}"
+                                                         Tag="{Binding}"
+                                                         TextAlignment="Center"
+                                                         FontSize="18"
+                                                         FontWeight="Bold"
+                                                         Margin="5,2"
+                                                         GotKeyboardFocus="NumericTextBox_OnGotKeyboardFocus"
+                                                         PreviewKeyDown="NumericTextBox_OnPreviewKeyDown"
+                                                         TextChanged="VarnokStarTextBox_OnTextChanged"/>
+
+                                                <Button Grid.Column="2"
+                                                        Content="+"
+                                                        FontSize="19"
+                                                        Padding="0"
+                                                        Background="{StaticResource AccentBrush}"
+                                                        Tag="{Binding}"
+                                                        Click="VarnokStarPlus_OnClick"/>
+                                            </Grid>
+
+                                            <TextBlock Foreground="#9FB8E5">
+                                                <Run Text="Fehlen: "/>
+                                                <Run Text="{Binding StarMissing}"
+                                                     Foreground="White"
+                                                     FontWeight="Bold"/>
+                                            </TextBlock>
+
+                                            <ProgressBar Height="12"
+                                                         Minimum="0"
+                                                         Maximum="100"
+                                                         Value="{Binding Progress}"
+                                                         Margin="0,12,0,0"/>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <!-- Summary and priority -->
+                        <Grid Margin="0,12,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Border Grid.Column="0"
+                                    Style="{StaticResource CardStyle}">
+                                <StackPanel>
+                                    <TextBlock Text="Gesamtfortschritt"
+                                               Foreground="White"
+                                               FontSize="21"
+                                               FontWeight="Bold"/>
+                                    <ProgressBar x:Name="VarnokProgressBar"
+                                                 Height="22"
+                                                 Minimum="0"
+                                                 Maximum="100"
+                                                 Margin="0,12,0,10"/>
+                                    <TextBlock x:Name="VarnokSummaryText"
+                                               Foreground="White"
+                                               FontSize="16"
+                                               FontWeight="SemiBold"
+                                               TextWrapping="Wrap"/>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Grid.Column="1"
+                                    Style="{StaticResource CardStyle}">
+                                <StackPanel>
+                                    <TextBlock Text="Nächste Priorität"
+                                               Foreground="White"
+                                               FontSize="21"
+                                               FontWeight="Bold"/>
+                                    <TextBlock x:Name="VarnokPriorityText"
+                                               Foreground="#FFD34F"
+                                               FontSize="18"
+                                               FontWeight="Bold"
+                                               TextWrapping="Wrap"
+                                               Margin="0,12,0,0"/>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
                     </StackPanel>
                 </ScrollViewer>
 

@@ -139,7 +139,8 @@ public static class AppDataService
             ActiveBuildId = build.Id,
             Gems = CreateGemCollections(),
             Runes = CreateRuneCollections(),
-            Mortis = CreateMortisPlan()
+            Mortis = CreateMortisPlan(),
+            Varnok = CreateVarnokPlan()
         };
     }
 
@@ -367,6 +368,26 @@ public static class AppDataService
         return collections;
     }
 
+    public static VarnokPlan CreateVarnokPlan()
+    {
+        return new VarnokPlan
+        {
+            Items =
+            [
+                new() { Name = "Helm", DreamRequired = 50, StarRequired = 5 },
+                new() { Name = "Schultern", DreamRequired = 50, StarRequired = 5 },
+                new() { Name = "Torso", DreamRequired = 50, StarRequired = 5 },
+                new() { Name = "Handschuhe", DreamRequired = 50, StarRequired = 5 },
+                new() { Name = "Schuhe", DreamRequired = 50, StarRequired = 5 },
+                new() { Name = "Mantel", DreamRequired = 50, StarRequired = 5 },
+                new() { Name = "GB-Waffe", DreamRequired = 100, StarRequired = 10 },
+                new() { Name = "Pet", DreamRequired = 0, StarRequired = 20 },
+                new() { Name = "Rune", DreamRequired = 0, StarRequired = 20 },
+                new() { Name = "Teppich", DreamRequired = 100, StarRequired = 20 }
+            ]
+        };
+    }
+
     public static MortisPlan CreateMortisPlan()
     {
         return new MortisPlan
@@ -396,6 +417,7 @@ public static class AppDataService
         character.Gems ??= [];
         character.Runes ??= [];
         character.Mortis ??= CreateMortisPlan();
+        character.Varnok ??= CreateVarnokPlan();
 
         if (character.Builds.Count == 0)
         {
@@ -495,6 +517,30 @@ public static class AppDataService
 
         if (character.Mortis.Activities is null || character.Mortis.Activities.Count == 0)
             character.Mortis = CreateMortisPlan();
+
+        if (character.Varnok.Items is null || character.Varnok.Items.Count == 0)
+        {
+            character.Varnok = CreateVarnokPlan();
+        }
+        else
+        {
+            VarnokPlan defaults = CreateVarnokPlan();
+
+            foreach (VarnokItem defaultItem in defaults.Items)
+            {
+                VarnokItem? existing =
+                    character.Varnok.Items.FirstOrDefault(x => x.Name == defaultItem.Name);
+
+                if (existing is null)
+                {
+                    character.Varnok.Items.Add(defaultItem);
+                    continue;
+                }
+
+                existing.DreamRequired = defaultItem.DreamRequired;
+                existing.StarRequired = defaultItem.StarRequired;
+            }
+        }
     }
 
     public static void NormalizeBuild(BuildProfile build)

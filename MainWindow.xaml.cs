@@ -100,12 +100,16 @@ public partial class MainWindow : Window
         MortisCardsControl.ItemsSource = null;
         MortisCardsControl.ItemsSource = ActiveCharacter.Mortis.Activities;
 
+        VarnokCardsControl.ItemsSource = null;
+        VarnokCardsControl.ItemsSource = ActiveCharacter.Varnok.Items;
+
         _loading = false;
 
         LoadSelectedEquipmentSlot();
         RefreshGemPage();
         RefreshRunePage();
         UpdateMortisSummary();
+        UpdateVarnokSummary();
         UpdateSummary();
         Save();
     }
@@ -138,6 +142,7 @@ public partial class MainWindow : Window
         RunesPage.Visibility = Visibility.Collapsed;
         JewelsPage.Visibility = Visibility.Collapsed;
         MortisPage.Visibility = Visibility.Collapsed;
+        VarnokPage.Visibility = Visibility.Collapsed;
 
         page.Visibility = Visibility.Visible;
 
@@ -151,6 +156,7 @@ public partial class MainWindow : Window
         RunesButton.Background = normal;
         JewelsButton.Background = normal;
         MortisButton.Background = normal;
+        VarnokButton.Background = normal;
 
         activeButton.Background = accent;
     }
@@ -663,6 +669,138 @@ public partial class MainWindow : Window
         }
     }
 
+    private void VarnokDreamTextBox_OnTextChanged(
+        object sender,
+        TextChangedEventArgs e)
+    {
+        if (_loading ||
+            sender is not TextBox box ||
+            box.Tag is not VarnokItem item)
+        {
+            return;
+        }
+
+        item.DreamOwned = ParseInt(box.Text);
+        UpdateVarnokSummary();
+    }
+
+    private void VarnokStarTextBox_OnTextChanged(
+        object sender,
+        TextChangedEventArgs e)
+    {
+        if (_loading ||
+            sender is not TextBox box ||
+            box.Tag is not VarnokItem item)
+        {
+            return;
+        }
+
+        item.StarOwned = ParseInt(box.Text);
+        UpdateVarnokSummary();
+    }
+
+    private void VarnokDreamPlus_OnClick(object sender, RoutedEventArgs e)
+    {
+        if (sender is Button button && button.Tag is VarnokItem item)
+        {
+            item.DreamOwned++;
+            UpdateVarnokSummary();
+        }
+    }
+
+    private void VarnokDreamMinus_OnClick(object sender, RoutedEventArgs e)
+    {
+        if (sender is Button button && button.Tag is VarnokItem item)
+        {
+            item.DreamOwned = Math.Max(0, item.DreamOwned - 1);
+            UpdateVarnokSummary();
+        }
+    }
+
+    private void VarnokStarPlus_OnClick(object sender, RoutedEventArgs e)
+    {
+        if (sender is Button button && button.Tag is VarnokItem item)
+        {
+            item.StarOwned++;
+            UpdateVarnokSummary();
+        }
+    }
+
+    private void VarnokStarMinus_OnClick(object sender, RoutedEventArgs e)
+    {
+        if (sender is Button button && button.Tag is VarnokItem item)
+        {
+            item.StarOwned = Math.Max(0, item.StarOwned - 1);
+            UpdateVarnokSummary();
+        }
+    }
+
+    private void UpdateVarnokSummary()
+    {
+        VarnokPlan plan = ActiveCharacter.Varnok;
+
+        VarnokDreamRequiredText.Text = plan.DreamRequired.ToString("N0");
+        VarnokDreamMissingText.Text = plan.DreamMissing.ToString("N0");
+        VarnokStarRequiredText.Text = plan.StarRequired.ToString("N0");
+        VarnokStarMissingText.Text = plan.StarMissing.ToString("N0");
+
+        VarnokProgressBar.Value = plan.Progress;
+
+        VarnokSummaryText.Text =
+            $"Fortschritt: {plan.Progress:N1} % · " +
+            $"Fertig: {plan.CompletedItems} von {plan.TotalItems} Gegenständen\n" +
+            $"Traumschleier vorhanden: {plan.DreamOwned:N0} / {plan.DreamRequired:N0} · " +
+            $"Heilige Sterne vorhanden: {plan.StarOwned:N0} / {plan.StarRequired:N0}";
+
+        VarnokItem? priority = plan.NextPriority;
+
+        VarnokPriorityText.Text =
+            priority is null
+                ? "Alle Varnok-Ziele sind fertig."
+                : $"{priority.Name}\n" +
+                  $"Es fehlen {priority.DreamMissing:N0} Traumschleier " +
+                  $"und {priority.StarMissing:N0} Heilige Sterne.";
+
+        Save();
+    }
+
+    private void NumericTextBox_OnGotKeyboardFocus(
+        object sender,
+        KeyboardFocusChangedEventArgs e)
+    {
+        if (sender is TextBox box)
+            box.SelectAll();
+    }
+
+    private void NumericTextBox_OnPreviewKeyDown(
+        object sender,
+        KeyEventArgs e)
+    {
+        if (sender is not TextBox box)
+            return;
+
+        if (e.Key == Key.Enter)
+        {
+            box.MoveFocus(
+                new TraversalRequest(FocusNavigationDirection.Next));
+            e.Handled = true;
+            return;
+        }
+
+        bool allowed =
+            e.Key is >= Key.D0 and <= Key.D9 ||
+            e.Key is >= Key.NumPad0 and <= Key.NumPad9 ||
+            e.Key == Key.Back ||
+            e.Key == Key.Delete ||
+            e.Key == Key.Left ||
+            e.Key == Key.Right ||
+            e.Key == Key.Tab ||
+            Keyboard.Modifiers.HasFlag(ModifierKeys.Control);
+
+        if (!allowed)
+            e.Handled = true;
+    }
+
     private static string? Prompt(string title, string initialValue)
     {
         Window dialog = new()
@@ -748,6 +886,12 @@ public partial class MainWindow : Window
     {
         UpdateMortisSummary();
         ShowPage(MortisPage, MortisButton);
+    }
+
+    private void VarnokButton_OnClick(object sender, RoutedEventArgs e)
+    {
+        UpdateVarnokSummary();
+        ShowPage(VarnokPage, VarnokButton);
     }
 
     private void CharacterCombo_OnSelectionChanged(object sender, SelectionChangedEventArgs e)

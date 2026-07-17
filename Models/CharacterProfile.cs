@@ -19,4 +19,5 @@ public sealed class CharacterProfile
     public int OwnedRuneGold { get; set; }
     public List<RuneCollection> Runes { get; set; } = [];
     public MortisPlan Mortis { get; set; } = new();
+    public VarnokPlan Varnok { get; set; } = new();
 }

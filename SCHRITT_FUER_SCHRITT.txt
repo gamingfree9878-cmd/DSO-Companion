@@ -1,4 +1,4 @@
-DSO COMPANION VERSION 1.3.3
+DSO COMPANION VERSION 1.4
 
 1. GitHub Desktop schließen.
 
@@ -9,15 +9,15 @@ DSO COMPANION VERSION 1.3.3
    .git
 
 4. Entpacke:
-   DSO_Companion_V1_3_3_DEF_WERTE_EXCEL.zip
+   DSO_Companion_V1_4_VARNOK.zip
 
-5. Kopiere den gesamten Inhalt in:
+5. Kopiere den gesamten Inhalt nach:
    Dokumente\GitHub\DSO-Companion
 
 6. GitHub Desktop öffnen.
 
 7. Summary:
-   Version 1.3.3 Defensive Excel Werte
+   Version 1.4 Varnok
 
 8. Commit to main.
 
@@ -26,9 +26,8 @@ DSO COMPANION VERSION 1.3.3
 10. GitHub → Actions → grünen Build abwarten.
 
 TEST:
-- Amethyst öffnen
-- Cyanit öffnen
-- Smaragd öffnen
-- einen Diamanten öffnen
-- prüfen, ob Trapez jeweils 1.600 Staub und 1.830 Gold zeigt
-- prüfen, ob Imperial Exquisit jeweils 18.400 Staub und 14.645 Gold zeigt
+- links Varnok öffnen
+- bei Helm mehrere Ziffern eintragen
+- Tab und Enter testen
+- Plus und Minus testen
+- Summen und Fortschritt kontrollieren

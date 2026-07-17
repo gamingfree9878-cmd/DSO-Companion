@@ -1,43 +1,42 @@
-# DSO Companion 1.3.3 – Defensive Edelsteinwerte aus Excel
+# DSO Companion 1.4 – Varnok
 
-Die Staub- und Goldwerte wurden direkt aus `Steine_Rechnerd.xlsx` übernommen.
+Neues Varnok-Modul mit den exakten Zielwerten aus `Varnok.xlsx`.
 
-## Offensive Edelsteine
+## Zielwerte
 
-- Trapez: 2.000 Staub / 2.288 Gold
-- Trapez Verfeinerter: 3.500 / 3.596
-- Trapez Brillanter: 5.500 / 5.230
-- Trapez Exquisit: 8.000 / 7.192
-- Imperial: 11.000 / 9.480
-- Imperial Verfeinerter: 14.500 / 12.095
-- Imperial Brillanter: 18.500 / 15.038
-- Imperial Exquisit: 23.000 / 18.307
+### Traumschleier
 
-## Defensive Edelsteine und Diamanten
+- Helm: 50
+- Schultern: 50
+- Torso: 50
+- Handschuhe: 50
+- Schuhe: 50
+- Mantel: 50
+- GB-Waffe: 100
+- Teppich: 100
+- Gesamt: 500
 
-- Trapez: 1.600 Staub / 1.830 Gold
-- Trapez Verfeinerter: 2.800 / 2.876
-- Trapez Brillanter: 4.400 / 4.184
-- Trapez Exquisit: 6.400 / 5.753
-- Imperial: 8.800 / 7.584
-- Imperial Verfeinerter: 11.600 / 9.676
-- Imperial Brillanter: 14.800 / 12.030
-- Imperial Exquisit: 18.400 / 14.645
+### Heilige Sterne
 
-Die defensiven Werte gelten für:
+- Helm: 5
+- Schultern: 5
+- Torso: 5
+- Handschuhe: 5
+- Schuhe: 5
+- Mantel: 5
+- GB-Waffe: 10
+- Pet: 20
+- Rune: 20
+- Teppich: 20
+- Gesamt: 100
 
-- Amethyst
-- Cyanit
-- Smaragd
-- Diamant
-- Eisdiamant
-- Blitzdiamant
-- Feuerdiamant
-- Andermachtdiamant
-- Giftdiamant
+## Bedienung
 
-## Opale
-
-Opale behalten ihre eigene Kostenreihe aus der Excel.
-
-Alle bisherigen Funktionen aus Version 1.3.2 bleiben erhalten.
+- direkte mehrstellige Eingabe
+- Plus und Minus
+- Tab springt zum nächsten Feld
+- Enter springt ebenfalls weiter
+- vorhandene Zahl wird beim Anklicken markiert
+- automatisches Speichern je Charakter
+- Fortschrittsbalken und fehlende Materialien
+- Anzeige der nächsten sinnvollen Priorität
